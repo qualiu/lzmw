@@ -1,18 +1,19 @@
+@echo off
 :: ############################################################################
 :: This tool is to find all process by the searching options of the process : 
 :: commad line, name, process id, parent process id
 :: ####### to "echo on" for debuging this script : ###################
-:: lzmw -p psall.bat -it "^\s*(@?echo)\s+off\b" -o "$1 on" -R && lzmw -p psall.bat -it "^\s*::\s*(echo\s+.*)$" -o "$1" -R
+:: lzmw -p psall.bat -it "^\s*(@?echo)\s+off\b" -o "$1 on" -R && lzmw -p psall.bat -it "^\s*rem\s+(echo\s+.*)$" -o "$1" -R
 :: ####### to restore "echo off" , run following : ###################
-:: lzmw -p psall.bat -it "^\s*(@?echo)\s+on\b" -o "$1 off" -R && lzmw -p psall.bat -it "^\s*(echo\s+.*)$" -o "::$1" -L 30 -R
+:: lzmw -p psall.bat -it "^\s*(@?echo)\s+on\b" -o "$1 off" -R && lzmw -p psall.bat -it "^\s*(echo\s+.*)$" -o "rem $1" -L 30 -R
 :: ############################################################################
 
-@echo off
-setlocal enabledelayedexpansion
+SetLocal EnableExtensions EnableDelayedExpansion
 set lzmw=lzmw
+set FilterSelf=where (name != "lzmw.exe")
 
-if "%1" == "-h"     set ToShowUsage=1
-if "%1" == "--help" set ToShowUsage=1
+if "%~1" == "-h"     set ToShowUsage=1
+if "%~1" == "--help" set ToShowUsage=1
 
 if "%ToShowUsage%" == "1" (
     %lzmw%
@@ -69,8 +70,11 @@ shift
 goto start
 
 :done
+rem echo textOption = %textOption%
+rem echo otherOption = %otherOption%
+
 set finalEnhance=
-if "%textOption%" == "" (
+if not x%textOption% == x if %textOption% == "" (
    if not "%enhanceOption%" == "" (
         set finalEnhance=-e %enhanceOption%
    )
@@ -82,21 +86,18 @@ if "%textOption%" == "" (
     )
 )
 
-::echo all options = %*
-::echo textOption = %textOption%
-::echo enhanceOption = %enhanceOption%
-::echo otherOption = %otherOption%
-::echo finalEnhance = %finalEnhance%
+rem echo enhanceOption = %enhanceOption%
+rem echo finalEnhance = %finalEnhance%
 
 set WMIC_ARGS=ParentProcessId,ProcessId,Name,CommandLine
 set EachMultiLineToOneLine=-t "\s+" -o " " --nt "^(wmic|lzmw)" -PAC
 set ColumnReplace=-t "^(.+?)\s+(\S+)\s+(\S+)\s+(\S+)\s*$" -o "$3 $4 $2 $1"
 set LastArgs=-it "^(?:\d+|ParentProcessId)\s+(\d+|ProcessId)\s+(\S+|Name)" %finalEnhance% %otherOption%
 
-if "%textOption%" == "" (
+if not x%textOption% == x if %textOption% == "" (
     wmic process get %WMIC_ARGS% | %lzmw% %EachMultiLineToOneLine% | %lzmw% %ColumnReplace% -PAC | %lzmw% %LastArgs%
 ) else (
-    ::echo ParentProcessId ProcessId Name CommandLine | %lzmw% -it "^\w+\s+(\w+)\s+(\w+)\s+(\w+)" -PA
+    rem echo ParentProcessId ProcessId Name CommandLine | %lzmw% -it "^\w+\s+(\w+)\s+(\w+)\s+(\w+)" -PA
     wmic process get %WMIC_ARGS% | %lzmw% %EachMultiLineToOneLine% | %lzmw% -PAC %textCmd% %textOption% | %lzmw% %ColumnReplace% -PAC | %lzmw% %LastArgs%
 )
 
@@ -106,3 +107,4 @@ goto :End
 echo Not support or currently cannot use %~1 %~2 , you can append a pipe with : %lzmw% %~1 %~2 | %lzmw% -ie "(?<=cannot use).*(?=you can)" -PA
 
 :End
+
