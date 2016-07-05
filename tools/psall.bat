@@ -74,12 +74,12 @@ rem echo textOption = %textOption%
 rem echo otherOption = %otherOption%
 
 set finalEnhance=
-if not x%textOption% == x if %textOption% == "" (
-   if not "%enhanceOption%" == "" (
+if [%textOption%] == [] (
+   if not [%enhanceOption%] == [] (
         set finalEnhance=-e %enhanceOption%
    )
 ) else (
-    if not "%enhanceOption%" == "" (
+    if not [%enhanceOption%] == [] (
         set finalEnhance=-e "%textOption:"=%|%enhanceOption:"=%"
     ) else (
         set finalEnhance=-e %textOption%
@@ -94,7 +94,7 @@ set EachMultiLineToOneLine=-t "\s+" -o " " --nt "^(wmic|lzmw)" -PAC
 set ColumnReplace=-t "^(.+?)\s+(\S+)\s+(\S+)\s+(\S+)\s*$" -o "$3 $4 $2 $1"
 set LastArgs=-it "^(?:\d+|ParentProcessId)\s+(\d+|ProcessId)\s+(\S+|Name)" %finalEnhance% %otherOption%
 
-if not x%textOption% == x if %textOption% == "" (
+if [%textOption%] == [] (
     wmic process get %WMIC_ARGS% | %lzmw% %EachMultiLineToOneLine% | %lzmw% %ColumnReplace% -PAC | %lzmw% %LastArgs%
 ) else (
     rem echo ParentProcessId ProcessId Name CommandLine | %lzmw% -it "^\w+\s+(\w+)\s+(\w+)\s+(\w+)" -PA
