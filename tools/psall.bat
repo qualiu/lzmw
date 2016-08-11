@@ -22,7 +22,7 @@ if "%ToShowUsage%" == "1" (
     echo Example-1: %0 -H 9 -T 9
     echo Example-2: %0 -it cmd.exe
     echo Example-3: %0 -i -x C:\Windows -H 3
-    exit /b 0
+    exit /b 5
 )
 
 set textOption=
@@ -31,7 +31,7 @@ set otherOption=
 set textCmd=
 
 :start
-if "%1" == ""  goto done
+if "%~1" == ""  goto done
 
 if "%1" == "-t" (
     set textOption=%2
