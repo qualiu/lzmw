@@ -30,20 +30,21 @@ Any good ideas please to : QQ : 94394344 , aperiodic updates and docs on https:/
 Call@Anywhere: add to PATH with parent directory: d:\lztool or temporally : SET PATH=%PATH%;d:\lztool
 
 
+
 # lzmw.exe ------------------------------------------------
 Line matching/replacing(IGNORE case of file and directory name) by LQM since 2012.12:
-  -r [ --recursive ]          Recursively search sub-directories. Default not
+  -r [ --recursive ]          Recursively search sub-directories.
   -p [ --path ] arg           Directories or files, use ',' or ';' to separate.
   -f [ --file-match ] arg     Regex pattern of file name to search.
   -t [ --text-match ] arg     Regex pattern of line text must match.
   -x [ --has-text ] arg       Line must contain this normal text (not regex)
-  --nx arg                    Line not contain this normal text (not regex)
-  --nt arg                    Pattern of lines must not match.
-  --nf arg                    Pattern of file name must not match.
-  --pp arg                    Pattern of full file path must match
-  --np arg                    Pattern of full file path must not match
-  --nd arg                    Each sub directory name must not match.
-  -d [ --dir-has ] arg        File's parent directory must has one match
+  --nx arg                    Line must NOT contain this normal text.
+  --nt arg                    Pattern of lines must NOT match.
+  --nf arg                    Pattern of file name must NOT match.
+  --pp arg                    Pattern of full file path must match.
+  --np arg                    Pattern of full file path must NOT match.
+  --nd arg                    File's parent directory names must NOT match.
+  -d [ --dir-has ] arg        File's parent directory names must has one match.
   -i [ --ignore-case ]        Ignore case of matching/replacing text.
   -e [ --enhance ] arg        Pattern to enhance text, inferior to : -t -x -o
   -o [ --replace-to ] arg     Regex pattern to replace -x/-t XXX to -o XXX
@@ -65,20 +66,21 @@ Line matching/replacing(IGNORE case of file and directory name) by LQM since 201
   --s1 arg                    File size like 100kb (No Space, B if no unit)
   --s2 arg                    File size like 2.5M (No Space, B if no unit)
   -R [ --replace-file ]       Replace file text : -x/-t XXX to -o XXX
-  -K [ --backup ]             Backup file before replacing. Default not.
+  -K [ --backup ]             Backup files if replaced content.
   -S [ --single-line ]        Single line rule for match/replace (often file)
-  -c [ --show-command ]       Show command line. default not.
+  -c [ --show-command ]       Show command line(and can append any text)
   -U [ --up ] arg             Out above lines of matched by -t or found by -x
   -D [ --down ] arg           Out bellow lines of matched by -t or found by -x
   -H [ --head ] arg           Out only top [N] lines of whole output,except -T
   -T [ --tail ] arg           Out only bottom [N] lines of whole, except -H
-  -L [ --row-begin ] arg      Begin row of reading pipe or files
-  -N [ --row-end ] arg        End row of reading pipe or files
-  -b [ --start-pattern ] arg  Regex pattern to begin reading or replacing
-  -q [ --stop-pattern ] arg   Regex pattern to quit reading or replacing
-  -Q [ --stop2-pattern ] arg  Regex pattern to quit after matching start
-  -O [ --out-if-did ]         Out summary info only if matched/replaced/found
+  -L [ --row-begin ] arg      Begin row of reading pipe or files.
+  -N [ --row-end ] arg        End row of reading pipe or files.
+  -b [ --start-pattern ] arg  Regex pattern to begin reading/replacing.
+  -q [ --stop-pattern ] arg   Regex pattern to quit reading/replacing.
+  -Q [ --stop2-pattern ] arg  Regex pattern to quit after matching start.
+  -O [ --out-if-did ]         Out summary info only if matched/replaced/found.
   -X [ --execute-out-lines ]  Execute final out lines as commands.
+  -z [ --string ] arg         Input a string instead of reading files or pipe.
   --verbose                   Show parsed parameters and return code, etc.
   -h [ --help ]               see usage and https://github.com/qualiu/lzmw
 
@@ -102,10 +104,13 @@ Note: Return value is the matched/replaced count in files or pipe.
 (5) Further extraction: with -c (--show-command), can append any text to the command line.
     Especially useful with -O for secondary and further extractions.
 (6) Map <--> Reduce : -o transforms one line to multi-lines; -S changes -t to single-line Regex mode.
-    lzmw -p my.log -t "host-list=([\d\.]+),(\d\.]+),([^,]+)" -o "${1}\n$2\n$3" -P -A -C | lzmw -S -t "([\d\.]+)[\r\n]*" -o "$1," -PAC | lzmw ...  | lzmw ... 
+    lzmw -p my.log -t "host-list=([\d\.]+),(\d\.]+),([^,]+)" -o "${1}\n$2\n$3" -P -A -C | lzmw -S -t "([\d\.]+)[\r\n]*" -o "$1," -PAC | lzmw ... | lzmw ...
 (7) Quick look up usage by self : Also helpful to look up system/other tool usages with brief context (Up/Down lines)
     lzmw | lzmw -i -t sort -U 3 -D 3 -e time
     robocopy /? | lzmw -it mirror -U 3 -D 3 -e purge
+
+Additional feature: Directly reading text by -z (--string instead of echo) Example: Finding non-exist path in %PATH% and olny check 3 header + 3 tailer paths:
+    lzmw -z "%PATH%" -t "\s*;\s*" -o "\n" -PAC | lzmw -t .+ -o "if not exist \"$0\" echo NOT EXIST $0"  -PI -H 3 -T 3 -X
 
 Example-1 : Find env in profiles:
 	D:\lztool\lzmw.exe --recursive --path "/home/qualiu , /etc , /d/cygwin/profile"  --file-match "\.(env|xml|\w*rc)$"  --text-match "^\s*export \w+=\S+" --ignore-case
@@ -117,7 +122,7 @@ Example-3 : Recursively replace(-R) IP tail-part in xml paragraph: <SQL> or <Con
 	lzmw -rp  .  -f "\.xml$" -d "\w+-test$" --nd "Prod-\w+" -b "^\s*<SQL|Connection>" -Q "^\s*</(SQL|Connection)>" -N 200 -it "(\d{1,3})\.(\d{1,3})\.\d{1,3}\.\d{1,3}" -o "${1}.$2.192.203" -RK
 
 Example-4 : Read Pipe : such as : type query.txt | lzmw -t words -PAC 2>nul | lzmw -PIC -xxx ...
-	ipconfig  | lzmw -t "^.*?(\d+\.[\d\.]{4,}).*$"  -o "${1}" -PAC
+	ipconfig | lzmw -t "^.*?(\d+\.[\d\.]{4,}).*$"  -o "${1}" -PAC
 
 Example-5 : Single-line regex mode replacing whole text in each file and backup (preview without -R)
 	lzmw -rp "%CD%" -f "config\w*\.(xml|ini)$" -S -t "(<Command>).*?(</Command>)" -o "$1 new-content ${2}" -RK
@@ -126,7 +131,7 @@ Example-6 : Multi-line regex mode (normal mode) replacing lines in each file and
 	lzmw -rp spark\bin,spark\test -f "\.(bat|cmd)$"  -it "^(\s*@\s*echo)\s+off\b" -o "$1 on" -R -K
 
 Example-7 : Display current modified code files :
-	for /F %s in ('lzmw -l -f "\.(cs|java|cpp|cx*|hp*|py|scala)$" -rp "%CD%" --nd "^(debug|release)$"  --w1 "2012-12-24 09:17:09" -PAC 2^>nul ') do @echo code file : %s
+	for /F %s in ('lzmw -l -f "\.(cs|java|cpp|cx*|hp*|py|scala)$" -rp "%CD%" --nd "^(debug|release)$"  --w1 "2012-12-08 23:36:17" -PAC 2^>nul ') do @echo code file : %s
 
 Example-8 : Get 2 oldest and newest mp3 (4 files) which 3.0MB<=size<=9.9MB and show size unit, in current directory (Can omit -p . or -p %CD%)
 	lzmw -l --wt -H 2 -T 2 -f "\.mp3$" --sz --s1 3.0MB --s2 9.9m
