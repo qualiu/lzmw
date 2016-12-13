@@ -6,11 +6,15 @@ rem lzmw -f "\.bat$" -it "^\s*(@?echo)\s+on\b" -o "$1 off" -N 9 -R -p .
 SetLocal EnableDelayedExpansion
 
 rem @echo %* | findstr "[A-Za-z]">nul && call :KillByRegex %* || call :KillByPID %*
+if "%~1" == ""       set ToShowUsage=1
+if "%~1" == "-h"     set ToShowUsage=1
+if "%~1" == "--help" set ToShowUsage=1
+if "%~1" == "/?"       set ToShowUsage=1
 
-if "%~1" == "" (
-    echo Usage   : %0  process-match-options or process-id-list
-    echo Example : %0  -i -t "java.*-X\S+|cmd.exe"  ---- kill process by commandline matching, more info run : lzmw.exe
-    echo Example : %0  2030 3021                    ---- kill process by id
+if "%ToShowUsage%" == "1" (
+    echo Usage   : %0  process-match-options or process-id-list | lzmw -PA -e "option\w*|\b(id)\b" -x %0
+    echo Example : %0  -i -t "java.*-X\S+|cmd.exe"  ---- kill process by commandline matching, more info run : lzmw.exe | lzmw -PA -e "\s+-+\w+|lzmw" -x %0
+    echo Example : %0  2030 3021                    ---- kill process by id | lzmw -PA -e "(\s+\d+|\bid\b)" -x %0
     exit /b 5
 )
 

@@ -14,14 +14,15 @@ set FilterSelf=where (name != "lzmw.exe")
 
 if "%~1" == "-h"     set ToShowUsage=1
 if "%~1" == "--help" set ToShowUsage=1
+if "%~1" == "/?"       set ToShowUsage=1
 
 if "%ToShowUsage%" == "1" (
-    %lzmw%
-    echo %lzmw% matching options as above.
-    echo try to use : -t "process-info-text" , -e "to-enhance" , -H "header-lines", ..., -P, etc.
-    echo Example-1: %0 -H 9 -T 9
-    echo Example-2: %0 -it cmd.exe
-    echo Example-3: %0 -i -x C:\Windows -H 3
+    :: %lzmw%
+    echo To see %lzmw% matching options just run %lzmw% | lzmw -PA -ie "options|lzmw" -x %lzmw%
+    echo Usage    : %0 -t "process-info-text"  -e "to-enhance"  -H "header-lines", ... -P, etc. | lzmw -PA -e "\s+-+\w+\s+" -x %0
+    echo Example-1: %0 -H 9 -T 9    | lzmw -PA -e "\s+-+\w+\s+" -x %0
+    echo Example-2: %0 -it cmd.exe --nx lzmw.exe | lzmw -PA -e "\s+-\w\s+" | lzmw -PA -e "\s+-+\w+\s+" -x %0
+    echo Example-3: %0 -t C:.Windows -H 3 --nx C:\Windows\system32 --nt lzmw.exe | lzmw -PA -e "\s+-+\w+\s+" -x %0
     exit /b 5
 )
 
@@ -90,7 +91,8 @@ rem echo enhanceOption = %enhanceOption%
 rem echo finalEnhance = %finalEnhance%
 
 set WMIC_ARGS=ParentProcessId,ProcessId,Name,CommandLine
-set EachMultiLineToOneLine=-t "\s+" -o " " --nt "^(wmic|lzmw)" -PAC
+::set EachMultiLineToOneLine=-t "\s+" -o " " --nt "^(wmic|lzmw)" -PAC
+set EachMultiLineToOneLine=-t "\s+" -o " " --nt "^(wmic)" -PAC
 set ColumnReplace=-t "^(.+?)\s+(\S+)\s+(\S+)\s+(\S+)\s*$" -o "$3 $4 $2 $1"
 set LastArgs=-it "^(?:\d+|ParentProcessId)\s+(\d+|ProcessId)\s+(\S+|Name)" %finalEnhance% %otherOption%
 
@@ -104,7 +106,7 @@ if [%textOption%] == [] (
 goto :End
 
 :NotSupportNormalGrep
-echo Not support or currently cannot use %~1 %~2 , you can append a pipe with : %lzmw% %~1 %~2 | %lzmw% -ie "(?<=cannot use).*(?=you can)" -PA
+echo Not support or currently cannot use %~1 %~2 , you can append a pipe with : %lzmw% %~1 %~2 | %lzmw% -e "(?<=cannot use).*(?=you can)" -PA
 
 :End
 

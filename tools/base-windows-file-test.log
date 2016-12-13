@@ -7,6 +7,35 @@ c:\Program Files\LLVM\bin\clang.exe
 lzmw -cA -z "c:\Program Files\LLVM\bin\clang.exe" -t "\\\\" -o \\ 
 c:\Program Files\LLVM\bin\clang.exe
 
+lzmw -cA -p . -f "^(example-commands|sample-file)\.(txt|bat)$" -l --wt --sz -H 3 --dsc 
+example-commands.bat
+sample-file.txt
+
+lzmw -cA -p . -f "^(example-commands|sample-file)\.(txt|bat)$" -l --sz --wt -T 3  
+sample-file.txt
+example-commands.bat
+
+lzmw -cA -p . -f "^(example-commands|sample-file)\.(txt|bat)$" -l --wt --sz -H 3 --dsc --s1 1KB --s2 1MB --w1 "2015-07-20 13:20" 
+example-commands.bat
+sample-file.txt
+
+lzmw -cA -p sample-file.txt -ib "^\s*enum" -q "\};" -S -t "([\r\n]+)\s+" -o "$1  " 
+sample-file.txt:12: enum class LineType {
+  NotMatchedLine = 0,
+  MatchedLine = 1,
+  UpLine = 2,
+  DownLine = 3
+};
+
+
+lzmw -cA -p sample-file.txt -ib "^\s*enum" -q "\};" -t "^\s+" -o "  " -a -P 
+enum class LineType {
+  NotMatchedLine = 0,
+  MatchedLine = 1,
+  UpLine = 2,
+  DownLine = 3
+};
+
 lzmw -cA -p sample-file.txt -i -t "(Deferred\w*)" 
 sample-file.txt:14: class DeferredRun {
 sample-file.txt:16:         DeferredRun(const std::function<void()>& run) : _run(run) { }
@@ -23,209 +52,213 @@ sample-file.txt:17:         ~DeferredRunReplaced() {
 
 lzmw -cA -p example-commands.bat -it "class|run" -H 9 
 example-commands.bat:1: ::Just run windows-test.bat which calls this file, or run this file directly, you will get a vivid sense of lzmw.
-example-commands.bat:7: lzmw -c -p %~dp0\sample-file.txt -i -b "class DeferredRun" -Q "^};" -t "(Deferred\w*)" -o "$1Replaced"
-example-commands.bat:8: lzmw -c -p %~dp0\example-commands.bat -it "class|run" -H 9
-example-commands.bat:9: lzmw -c -p %~dp0\example-commands.bat -ie "class|run" -H 9
+example-commands.bat:12: lzmw -c -p %~dp0\sample-file.txt -i -b "class DeferredRun" -Q "^};" -t "(Deferred\w*)" -o "$1Replaced"
+example-commands.bat:13: lzmw -c -p %~dp0\example-commands.bat -it "class|run" -H 9
+example-commands.bat:14: lzmw -c -p %~dp0\example-commands.bat -ie "class|run" -H 9
 
 lzmw -cA -p example-commands.bat -ie "class|run" -H 9 
 example-commands.bat:1: ::Just run windows-test.bat which calls this file, or run this file directly, you will get a vivid sense of lzmw.
 example-commands.bat:2: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -x \ -o \\
 example-commands.bat:3: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t \\ -o \\
 example-commands.bat:4: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t "\\\\" -o \\
-example-commands.bat:5: lzmw -c -p %~dp0\sample-file.txt -i -t "(Deferred\w*)"
-example-commands.bat:6: lzmw -c -p %~dp0\sample-file.txt -it "(Deferred\w*)\s+\1"
-example-commands.bat:7: lzmw -c -p %~dp0\sample-file.txt -i -b "class DeferredRun" -Q "^};" -t "(Deferred\w*)" -o "$1Replaced"
-example-commands.bat:8: lzmw -c -p %~dp0\example-commands.bat -it "class|run" -H 9
-example-commands.bat:9: lzmw -c -p %~dp0\example-commands.bat -ie "class|run" -H 9
+example-commands.bat:5: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --wt --sz -H 3 --dsc
+example-commands.bat:6: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --sz --wt -T 3 
+example-commands.bat:7: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --wt --sz -H 3 --dsc --s1 1KB --s2 1MB --w1 "2015-07-20 13:20"
+example-commands.bat:8: lzmw -c -p %~dp0\sample-file.txt -ib "^\s*enum" -q "\};" -S -t "([\r\n]+)\s+" -o "$1  "
+example-commands.bat:9: lzmw -c -p %~dp0\sample-file.txt -ib "^\s*enum" -q "\};" -t "^\s+" -o "  " -a -P
 
-lzmw -cA -p example-commands.bat -it "^lzmw\s+(-c\s+)?" -L 3 -N 9 -o "lzmw -cA "  
+lzmw -cA -p example-commands.bat -it "^lzmw\s+(-c\s+)?" -L 3 -N 9 -o "lzmw -cA " 
 example-commands.bat:3: lzmw -cA -z "c:\Program Files\LLVM\bin\clang.exe" -t \\ -o \\
 example-commands.bat:4: lzmw -cA -z "c:\Program Files\LLVM\bin\clang.exe" -t "\\\\" -o \\
-example-commands.bat:5: lzmw -cA -p %~dp0\sample-file.txt -i -t "(Deferred\w*)"
-example-commands.bat:6: lzmw -cA -p %~dp0\sample-file.txt -it "(Deferred\w*)\s+\1"
-example-commands.bat:7: lzmw -cA -p %~dp0\sample-file.txt -i -b "class DeferredRun" -Q "^};" -t "(Deferred\w*)" -o "$1Replaced"
-example-commands.bat:8: lzmw -cA -p %~dp0\example-commands.bat -it "class|run" -H 9
-example-commands.bat:9: lzmw -cA -p %~dp0\example-commands.bat -ie "class|run" -H 9
+example-commands.bat:5: lzmw -cA -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --wt --sz -H 3 --dsc
+example-commands.bat:6: lzmw -cA -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --sz --wt -T 3 
+example-commands.bat:7: lzmw -cA -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --wt --sz -H 3 --dsc --s1 1KB --s2 1MB --w1 "2015-07-20 13:20"
+example-commands.bat:8: lzmw -cA -p %~dp0\sample-file.txt -ib "^\s*enum" -q "\};" -S -t "([\r\n]+)\s+" -o "$1  "
+example-commands.bat:9: lzmw -cA -p %~dp0\sample-file.txt -ib "^\s*enum" -q "\};" -t "^\s+" -o "  " -a -P
 
 lzmw -cA -p example-commands.bat -x t -o T -H 5 
 example-commands.bat:1: ::JusT run windows-TesT.baT which calls This file, or run This file direcTly, you will geT a vivid sense of lzmw.
 example-commands.bat:3: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -T \\ -o \\
 example-commands.bat:4: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -T "\\\\" -o \\
-example-commands.bat:5: lzmw -c -p %~dp0\sample-file.TxT -i -T "(Deferred\w*)"
-example-commands.bat:6: lzmw -c -p %~dp0\sample-file.TxT -iT "(Deferred\w*)\s+\1"
+example-commands.bat:5: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(TxT|baT)$" -l --wT --sz -H 3 --dsc
+example-commands.bat:6: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(TxT|baT)$" -l --sz --wT -T 3 
 
 lzmw -cA -p example-commands.bat -t t -o T -H 5 
 example-commands.bat:1: ::JusT run windows-TesT.baT which calls This file, or run This file direcTly, you will geT a vivid sense of lzmw.
 example-commands.bat:3: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -T \\ -o \\
 example-commands.bat:4: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -T "\\\\" -o \\
-example-commands.bat:5: lzmw -c -p %~dp0\sample-file.TxT -i -T "(Deferred\w*)"
-example-commands.bat:6: lzmw -c -p %~dp0\sample-file.TxT -iT "(Deferred\w*)\s+\1"
+example-commands.bat:5: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(TxT|baT)$" -l --wT --sz -H 3 --dsc
+example-commands.bat:6: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(TxT|baT)$" -l --sz --wT -T 3 
 
 lzmw -cA -p example-commands.bat -x T -o t -H 5 
-example-commands.bat:11: lzmw -c -p %~dp0\example-commands.bat -x t -o t -H 5
-example-commands.bat:12: lzmw -c -p %~dp0\example-commands.bat -t t -o t -H 5
-example-commands.bat:13: lzmw -c -p %~dp0\example-commands.bat -x t -o t -H 5
-example-commands.bat:14: lzmw -c -p %~dp0\example-commands.bat -t t -o t -H 5
-example-commands.bat:16: lzmw -c -p %~dp0\example-commands.bat -x t -L 3 -H 5 -t 5
+example-commands.bat:6: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --sz --wt -t 3 
+example-commands.bat:16: lzmw -c -p %~dp0\example-commands.bat -x t -o t -H 5
+example-commands.bat:17: lzmw -c -p %~dp0\example-commands.bat -t t -o t -H 5
+example-commands.bat:18: lzmw -c -p %~dp0\example-commands.bat -x t -o t -H 5
+example-commands.bat:19: lzmw -c -p %~dp0\example-commands.bat -t t -o t -H 5
 
 lzmw -cA -p example-commands.bat -t T -o t -H 5 
-example-commands.bat:11: lzmw -c -p %~dp0\example-commands.bat -x t -o t -H 5
-example-commands.bat:12: lzmw -c -p %~dp0\example-commands.bat -t t -o t -H 5
-example-commands.bat:13: lzmw -c -p %~dp0\example-commands.bat -x t -o t -H 5
-example-commands.bat:14: lzmw -c -p %~dp0\example-commands.bat -t t -o t -H 5
-example-commands.bat:16: lzmw -c -p %~dp0\example-commands.bat -x t -L 3 -H 5 -t 5
+example-commands.bat:6: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --sz --wt -t 3 
+example-commands.bat:16: lzmw -c -p %~dp0\example-commands.bat -x t -o t -H 5
+example-commands.bat:17: lzmw -c -p %~dp0\example-commands.bat -t t -o t -H 5
+example-commands.bat:18: lzmw -c -p %~dp0\example-commands.bat -x t -o t -H 5
+example-commands.bat:19: lzmw -c -p %~dp0\example-commands.bat -t t -o t -H 5
 
 lzmw -cA -p example-commands.bat -t t -L 3 -H 5 
 example-commands.bat:3: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t \\ -o \\
 example-commands.bat:4: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t "\\\\" -o \\
-example-commands.bat:5: lzmw -c -p %~dp0\sample-file.txt -i -t "(Deferred\w*)"
-example-commands.bat:6: lzmw -c -p %~dp0\sample-file.txt -it "(Deferred\w*)\s+\1"
-example-commands.bat:7: lzmw -c -p %~dp0\sample-file.txt -i -b "class DeferredRun" -Q "^};" -t "(Deferred\w*)" -o "$1Replaced"
+example-commands.bat:5: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --wt --sz -H 3 --dsc
+example-commands.bat:6: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --sz --wt -T 3 
+example-commands.bat:7: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --wt --sz -H 3 --dsc --s1 1KB --s2 1MB --w1 "2015-07-20 13:20"
 
 lzmw -cA -p example-commands.bat -x t -L 3 -H 5 -T 5 
 example-commands.bat:3: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t \\ -o \\
 example-commands.bat:4: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t "\\\\" -o \\
-example-commands.bat:5: lzmw -c -p %~dp0\sample-file.txt -i -t "(Deferred\w*)"
-example-commands.bat:6: lzmw -c -p %~dp0\sample-file.txt -it "(Deferred\w*)\s+\1"
-example-commands.bat:7: lzmw -c -p %~dp0\sample-file.txt -i -b "class DeferredRun" -Q "^};" -t "(Deferred\w*)" -o "$1Replaced"
-example-commands.bat:67: lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PA -e "#\S+?#" This is raw xml text extracted.
-example-commands.bat:68: lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
-example-commands.bat:69: (lzmw -c -p %~dp0\sample-file.txt -it "<name>(#.+?#)</name>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\""  -PAC | lzmw -t "^\s*(lzmw -x .*)" -o "$1 -p Node1.tmp -R" -PAC) |lzmw -XI
-example-commands.bat:70: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000" This is expanded xml that has replaced name value settings.
-example-commands.bat:71: lzmw -z "if exist Node1.tmp del Node1.tmp" -XPI
+example-commands.bat:5: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --wt --sz -H 3 --dsc
+example-commands.bat:6: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --sz --wt -T 3 
+example-commands.bat:7: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(txt|bat)$" -l --wt --sz -H 3 --dsc --s1 1KB --s2 1MB --w1 "2015-07-20 13:20"
+example-commands.bat:81: lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PA -e "#\S+?#" This is raw xml text extracted.
+example-commands.bat:82: lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
+example-commands.bat:83: (lzmw -c -p %~dp0\sample-file.txt -it "<name>(#.+?#)</name>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\""  -PAC | lzmw -t "^\s*(lzmw -x .*)" -o "$1 -p Node1.tmp -R" -PAC) |lzmw -XI
+example-commands.bat:84: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000" This is expanded xml that has replaced name value settings.
+example-commands.bat:85: lzmw -z "if exist Node1.tmp del Node1.tmp" -XPI
 
 lzmw -cA -p example-commands.bat -t t -L 3 -e t -T 5 
-example-commands.bat:67: lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PA -e "#\S+?#" This is raw xml text extracted.
-example-commands.bat:68: lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
-example-commands.bat:69: (lzmw -c -p %~dp0\sample-file.txt -it "<name>(#.+?#)</name>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\""  -PAC | lzmw -t "^\s*(lzmw -x .*)" -o "$1 -p Node1.tmp -R" -PAC) |lzmw -XI
-example-commands.bat:70: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000" This is expanded xml that has replaced name value settings.
-example-commands.bat:71: lzmw -z "if exist Node1.tmp del Node1.tmp" -XPI
+example-commands.bat:81: lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PA -e "#\S+?#" This is raw xml text extracted.
+example-commands.bat:82: lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
+example-commands.bat:83: (lzmw -c -p %~dp0\sample-file.txt -it "<name>(#.+?#)</name>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\""  -PAC | lzmw -t "^\s*(lzmw -x .*)" -o "$1 -p Node1.tmp -R" -PAC) |lzmw -XI
+example-commands.bat:84: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000" This is expanded xml that has replaced name value settings.
+example-commands.bat:85: lzmw -z "if exist Node1.tmp del Node1.tmp" -XPI
 
 lzmw -cA -p example-commands.bat -x t -L 3 -e t -T 5 
-example-commands.bat:67: lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PA -e "#\S+?#" This is raw xml text extracted.
-example-commands.bat:68: lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
-example-commands.bat:69: (lzmw -c -p %~dp0\sample-file.txt -it "<name>(#.+?#)</name>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\""  -PAC | lzmw -t "^\s*(lzmw -x .*)" -o "$1 -p Node1.tmp -R" -PAC) |lzmw -XI
-example-commands.bat:70: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000" This is expanded xml that has replaced name value settings.
-example-commands.bat:71: lzmw -z "if exist Node1.tmp del Node1.tmp" -XPI
+example-commands.bat:81: lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PA -e "#\S+?#" This is raw xml text extracted.
+example-commands.bat:82: lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
+example-commands.bat:83: (lzmw -c -p %~dp0\sample-file.txt -it "<name>(#.+?#)</name>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\""  -PAC | lzmw -t "^\s*(lzmw -x .*)" -o "$1 -p Node1.tmp -R" -PAC) |lzmw -XI
+example-commands.bat:84: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000" This is expanded xml that has replaced name value settings.
+example-commands.bat:85: lzmw -z "if exist Node1.tmp del Node1.tmp" -XPI
 
 lzmw -cA -p example-commands.bat -t t -L 3 -e t -o T -H 5 
 example-commands.bat:3: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -T \\ -o \\
 example-commands.bat:4: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -T "\\\\" -o \\
-example-commands.bat:5: lzmw -c -p %~dp0\sample-file.TxT -i -T "(Deferred\w*)"
-example-commands.bat:6: lzmw -c -p %~dp0\sample-file.TxT -iT "(Deferred\w*)\s+\1"
-example-commands.bat:7: lzmw -c -p %~dp0\sample-file.TxT -i -b "class DeferredRun" -Q "^};" -T "(Deferred\w*)" -o "$1Replaced"
+example-commands.bat:5: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(TxT|baT)$" -l --wT --sz -H 3 --dsc
+example-commands.bat:6: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(TxT|baT)$" -l --sz --wT -T 3 
+example-commands.bat:7: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(TxT|baT)$" -l --wT --sz -H 3 --dsc --s1 1KB --s2 1MB --w1 "2015-07-20 13:20"
 
 lzmw -cA -p example-commands.bat -x t -L 3 -e t -o T -H 5 
 example-commands.bat:3: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -T \\ -o \\
 example-commands.bat:4: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -T "\\\\" -o \\
-example-commands.bat:5: lzmw -c -p %~dp0\sample-file.TxT -i -T "(Deferred\w*)"
-example-commands.bat:6: lzmw -c -p %~dp0\sample-file.TxT -iT "(Deferred\w*)\s+\1"
-example-commands.bat:7: lzmw -c -p %~dp0\sample-file.TxT -i -b "class DeferredRun" -Q "^};" -T "(Deferred\w*)" -o "$1Replaced"
+example-commands.bat:5: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(TxT|baT)$" -l --wT --sz -H 3 --dsc
+example-commands.bat:6: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(TxT|baT)$" -l --sz --wT -T 3 
+example-commands.bat:7: lzmw -c -p %~dp0 -f "^(example-commands|sample-file)\.(TxT|baT)$" -l --wT --sz -H 3 --dsc --s1 1KB --s2 1MB --w1 "2015-07-20 13:20"
 
 lzmw -cA -p example-commands.bat -t t -L 9 -N 12 -e txt 
-example-commands.bat:9: lzmw -c -p %~dp0\example-commands.bat -ie "class|run" -H 9
-example-commands.bat:10: lzmw -c -p %~dp0\example-commands.bat -it "^lzmw\s+(-c\s+)?" -L 3 -N 9 -o "lzmw -c " 
-example-commands.bat:11: lzmw -c -p %~dp0\example-commands.bat -x t -o T -H 5
-example-commands.bat:12: lzmw -c -p %~dp0\example-commands.bat -t t -o T -H 5
+example-commands.bat:9: lzmw -c -p %~dp0\sample-file.txt -ib "^\s*enum" -q "\};" -t "^\s+" -o "  " -a -P
+example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -i -t "(Deferred\w*)"
+example-commands.bat:11: lzmw -c -p %~dp0\sample-file.txt -it "(Deferred\w*)\s+\1"
+example-commands.bat:12: lzmw -c -p %~dp0\sample-file.txt -i -b "class DeferredRun" -Q "^};" -t "(Deferred\w*)" -o "$1Replaced"
 
 lzmw -cA -p example-commands.bat -x t -L 9 -N 12 -e txt 
-example-commands.bat:9: lzmw -c -p %~dp0\example-commands.bat -ie "class|run" -H 9
-example-commands.bat:10: lzmw -c -p %~dp0\example-commands.bat -it "^lzmw\s+(-c\s+)?" -L 3 -N 9 -o "lzmw -c " 
-example-commands.bat:11: lzmw -c -p %~dp0\example-commands.bat -x t -o T -H 5
-example-commands.bat:12: lzmw -c -p %~dp0\example-commands.bat -t t -o T -H 5
+example-commands.bat:9: lzmw -c -p %~dp0\sample-file.txt -ib "^\s*enum" -q "\};" -t "^\s+" -o "  " -a -P
+example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -i -t "(Deferred\w*)"
+example-commands.bat:11: lzmw -c -p %~dp0\sample-file.txt -it "(Deferred\w*)\s+\1"
+example-commands.bat:12: lzmw -c -p %~dp0\sample-file.txt -i -b "class DeferredRun" -Q "^};" -t "(Deferred\w*)" -o "$1Replaced"
 
 lzmw -cA -p example-commands.bat -t t -L 9 -N 12 -e me.txt 
-example-commands.bat:9: lzmw -c -p %~dp0\example-commands.bat -ie "class|run" -H 9
-example-commands.bat:10: lzmw -c -p %~dp0\example-commands.bat -it "^lzmw\s+(-c\s+)?" -L 3 -N 9 -o "lzmw -c " 
-example-commands.bat:11: lzmw -c -p %~dp0\example-commands.bat -x t -o T -H 5
-example-commands.bat:12: lzmw -c -p %~dp0\example-commands.bat -t t -o T -H 5
+example-commands.bat:9: lzmw -c -p %~dp0\sample-file.txt -ib "^\s*enum" -q "\};" -t "^\s+" -o "  " -a -P
+example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -i -t "(Deferred\w*)"
+example-commands.bat:11: lzmw -c -p %~dp0\sample-file.txt -it "(Deferred\w*)\s+\1"
+example-commands.bat:12: lzmw -c -p %~dp0\sample-file.txt -i -b "class DeferredRun" -Q "^};" -t "(Deferred\w*)" -o "$1Replaced"
 
 lzmw -cA -p example-commands.bat -x t -L 9 -N 12 -e me.txt 
-example-commands.bat:9: lzmw -c -p %~dp0\example-commands.bat -ie "class|run" -H 9
-example-commands.bat:10: lzmw -c -p %~dp0\example-commands.bat -it "^lzmw\s+(-c\s+)?" -L 3 -N 9 -o "lzmw -c " 
-example-commands.bat:11: lzmw -c -p %~dp0\example-commands.bat -x t -o T -H 5
-example-commands.bat:12: lzmw -c -p %~dp0\example-commands.bat -t t -o T -H 5
+example-commands.bat:9: lzmw -c -p %~dp0\sample-file.txt -ib "^\s*enum" -q "\};" -t "^\s+" -o "  " -a -P
+example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -i -t "(Deferred\w*)"
+example-commands.bat:11: lzmw -c -p %~dp0\sample-file.txt -it "(Deferred\w*)\s+\1"
+example-commands.bat:12: lzmw -c -p %~dp0\sample-file.txt -i -b "class DeferredRun" -Q "^};" -t "(Deferred\w*)" -o "$1Replaced"
 
 lzmw -cA -p example-commands.bat -x me -L 20 -H 9 
-example-commands.bat:23: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -N 12 -e me.txt
-example-commands.bat:24: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -N 12 -e me.txt
-example-commands.bat:25: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
-example-commands.bat:26: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
-example-commands.bat:27: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
-example-commands.bat:28: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -N 40
-example-commands.bat:29: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -N 40
-example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -N 40
-example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:28: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -N 12 -e me.txt
+example-commands.bat:29: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -N 12 -e me.txt
+example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
+example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
+example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
+example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -N 40
 
 lzmw -cA -p example-commands.bat -x me -L 20 -ie me -H 9 
-example-commands.bat:23: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -N 12 -e me.txt
-example-commands.bat:24: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -N 12 -e me.txt
-example-commands.bat:25: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
-example-commands.bat:26: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
-example-commands.bat:27: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
-example-commands.bat:28: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -N 40
-example-commands.bat:29: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -N 40
-example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -N 40
-example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:28: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -N 12 -e me.txt
+example-commands.bat:29: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -N 12 -e me.txt
+example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
+example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
+example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
+example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -N 40
 
 lzmw -cA -p example-commands.bat -t me -L 20 -ie me -H 9 
-example-commands.bat:23: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -N 12 -e me.txt
-example-commands.bat:24: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -N 12 -e me.txt
-example-commands.bat:25: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
-example-commands.bat:26: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
-example-commands.bat:27: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
-example-commands.bat:28: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -N 40
-example-commands.bat:29: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -N 40
-example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -N 40
-example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:28: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -N 12 -e me.txt
+example-commands.bat:29: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -N 12 -e me.txt
+example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
+example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
+example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
+example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -N 40
 
 lzmw -cA -p example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -N 40 
-example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -t you -ie "you|ping|\w+.txt" -L 30 -N 40
-example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x you -ie "you|ping|\w+.txt" -L 30 -N 40
-example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -x nayou -o NAyou -ie "nayou|coyou" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -t nayou -o NAyou -ie "nayou|coyou" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -x nayou -o coyou -ie "nayou|coyou" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -x nayou -o coyou -ie "nayou|coyou" -U 3 -D 3 -T 8 -L 16 -N 30
-example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -t nayou -o coyou -ie "nayou|coyou" -U 3 -D 3 -T 9 -L 16 -N 30
-example-commands.bat:38: lzmw -c -p %~dp0\example-commands.bat -t nayou -o NAyou -ie Nayous -H 9
-example-commands.bat:39: lzmw -c -p %~dp0\example-commands.bat -t nayou -o NAyou -T 1 -C
-example-commands.bat:40: lzmw -c -p %~dp0\example-commands.bat -it nayou -l
+example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -x you -L 20 -H 9
+example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x you -L 20 -ie you -H 9
+example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -t you -L 20 -ie you -H 9
+example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -x you -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -t you -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -t you -ie "you|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -x you -ie "you|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:37: lzmw -c -p %~dp0\example-commands.bat -x nayou -o NAyou -ie "nayou|coyou" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:38: lzmw -c -p %~dp0\example-commands.bat -t nayou -o NAyou -ie "nayou|coyou" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:39: lzmw -c -p %~dp0\example-commands.bat -x nayou -o coyou -ie "nayou|coyou" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:40: lzmw -c -p %~dp0\example-commands.bat -x nayou -o coyou -ie "nayou|coyou" -U 3 -D 3 -T 8 -L 16 -N 30
 
 lzmw -cA -p example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -N 40 
-example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -t you -ie "you|ping|\w+.txt" -L 30 -N 40
-example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x you -ie "you|ping|\w+.txt" -L 30 -N 40
-example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -x nayou -o NAyou -ie "nayou|coyou" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -t nayou -o NAyou -ie "nayou|coyou" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -x nayou -o coyou -ie "nayou|coyou" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -x nayou -o coyou -ie "nayou|coyou" -U 3 -D 3 -T 8 -L 16 -N 30
-example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -t nayou -o coyou -ie "nayou|coyou" -U 3 -D 3 -T 9 -L 16 -N 30
-example-commands.bat:38: lzmw -c -p %~dp0\example-commands.bat -t nayou -o NAyou -ie Nayous -H 9
-example-commands.bat:39: lzmw -c -p %~dp0\example-commands.bat -t nayou -o NAyou -T 1 -C
-example-commands.bat:40: lzmw -c -p %~dp0\example-commands.bat -it nayou -l
+example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -x you -L 20 -H 9
+example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x you -L 20 -ie you -H 9
+example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -t you -L 20 -ie you -H 9
+example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -x you -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -t you -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -t you -ie "you|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -x you -ie "you|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:37: lzmw -c -p %~dp0\example-commands.bat -x nayou -o NAyou -ie "nayou|coyou" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:38: lzmw -c -p %~dp0\example-commands.bat -t nayou -o NAyou -ie "nayou|coyou" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:39: lzmw -c -p %~dp0\example-commands.bat -x nayou -o coyou -ie "nayou|coyou" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:40: lzmw -c -p %~dp0\example-commands.bat -x nayou -o coyou -ie "nayou|coyou" -U 3 -D 3 -T 8 -L 16 -N 30
 
 lzmw -cA -p example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -N 40 
-example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -N 40
-example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -N 40
-example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -x name -o NAME -ie "name|come" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -t name -o NAME -ie "name|come" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -x name -o come -ie "name|come" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -x name -o come -ie "name|come" -U 3 -D 3 -T 8 -L 16 -N 30
-example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -t name -o come -ie "name|come" -U 3 -D 3 -T 9 -L 16 -N 30
-example-commands.bat:38: lzmw -c -p %~dp0\example-commands.bat -t name -o NAME -ie Names -H 9
-example-commands.bat:39: lzmw -c -p %~dp0\example-commands.bat -t name -o NAME -T 1 -C
-example-commands.bat:40: lzmw -c -p %~dp0\example-commands.bat -it name -l
+example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
+example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
+example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
+example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:37: lzmw -c -p %~dp0\example-commands.bat -x name -o NAME -ie "name|come" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:38: lzmw -c -p %~dp0\example-commands.bat -t name -o NAME -ie "name|come" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:39: lzmw -c -p %~dp0\example-commands.bat -x name -o come -ie "name|come" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:40: lzmw -c -p %~dp0\example-commands.bat -x name -o come -ie "name|come" -U 3 -D 3 -T 8 -L 16 -N 30
 
 lzmw -cA -p example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -N 40 
-example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -N 40
-example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -N 40
-example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -x name -o NAME -ie "name|come" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -t name -o NAME -ie "name|come" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -x name -o come -ie "name|come" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -x name -o come -ie "name|come" -U 3 -D 3 -T 8 -L 16 -N 30
-example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -t name -o come -ie "name|come" -U 3 -D 3 -T 9 -L 16 -N 30
-example-commands.bat:38: lzmw -c -p %~dp0\example-commands.bat -t name -o NAME -ie Names -H 9
-example-commands.bat:39: lzmw -c -p %~dp0\example-commands.bat -t name -o NAME -T 1 -C
-example-commands.bat:40: lzmw -c -p %~dp0\example-commands.bat -it name -l
+example-commands.bat:30: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
+example-commands.bat:31: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
+example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
+example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -N 40
+example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -N 40
+example-commands.bat:37: lzmw -c -p %~dp0\example-commands.bat -x name -o NAME -ie "name|come" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:38: lzmw -c -p %~dp0\example-commands.bat -t name -o NAME -ie "name|come" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:39: lzmw -c -p %~dp0\example-commands.bat -x name -o come -ie "name|come" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:40: lzmw -c -p %~dp0\example-commands.bat -x name -o come -ie "name|come" -U 3 -D 3 -T 8 -L 16 -N 30
 
 lzmw -cA -p example-commands.bat -x name -o NAME -ie "name|come" -U 3 -D 3 -L 16 -N 30 
 
@@ -238,18 +271,18 @@ lzmw -cA -p example-commands.bat -x name -o come -ie "name|come" -U 3 -D 3 -T 8 
 lzmw -cA -p example-commands.bat -t name -o come -ie "name|come" -U 3 -D 3 -T 9 -L 16 -N 30 
 
 lzmw -cA -p example-commands.bat -t name -o NAME -ie Names -H 9 
-example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -ie "NAME|come" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -x NAME -o come -ie "NAME|come" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -x NAME -o come -ie "NAME|come" -U 3 -D 3 -T 8 -L 16 -N 30
-example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -t NAME -o come -ie "NAME|come" -U 3 -D 3 -T 9 -L 16 -N 30
-example-commands.bat:38: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -ie NAMEs -H 9
-example-commands.bat:39: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -T 1 -C
-example-commands.bat:40: lzmw -c -p %~dp0\example-commands.bat -it NAME -l
-example-commands.bat:41: lzmw -c -p %~dp0\sample-file.txt -it NAME -l
+example-commands.bat:37: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:38: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -ie "NAME|come" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:39: lzmw -c -p %~dp0\example-commands.bat -x NAME -o come -ie "NAME|come" -U 3 -D 3 -L 16 -N 30
+example-commands.bat:40: lzmw -c -p %~dp0\example-commands.bat -x NAME -o come -ie "NAME|come" -U 3 -D 3 -T 8 -L 16 -N 30
+example-commands.bat:41: lzmw -c -p %~dp0\example-commands.bat -t NAME -o come -ie "NAME|come" -U 3 -D 3 -T 9 -L 16 -N 30
+example-commands.bat:43: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -ie NAMEs -H 9
+example-commands.bat:44: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -T 1 -C
+example-commands.bat:45: lzmw -c -p %~dp0\example-commands.bat -it NAME -l
+example-commands.bat:46: lzmw -c -p %~dp0\sample-file.txt -it NAME -l
 
 lzmw -cA -p example-commands.bat -t name -o NAME -T 1 -C 
-example-commands.bat:70: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000" This is expanded xml that has replaced NAME value settings.
+example-commands.bat:84: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000" This is expanded xml that has replaced NAME value settings.
 
 lzmw -cA -p example-commands.bat -it name -l 
 example-commands.bat
@@ -257,84 +290,64 @@ example-commands.bat
 lzmw -cA -p sample-file.txt -it name -l 
 sample-file.txt
 
-lzmw -cA -p example-commands.bat -t name -a -o NAME -ie Names -b "come|name\w*" -Q "mailTo|Tag" 
-example-commands.bat:32: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:33: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -ie "NAME|come" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:34: lzmw -c -p %~dp0\example-commands.bat -x NAME -o come -ie "NAME|come" -U 3 -D 3 -L 16 -N 30
-example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -x NAME -o come -ie "NAME|come" -U 3 -D 3 -T 8 -L 16 -N 30
-example-commands.bat:36: lzmw -c -p %~dp0\example-commands.bat -t NAME -o come -ie "NAME|come" -U 3 -D 3 -T 9 -L 16 -N 30
-example-commands.bat:37: ::lzmw -c -p %~dp0\sample-file.txt -t "\b(NotMatchedLine|MatchedLine|UpLine|DownLine)" -o "LineType::$1" --nt "=\s*\d+" -R
-example-commands.bat:38: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -ie NAMEs -H 9
-example-commands.bat:39: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -T 1 -C
-example-commands.bat:40: lzmw -c -p %~dp0\example-commands.bat -it NAME -l
-example-commands.bat:41: lzmw -c -p %~dp0\sample-file.txt -it NAME -l
-example-commands.bat:42: lzmw -c -p %~dp0\example-commands.bat -t NAME -a -o NAME -ie NAMEs -b "come|NAME\w*" -Q "mailTo|Tag"
-example-commands.bat:44: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -T 3
-example-commands.bat:45: lzmw -c -p %~dp0\example-commands.bat -t NAME -o come -ie "NAME|come" -a -L 19 -N 26
-example-commands.bat:46: lzmw -c -p %~dp0\example-commands.bat -t NAME -a -o NAM -ie "NAME|come" -L 19 -N 26
-example-commands.bat:47: lzmw -c -p %~dp0\example-commands.bat -b "garbage" -Q publish-update -t ping -e "me|ping|you|(publish-update)"
-example-commands.bat:48: lzmw -c -p %~dp0\example-commands.bat -b "garbage" -q publish-update -t ping -e "me|ping|you|(publish-update)"
-example-commands.bat:49: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -t not -U 3 -D 3 
-example-commands.bat:50: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag NAME.*?\b(Node1|Node2)\b" -Q "<MailAddress>|</Tag>" -e "MailTo" -t body -o BODY -a
-example-commands.bat:51: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag NAME.*?\b(Node2)\b" -Q "<MailAddress>|</Tag>" -e MailTo -t body -o BODY -a
-example-commands.bat:52: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag NAME.*?\b(\w+)\b" -Q "<MailAddress>|</Tag>" -t Node1 -e "<.?Tag.*?>" -a
-example-commands.bat:53: lzmw -c -p %~dp0\example-commands.bat -it NAME -o NAME -e NAMEs -x update
-example-commands.bat:54: lzmw -c -p %~dp0\example-commands.bat -it NAME -e NAMEs -x NAMEX
-example-commands.bat:55: lzmw -c -p %~dp0\example-commands.bat -ix update -t NAME -e NAMEs
-example-commands.bat:56: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag NAME" -q "Switch" -Q "</Tag" -t MailTo -e Switch 
-example-commands.bat:57: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag NAME" -q "Switch" -Q "</Tag" -t MailTo -e Switch -a
-example-commands.bat:58: lzmw -c -p %~dp0\sample-file.txt -it "<NAME>(#.+?)</NAME>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\"" -L 14 -N 30
-example-commands.bat:59: lzmw -c -p %~dp0\sample-file.txt -it Tag -x ref -U 5 -D 5
-example-commands.bat:67: lzmw -c -p %~dp0\sample-file.txt -b "<Tag NAME.*?Node1.*?>" -Q "</Tag>" -PA -e "#\S+?#" This is raw xml text extracted.
-example-commands.bat:68: lzmw -c -p %~dp0\sample-file.txt -b "<Tag NAME.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
+lzmw -cA -p example-commands.bat -t name -a -o NAME -ie Names -b "come|name\w*" -Q "mailTo|Tag" -T 9 
+example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -it NAME -o NAME -e NAMEs -x update
+example-commands.bat:59: lzmw -c -p %~dp0\example-commands.bat -it NAME -e NAMEs -x NAMEX
+example-commands.bat:60: lzmw -c -p %~dp0\example-commands.bat -ix update -t NAME -e NAMEs
+example-commands.bat:61: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag NAME" -q "Switch" -Q "</Tag" -t MailTo -e Switch 
+example-commands.bat:62: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag NAME" -q "Switch" -Q "</Tag" -t MailTo -e Switch -a
+example-commands.bat:63: lzmw -c -p %~dp0\sample-file.txt -it "<NAME>(#.+?)</NAME>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\"" -L 14 -N 30
+example-commands.bat:64: lzmw -c -p %~dp0\sample-file.txt -it Tag -x ref -U 5 -D 5
+example-commands.bat:81: lzmw -c -p %~dp0\sample-file.txt -b "<Tag NAME.*?Node1.*?>" -Q "</Tag>" -PA -e "#\S+?#" This is raw xml text extracted.
+example-commands.bat:82: lzmw -c -p %~dp0\sample-file.txt -b "<Tag NAME.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
 
 lzmw -cA -p example-commands.bat -it NOT -U 2 -e "SRC|DIR" -H 5 
-example-commands.bat:35: lzmw -c -p %~dp0\example-commands.bat -t name -o come -ie "name|come" -U 3 -D 3 -T 9 -L 16 -N 30
-example-commands.bat:36: ::lzmw -c -p %~dp0\sample-file.txt -t "\b(NotMatchedLine|MatchedLine|UpLine|DownLine)" -o "LineType::$1" --nt "=\s*\d+" -R
-example-commands.bat:37: ::lzmw -c -p %~dp0\sample-file.txt -t "\b(NotMatchedLine|MatchedLine|UpLine|DownLine)" -o "LineType::$1" --nt "=\s*\d+" -R
-example-commands.bat:41: lzmw -c -p %~dp0\example-commands.bat -t name -a -o NAME -ie Names -b "come|name\w*" -Q "mailTo|Tag"
-example-commands.bat:42: lzmw -c -p %~dp0\example-commands.bat -it NOT -U 2 -e "SRC|DIR" -H 5
+example-commands.bat:40: lzmw -c -p %~dp0\example-commands.bat -x name -o come -ie "name|come" -U 3 -D 3 -T 8 -L 16 -N 30
+example-commands.bat:41: lzmw -c -p %~dp0\example-commands.bat -t name -o come -ie "name|come" -U 3 -D 3 -T 9 -L 16 -N 30
+example-commands.bat:42: ::lzmw -c -p %~dp0\sample-file.txt -t "\b(NotMatchedLine|MatchedLine|UpLine|DownLine)" -o "LineType::$1" --nt "=\s*\d+" -R
+example-commands.bat:46: lzmw -c -p %~dp0\sample-file.txt -it name -l
+example-commands.bat:47: lzmw -c -p %~dp0\example-commands.bat -t name -a -o NAME -ie Names -b "come|name\w*" -Q "mailTo|Tag" -T 9
 
 lzmw -cA -p example-commands.bat -x name -o NAME -ie "name|come" -T 3 
-example-commands.bat:68: lzmw -c -p %~dp0\sample-file.txt -b "<Tag NAME.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
-example-commands.bat:69: (lzmw -c -p %~dp0\sample-file.txt -it "<NAME>(#.+?#)</NAME>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\""  -PAC | lzmw -t "^\s*(lzmw -x .*)" -o "$1 -p Node1.tmp -R" -PAC) |lzmw -XI
-example-commands.bat:70: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000" This is expanded xml that has replaced NAME value settings.
+example-commands.bat:82: lzmw -c -p %~dp0\sample-file.txt -b "<Tag NAME.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
+example-commands.bat:83: (lzmw -c -p %~dp0\sample-file.txt -it "<NAME>(#.+?#)</NAME>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\""  -PAC | lzmw -t "^\s*(lzmw -x .*)" -o "$1 -p Node1.tmp -R" -PAC) |lzmw -XI
+example-commands.bat:84: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000" This is expanded xml that has replaced NAME value settings.
 
 lzmw -cA -p example-commands.bat -t name -o come -ie "name|come" -a -L 19 -N 26 
-example-commands.bat:19: lzmw -c -p %~dp0\example-commands.bat -t t -L 3 -e t -o T -H 5
-example-commands.bat:20: lzmw -c -p %~dp0\example-commands.bat -x t -L 3 -e t -o T -H 5
-example-commands.bat:21: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -N 12 -e txt
-example-commands.bat:22: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -N 12 -e txt
-example-commands.bat:23: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -N 12 -e me.txt
-example-commands.bat:24: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -N 12 -e me.txt
-example-commands.bat:25: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
-example-commands.bat:26: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
+example-commands.bat:19: lzmw -c -p %~dp0\example-commands.bat -t T -o t -H 5
+example-commands.bat:20: lzmw -c -p %~dp0\example-commands.bat -t t -L 3 -H 5
+example-commands.bat:21: lzmw -c -p %~dp0\example-commands.bat -x t -L 3 -H 5 -T 5
+example-commands.bat:22: lzmw -c -p %~dp0\example-commands.bat -t t -L 3 -e t -T 5
+example-commands.bat:23: lzmw -c -p %~dp0\example-commands.bat -x t -L 3 -e t -T 5
+example-commands.bat:24: lzmw -c -p %~dp0\example-commands.bat -t t -L 3 -e t -o T -H 5
+example-commands.bat:25: lzmw -c -p %~dp0\example-commands.bat -x t -L 3 -e t -o T -H 5
+example-commands.bat:26: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -N 12 -e txt
 
 lzmw -cA -p example-commands.bat -t name -a -o NAM -ie "name|come" -L 19 -N 26 
-example-commands.bat:19: lzmw -c -p %~dp0\example-commands.bat -t t -L 3 -e t -o T -H 5
-example-commands.bat:20: lzmw -c -p %~dp0\example-commands.bat -x t -L 3 -e t -o T -H 5
-example-commands.bat:21: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -N 12 -e txt
-example-commands.bat:22: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -N 12 -e txt
-example-commands.bat:23: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -N 12 -e me.txt
-example-commands.bat:24: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -N 12 -e me.txt
-example-commands.bat:25: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
-example-commands.bat:26: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
+example-commands.bat:19: lzmw -c -p %~dp0\example-commands.bat -t T -o t -H 5
+example-commands.bat:20: lzmw -c -p %~dp0\example-commands.bat -t t -L 3 -H 5
+example-commands.bat:21: lzmw -c -p %~dp0\example-commands.bat -x t -L 3 -H 5 -T 5
+example-commands.bat:22: lzmw -c -p %~dp0\example-commands.bat -t t -L 3 -e t -T 5
+example-commands.bat:23: lzmw -c -p %~dp0\example-commands.bat -x t -L 3 -e t -T 5
+example-commands.bat:24: lzmw -c -p %~dp0\example-commands.bat -t t -L 3 -e t -o T -H 5
+example-commands.bat:25: lzmw -c -p %~dp0\example-commands.bat -x t -L 3 -e t -o T -H 5
+example-commands.bat:26: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -N 12 -e txt
 
 lzmw -cA -p example-commands.bat -b "garbage" -Q publish-update -t ping -e "me|ping|you|(publish-update)" 
-example-commands.bat:47: lzmw -c -p %~dp0\example-commands.bat -b "garbage" -Q publish-update -t ping -e "me|ping|you|(publish-update)"
-example-commands.bat:48: lzmw -c -p %~dp0\example-commands.bat -b "garbage" -q publish-update -t ping -e "me|ping|you|(publish-update)"
+example-commands.bat:52: lzmw -c -p %~dp0\example-commands.bat -b "garbage" -Q publish-update -t ping -e "me|ping|you|(publish-update)"
+example-commands.bat:53: lzmw -c -p %~dp0\example-commands.bat -b "garbage" -q publish-update -t ping -e "me|ping|you|(publish-update)"
 
 lzmw -cA -p example-commands.bat -b "garbage" -q publish-update -t ping -e "me|ping|you|(publish-update)" 
-example-commands.bat:47: lzmw -c -p %~dp0\example-commands.bat -b "garbage" -Q publish-update -t ping -e "me|ping|you|(publish-update)"
+example-commands.bat:52: lzmw -c -p %~dp0\example-commands.bat -b "garbage" -Q publish-update -t ping -e "me|ping|you|(publish-update)"
 
 lzmw -cA -p example-commands.bat -x name -o NAME -ie "name|come" -t not -U 3 -D 3  
-example-commands.bat:46: lzmw -c -p %~dp0\example-commands.bat -t name -a -o NAM -ie "name|come" -L 19 -N 26
-example-commands.bat:47: lzmw -c -p %~dp0\example-commands.bat -b "garbage" -Q publish-update -t ping -e "me|ping|you|(publish-update)"
-example-commands.bat:48: lzmw -c -p %~dp0\example-commands.bat -b "garbage" -q publish-update -t ping -e "me|ping|you|(publish-update)"
-example-commands.bat:49: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -t not -U 3 -D 3 
-example-commands.bat:50: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(Node1|Node2)\b" -Q "<MailAddress>|</Tag>" -e "MailTo" -t body -o BODY -a
-example-commands.bat:51: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(Node2)\b" -Q "<MailAddress>|</Tag>" -e MailTo -t body -o BODY -a
-example-commands.bat:52: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(\w+)\b" -Q "<MailAddress>|</Tag>" -t Node1 -e "<.?Tag.*?>" -a
+example-commands.bat:51: lzmw -c -p %~dp0\example-commands.bat -t name -a -o NAM -ie "name|come" -L 19 -N 26
+example-commands.bat:52: lzmw -c -p %~dp0\example-commands.bat -b "garbage" -Q publish-update -t ping -e "me|ping|you|(publish-update)"
+example-commands.bat:53: lzmw -c -p %~dp0\example-commands.bat -b "garbage" -q publish-update -t ping -e "me|ping|you|(publish-update)"
+example-commands.bat:54: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -t not -U 3 -D 3 
+example-commands.bat:55: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(Node1|Node2)\b" -Q "<MailAddress>|</Tag>" -e "MailTo" -t body -o BODY -a
+example-commands.bat:56: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(Node2)\b" -Q "<MailAddress>|</Tag>" -e MailTo -t body -o BODY -a
+example-commands.bat:57: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(\w+)\b" -Q "<MailAddress>|</Tag>" -t Node1 -e "<.?Tag.*?>" -a
 
 lzmw -cA -p sample-file.txt -ib "<Tag Name.*?\b(Node1|Node2)\b" -Q "<MailAddress>|</Tag>" -e "MailTo" -t body -o BODY -a 
 sample-file.txt:47: <Tag Name="Node1">
@@ -393,15 +406,15 @@ sample-file.txt:58:   </as::item>
 sample-file.txt:59: </Tag>
 
 lzmw -cA -p example-commands.bat -it name -o NAME -e Names -x update 
-example-commands.bat:53: lzmw -c -p %~dp0\example-commands.bat -it NAME -o NAME -e NAMEs -x update
-example-commands.bat:55: lzmw -c -p %~dp0\example-commands.bat -ix update -t NAME -e NAMEs
+example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -it NAME -o NAME -e NAMEs -x update
+example-commands.bat:60: lzmw -c -p %~dp0\example-commands.bat -ix update -t NAME -e NAMEs
 
 lzmw -cA -p example-commands.bat -it name -e Names -x nameX 
-example-commands.bat:54: lzmw -c -p %~dp0\example-commands.bat -it name -e Names -x nameX
+example-commands.bat:59: lzmw -c -p %~dp0\example-commands.bat -it name -e Names -x nameX
 
 lzmw -cA -p example-commands.bat -ix update -t name -e Names 
-example-commands.bat:53: lzmw -c -p %~dp0\example-commands.bat -it name -o NAME -e Names -x update
-example-commands.bat:55: lzmw -c -p %~dp0\example-commands.bat -ix update -t name -e Names
+example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -it name -o NAME -e Names -x update
+example-commands.bat:60: lzmw -c -p %~dp0\example-commands.bat -ix update -t name -e Names
 
 lzmw -cA -p sample-file.txt -ib "<Tag name" -q "Switch" -Q "</Tag" -t MailTo -e Switch  
 sample-file.txt:50:   <MailTo>Alex@abc.com</MailTo>
@@ -441,34 +454,72 @@ int main(int argc, char* argv[])
 
 lzmw -cA -p sample-file.txt -it Tag -x ref -U 5 -D 5 
 
+lzmw -cA -p sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:03" 
+sample-file.txt:3: 2012-12-27 00:03:03.333 third  line time at 3
+sample-file.txt:4: 2012-12-27 00:04:04.444 forth  line time at 4
+sample-file.txt:5: 2012-12-27 00:05:05.555 fifth  line time at 5
+
+lzmw -cA -p sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -E "2012-12-27 00:03" 
+sample-file.txt:2: 2012-12-27 00:01:01.111 second line time at 1
+sample-file.txt:1: 2012-12-27 00:02:02.222 first  line time at 2
+
+lzmw -cA -p sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -q "2012-12-27 00:03" 
+sample-file.txt:2: 2012-12-27 00:01:01.111 second line time at 1
+sample-file.txt:1: 2012-12-27 00:02:02.222 first  line time at 2
+sample-file.txt:3: 2012-12-27 00:03:03.333 third  line time at 3
+
+lzmw -cA -p sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -q "2012-12-27|03" 
+sample-file.txt:1: 2012-12-27 00:02:02.222 first  line time at 2
+
 lzmw -cA -p sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:00" -E "2012-12-27 00:03" 
-sample-file.txt:2: 2012-12-27 00:00:01.111 second line time at 1
-sample-file.txt:1: 2012-12-27 00:00:02.222 first  line time at 2
-sample-file.txt:3: 2012-12-27 00:00:03.333 third  line time at 3
+sample-file.txt:2: 2012-12-27 00:01:01.111 second line time at 1
+sample-file.txt:1: 2012-12-27 00:02:02.222 first  line time at 2
 
 lzmw -cA -p sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:00" -E "2012-12-27 00:03" -it first 
-sample-file.txt:1: 2012-12-27 00:00:02.222 first  line time at 2
+sample-file.txt:1: 2012-12-27 00:02:02.222 first  line time at 2
+
+lzmw -cA -p example-commands.bat -x " -B" -t ".*?(\d+\S+ \d+[\d:]+).*"  
+example-commands.bat:65: lzmw -c -p %~dp0\sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:03"
+example-commands.bat:69: lzmw -c -p %~dp0\sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:00" -E "2012-12-27 00:03"
+example-commands.bat:70: lzmw -c -p %~dp0\sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:00" -E "2012-12-27 00:03" -it first
 
 lzmw -cA -p sample-file.txt -s "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -it 2012 
-sample-file.txt:2: 2012-12-27 00:00:01.111 second line time at 1
-sample-file.txt:1: 2012-12-27 00:00:02.222 first  line time at 2
-sample-file.txt:3: 2012-12-27 00:00:03.333 third  line time at 3
+sample-file.txt:2: 2012-12-27 00:01:01.111 second line time at 1
+sample-file.txt:1: 2012-12-27 00:02:02.222 first  line time at 2
+sample-file.txt:3: 2012-12-27 00:03:03.333 third  line time at 3
 sample-file.txt:4: 2012-12-27 00:04:04.444 forth  line time at 4
 sample-file.txt:5: 2012-12-27 00:05:05.555 fifth  line time at 5
 
 lzmw -cA -p sample-file.txt -t "^((((((\d+\D\d+\D\d+[\D\s]*\d+:\d+:\d+))))))(\S*)" -s "^\d+\D\d+\D\d+[\D\s]*\d+:\d+:\d+" -e "\d+|(\w+)\s+line" 
-sample-file.txt:2: 2012-12-27 00:00:01.111 second line time at 1
-sample-file.txt:1: 2012-12-27 00:00:02.222 first  line time at 2
-sample-file.txt:3: 2012-12-27 00:00:03.333 third  line time at 3
+sample-file.txt:2: 2012-12-27 00:01:01.111 second line time at 1
+sample-file.txt:1: 2012-12-27 00:02:02.222 first  line time at 2
+sample-file.txt:3: 2012-12-27 00:03:03.333 third  line time at 3
 sample-file.txt:4: 2012-12-27 00:04:04.444 forth  line time at 4
 sample-file.txt:5: 2012-12-27 00:05:05.555 fifth  line time at 5
 
 lzmw -cA -p sample-file.txt -t "^((((((\d+\D\d+\D\d+[\D\s]*\d+:\d+:\d+))))))(\S*)" -s "^\d+\D\d+\D\d+[\D\s]*\d+:\d+:\d+" -e "\d+|(\w+)\s+line" --dsc 
 sample-file.txt:5: 2012-12-27 00:05:05.555 fifth  line time at 5
 sample-file.txt:4: 2012-12-27 00:04:04.444 forth  line time at 4
-sample-file.txt:3: 2012-12-27 00:00:03.333 third  line time at 3
-sample-file.txt:1: 2012-12-27 00:00:02.222 first  line time at 2
-sample-file.txt:2: 2012-12-27 00:00:01.111 second line time at 1
+sample-file.txt:3: 2012-12-27 00:03:03.333 third  line time at 3
+sample-file.txt:1: 2012-12-27 00:02:02.222 first  line time at 2
+sample-file.txt:2: 2012-12-27 00:01:01.111 second line time at 1
+
+lzmw -cA -p example-commands.bat -it "\w+" -H 0       Should NOT out any matched. 
+
+lzmw -cA -p example-commands.bat -it "\w+" -H 0 -T 2  Should out only 2 matched of bottom. 
+example-commands.bat:84: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000" This is expanded xml that has replaced name value settings.
+example-commands.bat:85: lzmw -z "if exist Node1.tmp del Node1.tmp" -XPI
+
+lzmw -cA -p example-commands.bat -it "\w+" -T 0       Should NOT out any matched. 
+
+lzmw -cA -p example-commands.bat -it "\w+" -T 0 -H 2  Should out only 2 matched of top. 
+example-commands.bat:1: ::Just run windows-test.bat which calls this file, or run this file directly, you will get a vivid sense of lzmw.
+example-commands.bat:2: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -x \ -o \\
+
+lzmw -cA -p example-commands.bat -N 3 -it just -U 3 -D 3 
+example-commands.bat:1: ::Just run windows-test.bat which calls this file, or run this file directly, you will get a vivid sense of lzmw.
+example-commands.bat:2: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -x \ -o \\
+example-commands.bat:3: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t \\ -o \\
 
 
 echo example-commands.bat | lzmw -t .+  -o "findstr xml $0" -XA 
@@ -476,7 +527,7 @@ lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PA -e "
 lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000" This is expanded xml that has replaced name value settings.
  
 
-echo lzmw -c -p example-commands.bat -it copy -PAC | lzmw -XA 
+lzmw -p example-commands.bat -b "::Stop calling" --nt "::Stop calling" -ix "%~dp0" -o %~dp0 -a -PAC | lzmw -it "\blzmw\b" -o "lzmw" -a -XPAC 
 <Tag Name="Node1">
   <as::item ref="NodeCitOnly" />
   <as::item ref="Node1Config" />
@@ -492,15 +543,15 @@ echo lzmw -c -p example-commands.bat -it copy -PAC | lzmw -XA
 </Tag>
 lzmw -x "#FUNCTION#" -o "'All'" -p Node1.tmp -R
 1-1 : Node1.tmp
-Replaced 1 lines(7.69%) in 1 files(100%), read 13 lines 432 B in 1 files. 
+Replaced 1 lines(7.14%) in 1 files(100%), read 14 lines 432 B in 1 files. 
 
 lzmw -x "#THRESHOLD_1#" -o "4000" -p Node1.tmp -R
 1-1 : Node1.tmp
-Replaced 1 lines(7.69%) in 1 files(100%), read 13 lines 427 B in 1 files. 
+Replaced 1 lines(7.14%) in 1 files(100%), read 14 lines 427 B in 1 files. 
 
 lzmw -x "#THRESHOLD_2#" -o "8000" -p Node1.tmp -R
 1-1 : Node1.tmp
-Replaced 1 lines(7.69%) in 1 files(100%), read 13 lines 418 B in 1 files. 
+Replaced 1 lines(7.14%) in 1 files(100%), read 14 lines 418 B in 1 files. 
 
 <Tag Name="Node1">
   <as::item ref="NodeCitOnly" />
@@ -515,3 +566,4 @@ Replaced 1 lines(7.69%) in 1 files(100%), read 13 lines 418 B in 1 files.
     </as::pairs>
   </as::item>
 </Tag>
+

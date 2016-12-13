@@ -1,5 +1,9 @@
-# 1. lzmw overview: (usage/examples: [tools/readme.txt](https://github.com/qualiu/lzmw/tree/master/tools) )
-Search/Replace text
+# 1. lzmw.exe/gcc* overview: (usage/examples: [readme.txt](https://github.com/qualiu/lzmw/tree/master/tools/readme.txt) )
+[**New**] [Performance comparison with findstr and grep ](https://github.com/qualiu/lzmw/tree/master/perf) : [on-Windows-comparison.PNG](https://raw.githubusercontent.com/qualiu/lzmw/master/perf/on-Windows-comparison.PNG) [on-Cygwin-comparison.PNG](https://raw.githubusercontent.com/qualiu/lzmw/master/perf/on-Cygwin-comparison.PNG)
+### [**Vivid Colorful Demo/examples**]: Run [windows-test.bat](https://github.com/qualiu/lzmw/blob/master/tools/windows-test.bat) without parameters.
+Download all by command : **git clone** https://github.com/qualiu/lzmw/
+
+Search/Replace text by **lzmw.exe** / **lzmw.gcc**** / **lzmw.cygwin** 
   * in 
    - pipe(command line result) or 
    - files-in-multiple-directories 
@@ -26,7 +30,9 @@ Besides, some script/batch/shell are also examples.
 4. [Find processes](https://github.com/qualiu/lzmw/blob/master/tools/psall.bat) / [Kill processes](https://github.com/qualiu/lzmw/blob/master/tools/pskill.bat) by regex/pid with colorful matching.
 5. Find file with specified name, in modification time range, size range and other fitlers as following.
 6. Look up a tool's usage with brief context (Up/Down lines)
-7. Map <--> Reduce ...
+7. Grep a command's result with matching info and time.
+8. Color your script execution.
+9. Map <--> Reduce ...
  ... ...
 
 ### With requirements of : (you can short alias like -t/-o , or full name --text-match/--replace-to )
@@ -34,9 +40,9 @@ Besides, some script/batch/shell are also examples.
 2. General Regex (regular expression) searching(**-t**)/replacing(**-o**) : consistent regex syntax with C#/C++/Java, not like strange or limited regex as AWK/GAWK/SED/FINDSTR …
 3. Recursively (**-r**) search / replace files in paths (**-p**) (multiple paths separated by "," or ";")
   * For replacing: replace regex-pattern(**-t**)/normal-text(**-x**) to (**-o**) final-text
-    * preview: no **-R**
-    * replace : with **-R**
-    * Backup file first (**-K**) :
+    * Preview: no **-R**
+    * Replace : with **-R**
+    * Backup files only if changed/replaced (**-K**) :
   * Backup :  orgional files will be backup to : {name}--lz-backup--{file-last-write-time}-{N}
     - Such as : myConfig.xml--lz-backup-2013-11-13__11_38_24
     - But if replaced many times in a second : 
@@ -79,7 +85,9 @@ Besides, some script/batch/shell are also examples.
   * Use **-PAC** to get clean result (no above info, no color)
   * Use **-PIC** to output info to stderr pipe
   * Use **-PC**/**-POC**/**-l -PC**/**-lPOC** >nul(nul on Windows, /dev/null on Linux) to use summary info as source input for later process/tool.
-  * If has **-c** in command line any where, can append any extra text as a info, such as : lzmw -x "D:\data" -p xx.log -O >nul | lzmw -c -xxx xxx "secondary extraction of matched result contains D:\data"
+  * If has **-c** in command line any where, can append any extra text as a info, such as : 
+    - lzmw -x "D:\data" -p xx.log -O >nul | lzmw -c -xxx xxx secondary extraction of matched result contains D:\data
+  * **-z** to directly read from input string, avoid using echo which is clumsy in pipe on Windows.
 
 #### lzmw on Windows : also can see [tools/readme.txt](https://github.com/qualiu/lzmw/tree/master/tools)
 ![lzmw on Windows](https://github.com/qualiu/lzmw/blob/master/tools/usage-picture/lzmw-Windows.png)

@@ -1,6 +1,6 @@
-2012-12-27 00:00:02.222 first  line time at 2
-2012-12-27 00:00:01.111 second line time at 1
-2012-12-27 00:00:03.333 third  line time at 3
+2012-12-27 00:02:02.222 first  line time at 2
+2012-12-27 00:01:01.111 second line time at 1
+2012-12-27 00:03:03.333 third  line time at 3
 2012-12-27 00:04:04.444 forth  line time at 4
 2012-12-27 00:05:05.555 fifth  line time at 5
 
