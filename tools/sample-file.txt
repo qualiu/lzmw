@@ -5,10 +5,10 @@
 2012-12-27 00:05:05.555 fifth  line time at 5
 
 enum class LineType {
-	NotMatchedLine = 0,
-	MatchedLine = 1,
-	UpLine = 2,
-	DownLine = 3
+    NotMatchedLine = 0,
+    MatchedLine = 1,
+    UpLine = 2,
+    DownLine = 3
 };
 
 class DeferredRun {

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [ -z "$3" ]; then
+if [ -z "$3" ] && [ -z "$2" ]; then
     echo "Usage   : $0  Test-file                        Plain-Finding-String   Regex-Pattern             [Optional : Test-times]"
-    echo "Example : $0  /cygdrive/d/tmp/Test-test.log    Exception             \"[0-9]*Exception[0-9]*\"   3"
-    exit 5
+    echo "Example : $0  /cygdrive/d/tmp/large-test.log   Exception              \"[0-9]*Exception[0-9]*\"   3"
+    exit -1
 fi
 
 if [ ! -e  $1 ];  then
@@ -23,6 +23,16 @@ if [ -z "$TestTimes" ]; then
 fi
 
 ## alias lzmw=lzmw.cygwin/lzmw.gcc* or make link to it : ln -s lzmw.gcc*/lzmw.cygwin /usr/bin/lzmw
+lzmwPath=$(whereis lzmw | awk '{if (match($0, /lzmw:\s*(\S+)/, arr)) printf("%s", arr[1]); }')
+lzmwFiles=$(ls $(dirname $0)/../tools/lzmw* 2>/dev/null)
+if [ -z "$lzmwPath" ]; then
+    echo "You should set lzmw in your path."
+    if [ -n "$lzmwFiles" ]; then
+        echo "Just choose your system version lzmw:"
+        echo "$lzmwFiles"
+    fi
+    exit
+fi
 
 function GetCPUCoresInfo() {
     NumberOfCores=$(wmic CPU GET NumberOfCores /VALUE | tr -d '\r' | awk '{if (match($0, /NumberOfCores=([0-9]+)/, arr)) print arr[1]; }')
@@ -34,7 +44,7 @@ function GetCPUCoresInfo() {
 }
 
 function GetOSVersionBit() {
-    export OSVersionBit="$(uname -omsr)"
+    export OSVersionBit="$(uname -mors)"
 : '
     OSArchitecture=""
     SystemCaption=""
@@ -55,7 +65,7 @@ function GetOSVersionBit() {
     echo "OSVersionBit=$SystemCaption $OSArchitecture"
  '
 }
-    
+
 function GetMemoryInfo() {
     TotalMemory=0
     MemoryChannels=0
@@ -90,13 +100,13 @@ function GetMemoryInfo() {
 ## Paramters : Title, File, pattern , findstr-options, grep-options, lzmw-options
 function Compare_By_File_Pattern_3_Options() {
     #echo "args[$#] = $*"
-    echo "$(date +'%F %T') : $1: $3 : $SystemInformation" | lzmw -PA -e "((((((.+))))))" -it "((((((Plain|Regex|(?<=by : )\S+))))))|Test|small|ignore\s*case|(Windows|Cygin|Linux|Centos|Fedora|UBuntu)\w*\s*(\d+\w*)?" 
-    echo "Test file info : $TestFileInfo : $1 : findstr / grep / lzmw" | lzmw -t "(\d+\.\d+)" -e "(\d+)|\w+" -PA
+    echo "$(date +'%F %T') : $1: $3 : $SystemInformation" | lzmw -PA -e "((((((.+))))))" -it "((((((Plain|Regex|(?<=by : )\S+))))))|Test|small|ignore\s*case|(Windows|Cygin|Linux|Centos|Fedora|UBuntu)\w*\s*(\d+\w*)?"
+    echo "Test file info : $TestFileInfo : $1 by findstr / grep / lzmw ; To find = $3" | lzmw -t "(\d+\.\d+)" -e "(\d+)|\w+" -PA
     for ((k=1; k <= $TestTimes; k++)); do
         #echo "Test[$k]-$TestTimes : $1 : $3 "
-        findstr $4 "$3"    $2      | lzmw -l -c Read  findstr result.
-        grep    $5 "$3"    $2      | lzmw -l -c Read  grep    result.
-        lzmw    $6 "$3" -p $2 -PAC | lzmw -l -c Read  lzmw    result.
+        findstr $4 "$3"    $2      | lzmw -l -c Read  findstr : $3
+        grep    $5 "$3"    $2      | lzmw -l -c Read  grep : $3
+        lzmw    $6 "$3" -p $2 -PAC | lzmw -l -c Read  lzmw : $3
     done
     echo
 }
@@ -108,7 +118,7 @@ export SystemInformation="$OSVersionBit + $MemoryInfo + $CPUCoresInfo"
 export TestFileInfo=$(lzmw -l -t . -p $TestFilePath -H 0 -c Get size and rows -PC | lzmw -it "^.*read (\d+ lines \d+\S+ \w+).*from (\d+\S+.+?)Checked.*" -o '$1' -PAC)
 
 cd $TestFileDir
-Compare_By_File_Pattern_3_Options "Plain text finding"   $TestFileName   "$PlainFinding"    ""       ""   -x 
-Compare_By_File_Pattern_3_Options "Plain ignore case"    $TestFileName   "$PlainFinding"    /I       -i   -ix
-Compare_By_File_Pattern_3_Options "Regex text finding"   $TestFileName   "$RegexFinding"   /R        -e   -t 
-Compare_By_File_Pattern_3_Options "Regex ignore case"    $TestFileName   "$RegexFinding"   "/I /R"   -ie  -it
+if [ -n "$PlainFinding" ]; then Compare_By_File_Pattern_3_Options "Plain text finding"   $TestFileName   "$PlainFinding"    ""       ""   -x  ; fi
+if [ -n "$PlainFinding" ]; then Compare_By_File_Pattern_3_Options "Plain ignore case"    $TestFileName   "$PlainFinding"    /I       -i   -ix ; fi
+if [ -n "$RegexFinding" ]; then Compare_By_File_Pattern_3_Options "Regex text finding"   $TestFileName   "$RegexFinding"   /R        -e   -t  ; fi
+if [ -n "$RegexFinding" ]; then Compare_By_File_Pattern_3_Options "Regex ignore case"    $TestFileName   "$RegexFinding"   "/I /R"   -ie  -it ; fi

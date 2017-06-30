@@ -1,10 +1,10 @@
 @echo off
 SetLocal EnableExtensions EnableDelayedExpansion
 
-if "%~3" == "" (
+if "%~2" == "" if "%~3" == "" (
     echo Usage   : %0  Test-file                Plain-Finding-String   Regex-Pattern            [Optional : TestTimes]
     echo Example : %0  d:\tmp\large-test.log    Exception             "[0-9]*Exception[0-9]*"    3
-    exit /b 5
+    exit /b -1
 )
 
 if not exist %1 (
@@ -18,10 +18,20 @@ for %%a in ("%~1") do (
     set TestFileName="%%~nxa"
 )
 
+where lzmw.exe 2>nul >nul || set "PATH=%~dp0..\tools;%PATH%"
 set PlainFinding=%2
 set RegexFinding=%3
 set "TestTimes=%~4"
 if "%TestTimes%" == "" set "TestTimes=1"
+
+where grep.exe 2>nul >nul
+if %ERRORLEVEL% EQU 0 (
+    set Grep=grep
+    set GrepResult=lzmw -l -c Read  grep :
+) else (
+    set Grep=echo
+    set GrepResult=lzmw -PAC -H 0 -M
+)
 
 set EnhanceShow=lzmw -PA -e "((((((.+))))))" -it "((((((Plain|Regex|(?<=by : )\S+))))))|Test|small|ignore\s*case|(Windows|Cygin|Linux|Centos|Fedora|UBuntu)\w*\s*(\d+\w*)?"
 
@@ -37,24 +47,23 @@ for /F "tokens=*" %%a in ('lzmw -l -t . -p %TestFilePath% -H 0 -c Get size and r
 )
 
 pushd %TestFileDir%
-call :Compare_By_File_Pattern_3_Options "Plain text finding"  %TestFileName%    %PlainFinding%  ""       ""   -x 
-call :Compare_By_File_Pattern_3_Options "Plain ignore case"   %TestFileName%    %PlainFinding%  /I       -i   -ix
-call :Compare_By_File_Pattern_3_Options "Regex text finding"  %TestFileName%    %RegexFinding%  /R       -e   -t 
-call :Compare_By_File_Pattern_3_Options "Regex ignore case"   %TestFileName%    %RegexFinding%  "/I /R"  -ie  -it
+if not %PlainFinding% == ""   call :Compare_By_File_Pattern_3_Options "Plain text finding"  %TestFileName%    %PlainFinding%  ""       ""   -x
+if not %PlainFinding% == ""   call :Compare_By_File_Pattern_3_Options "Plain ignore case"   %TestFileName%    %PlainFinding%  /I       -i   -ix
+if not "%RegexFinding%" == "" call :Compare_By_File_Pattern_3_Options "Regex text finding"  %TestFileName%    %RegexFinding%  /R       -e   -t
+if not "%RegexFinding%" == "" call :Compare_By_File_Pattern_3_Options "Regex ignore case"   %TestFileName%    %RegexFinding%  "/I /R"  -ie  -it
 popd
 
 exit /b 0
 
-
 ::Paramters : Title, File, pattern , findstr-options, grep-options, lzmw-options
 :Compare_By_File_Pattern_3_Options
     echo %date% %time% : %~1 : %3 : %SystemInformation% | %EnhanceShow%
-    echo Test file info : !TestFileInfo! : %~1 : findstr / grep / lzmw | lzmw -t "(\d+\.\d+)" -e "(\d+)|\w+" -PA -a
+    echo Test file info : !TestFileInfo! : %~1 by findstr / grep / lzmw ; To find = %3 | lzmw -t "(\d+\.\d+)" -e "(\d+)|\w+" -PA -a
     for /L %%k in (1,1,%TestTimes%) do (
-        findstr %~4 %3    %2      | lzmw -l -c Read  findstr result.
-        grep    %~5 %3    %2      | lzmw -l -c Read  grep    result.
-        lzmw    %~6 %3 -p %2 -PAC | lzmw -l -c Read  lzmw    result.
-    )    
+        findstr %~4 %3    %2      | lzmw -l -c Read  findstr : %3
+        %Grep%  %~5 %3    %2      | %GrepResult% %3
+        lzmw    %~6 %3 -p %2 -PAC | lzmw -l -c Read  lzmw : %3
+    )
     echo.
     exit /b 0
 
@@ -62,11 +71,11 @@ exit /b 0
     ::for /F "tokens=*" %%a in ('wmic CPU GET /VALUE ^| lzmw -it "^NumberOfCores=(\d+)" -o $1 -PAC ') do set NumberOfCores=%%a
     ::for /F "tokens=*" %%a in ('wmic CPU GET /VALUE ^| lzmw -it "^Name=(.+)" -o $1 -PAC ') do set "CPUInfo=%%a"
     for /f "tokens=1,2 delims==" %%a in ('wmic CPU GET NumberOfCores /VALUE ^| findstr /I NumberOfCores') do set NumberOfCores=%%b
-    
+
     for /f "tokens=1,2 delims==" %%a in ('wmic CPU GET Name /VALUE ^| findstr /I Name') do set CPUInfo=%%b
     set "CPUInfo=%CPUInfo% %NumberOfCores% Cores"
     exit /b 0
-    
+
 :GetOSVersionBit
     for /f "tokens=1,2 delims==" %%a in ('wmic OS GET Caption^,OSArchitecture /Value ^| findstr /I /R "[0-9a-z]"') do (
         if "%%a" == "Caption" (
@@ -77,7 +86,7 @@ exit /b 0
     )
     set "OSVersionBit=!SystemCaption! !OSArchitecture!"
     exit /b 0
-    
+
 :GetMemoryInfo
     set /a TotalMemory=0
     set /a MemoryChannels=0
@@ -94,7 +103,7 @@ exit /b 0
     set Units[0]=MB
     set Units[1]=GB
     set Units[2]=TB
-    
+
     set /a unitIndex=0
     set /a MemoryNumber=%TotalMemory%
     for /L %%k in (1,1,2) do (
@@ -103,11 +112,11 @@ exit /b 0
             set /a MemoryNumber/=1024
         )
     )
-    
+
     set "MemoryInfo=!MemoryNumber! !Units[%unitIndex%]! RAM"
     ::set MemoryInfo="!MemoryInfo!/%MemoryChannels% Channels/%MemorySpeed% Speed"
     exit /b 0
-    
+
 :GetNumberOfMB
     :: if number >= 4294967296 will get error.
     set bytes=%~1
@@ -118,4 +127,3 @@ exit /b 0
     if %head% GTR 0  set /a "head=%head%*100000/1000 * 10000 /1024"
     set /a numberMB=%head% + %tail%
     exit /b %numberMB%
-    

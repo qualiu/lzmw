@@ -1,112 +1,73 @@
-@echo off
 :: ############################################################################
-:: This tool is to find all process by the searching options of the process : 
-:: commad line, name, process id, parent process id
-:: ####### to "echo on" for debuging this script : ###################
-:: lzmw -p psall.bat -it "^\s*(@?echo)\s+off\b" -o "$1 on" -R && lzmw -p psall.bat -it "^\s*rem\s+(echo\s+.*)$" -o "$1" -R
-:: ####### to restore "echo off" , run following : ###################
-:: lzmw -p psall.bat -it "^\s*(@?echo)\s+on\b" -o "$1 off" -R && lzmw -p psall.bat -it "^\s*(echo\s+.*)$" -o "rem $1" -L 30 -R
+:: This tool is to find all process by the searching options of the process:
+::  ParentProcessId ProcessId Name CommandLine
+:: Filter self of lzmw.exe please append with:
+::    --nx lzmw.exe or --nt lzmw\.exe
+::
+:: Output line format, separated by TAB: ParentProcessId ProcessId Name CommandLine
+:: [1]: Default: :RowNumber: ParentProcessId ProcessId Name CommandLine
+:: [2]: With -P: ParentProcessId ProcessId Name CommandLine
 :: ############################################################################
 
+@echo off
 SetLocal EnableExtensions EnableDelayedExpansion
-set lzmw=lzmw
-set FilterSelf=where (name != "lzmw.exe")
 
 if "%~1" == "-h"     set ToShowUsage=1
 if "%~1" == "--help" set ToShowUsage=1
-if "%~1" == "/?"       set ToShowUsage=1
+if "%~1" == "/?"     set ToShowUsage=1
+
+where lzmw.exe 2>nul >nul || if not exist %~dp0\lzmw.exe powershell -Command "Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/lzmw.exe?raw=true -OutFile %~dp0\lzmw.exe"
+where lzmw.exe 2>nul >nul || set "PATH=%~dp0;%PATH%"
+for /f "tokens=*" %%a in ('where lzmw.exe 2^>nul') do set "lzmwPath=%%a"
 
 if "%ToShowUsage%" == "1" (
-    :: %lzmw%
-    echo To see %lzmw% matching options just run %lzmw% | lzmw -PA -ie "options|lzmw" -x %lzmw%
-    echo Usage    : %0 -t "process-info-text"  -e "to-enhance"  -H "header-lines", ... -P, etc. | lzmw -PA -e "\s+-+\w+\s+" -x %0
-    echo Example-1: %0 -H 9 -T 9    | lzmw -PA -e "\s+-+\w+\s+" -x %0
-    echo Example-2: %0 -it cmd.exe --nx lzmw.exe | lzmw -PA -e "\s+-\w\s+" | lzmw -PA -e "\s+-+\w+\s+" -x %0
-    echo Example-3: %0 -t C:.Windows -H 3 --nx C:\Windows\system32 --nt lzmw.exe | lzmw -PA -e "\s+-+\w+\s+" -x %0
-    exit /b 5
+    echo To see lzmw.exe matching options just run %lzmwPath% | lzmw -PA -ie "options|\S*lzmw\S*" -x lzmw
+    echo Usage  : %~n0 -t/-x "process-match-options"  -e "to-enhance"  -H "header-lines", ... -P, etc. | lzmw -aPA -e "\s+-+\w+\s+|-[txP]" -x %~n0
+    echo Example: %~n0 -H 9 -T 9 -P  | lzmw -aPA -e "\s+-+\w+\s+" -x %~n0
+    echo Example: %~n0 -it C:\\Windows --nx lzmw.exe | lzmw -PA -e "\s+-\w\s+" | lzmw -aPA -e "\s+-+\w+\s+" -x %~n0
+    echo Example: %~n0 -ix C:\Windows -t "java.*" -H 3 --nx C:\Windows\system32 --nt lzmw\.exe | lzmw -aPA -e "\s+-+\w+\s+" -x %~n0
+    echo Example: %~n0  2030 3021 19980        ---- find processes by id | lzmw -PA -e "\s+(\d+|\bid\b)" -x %~n0
+    exit /b 0
 )
 
-set textOption=
-set enhanceOption=
-set otherOption=
-set textCmd=
-
-:start
-if "%~1" == ""  goto done
-
-if "%1" == "-t" (
-    set textOption=%2
-    set textCmd=%1
-    shift
-    shift
-    goto start
-) 
-if "%1" == "-it" (
-    set textOption=%2
-    set textCmd=%1
-    shift
-    shift
-    goto start
-) 
-if "%1" == "-e" (
-    set enhanceOption=%2
-    shift
-    shift
-    goto start
-) 
-if "%1" == "-ie" (
-    set enhanceOption=%2
-    shift
-    shift
-    goto start
+:: Test args for lzmw.exe
+lzmw -z justTestArgs %* >nul 2>nul
+if %ERRORLEVEL% LSS 0 (
+    echo Error parameters for %~nx0: %* , test with: -z justTestArgs: | lzmw -aPA -t "Error.*for \S+(.*(test with.*(-z (justTestArgs))))"
+    lzmw -z justTestArgs %*
+    exit /b -1
 )
 
-if "%1" == "-x"  call :NotSupportNormalGrep %1 %2 & exit /b 1
-if "%1" == "-ix" call :NotSupportNormalGrep %1 %2 & exit /b 1
+::lzmw -z justTestArgs %* -P >nul 2>nul
+::if !ERRORLEVEL! NEQ -1 set NoPathToCall=-P
 
-set otherOption=%otherOption% %1 
+set ColumnTitles=ParentProcessId,ProcessId,Name,CommandLine
+set WMIC_ARGS=%ColumnTitles% /value
+:: echo %* | lzmw -t "\s+-[PAC]+" >nul || echo %ColumnTitles%
 
-shift
+set ColumnReplace=-S -t "\s*CommandLine=([^^\r\n]*)\s+Name=([^^\r\n]*)\s*ParentProcessId=(\d+)\s*ProcessId=(\d+)\s*" -o "$3\t$4\t$2\t$1\n"
+set RemoveEmptyTail=-S -t "\s*$" -o "" -PAC
 
-goto start
-
-:done
-rem echo textOption = %textOption%
-rem echo otherOption = %otherOption%
-
-set finalEnhance=
-if [%textOption%] == [] (
-   if not [%enhanceOption%] == [] (
-        set finalEnhance=-e %enhanceOption%
-   )
+:: Check if just all PID numbers, then set ColumnReplace with PIDPattern
+if not [%~1] == [] for /f "tokens=*" %%a in ('echo %* ^| lzmw -t "(^|\s+)(-[PACIMO]+|-[UDHT]\s*\d+|-c\s*.*)" -o "" -aPAC') do set TestPureNumbers=%%a
+echo !TestPureNumbers! | lzmw -t "[^\d ]" >nul
+:: if all are numbers and whitespaces.
+if !ERRORLEVEL! EQU 0 (
+    for /f "tokens=*" %%a in ('echo !TestPureNumbers! ^| lzmw -t "\s*(\d+)\s*" -o "$1|" -PAC ^| lzmw -t "\s*\|\s*$" -o "" -aPAC') do set "PIDPattern=%%a"
+    for /f "tokens=*" %%a in ('echo %* ^| lzmw -t "(!PIDPattern!)\s*" -o " " -PAC') do set AllArgs=%%a
+    
+    set PidFilter=-b "^^CommandLine=" -Q "^^ProcessId=" -t "^^ProcessId=(!PIDPattern!)\s*" -aPAC
+    call wmic process get %WMIC_ARGS% | lzmw !PidFilter! | lzmw !ColumnReplace! -PACc | lzmw %RemoveEmptyTail% | lzmw !AllArgs! %NoPathToCall%
 ) else (
-    if not [%enhanceOption%] == [] (
-        set finalEnhance=-e "%textOption:"=%|%enhanceOption:"=%"
-    ) else (
-        set finalEnhance=-e %textOption%
+    :: Avoid list all process and called from pskill, but has words:
+    if not [%~1] == [] (
+        :: Not use hasNonMatch to avoid get all processes and to be killed.
+        lzmw --verbose -z justTestArgs %* 2>&1 | lzmw -q "End extra verbose" -it "hasMatch|hasEnhance" >nul
+        if !ERRORLEVEL! EQU 0 (
+            :: if no match or not-match and no enhance, but has words, add -x to prevent list all:
+            echo %* | lzmw -t "(^|\s+)(-[PACIMO]+|-[UDHT]\s*\d+|-c\s*.*)" -o "" -aPAC | lzmw -t "\w+" -c Check if has words >nul
+            if !ERRORLEVEL! GTR 0 set DefaultGrep=-x
+        )
     )
+    call wmic process get %WMIC_ARGS% | lzmw !ColumnReplace! -PACc | lzmw %RemoveEmptyTail%  | lzmw !DefaultGrep! %* %NoPathToCall%
 )
-
-rem echo enhanceOption = %enhanceOption%
-rem echo finalEnhance = %finalEnhance%
-
-set WMIC_ARGS=ParentProcessId,ProcessId,Name,CommandLine
-::set EachMultiLineToOneLine=-t "\s+" -o " " --nt "^(wmic|lzmw)" -PAC
-set EachMultiLineToOneLine=-t "\s+" -o " " --nt "^(wmic)" -PAC
-set ColumnReplace=-t "^(.+?)\s+(\S+)\s+(\S+)\s+(\S+)\s*$" -o "$3 $4 $2 $1"
-set LastArgs=-it "^(?:\d+|ParentProcessId)\s+(\d+|ProcessId)\s+(\S+|Name)" %finalEnhance% %otherOption%
-
-if [%textOption%] == [] (
-    wmic process get %WMIC_ARGS% | %lzmw% %EachMultiLineToOneLine% | %lzmw% %ColumnReplace% -PAC | %lzmw% %LastArgs%
-) else (
-    rem echo ParentProcessId ProcessId Name CommandLine | %lzmw% -it "^\w+\s+(\w+)\s+(\w+)\s+(\w+)" -PA
-    wmic process get %WMIC_ARGS% | %lzmw% %EachMultiLineToOneLine% | %lzmw% -PAC %textCmd% %textOption% | %lzmw% %ColumnReplace% -PAC | %lzmw% %LastArgs%
-)
-
-goto :End
-
-:NotSupportNormalGrep
-echo Not support or currently cannot use %~1 %~2 , you can append a pipe with : %lzmw% %~1 %~2 | %lzmw% -e "(?<=cannot use).*(?=you can)" -PA
-
-:End
-
