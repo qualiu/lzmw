@@ -1,78 +1,103 @@
 @echo off
 :: ############################################################################
-:: This tool is to find all process by the searching options of the process : 
-:: commad line, name, process id, parent process id
-:: ####### to "echo on" for debuging this script : ###################
+:: This tool is to find all process by the searching options of the process :
+::  commad line, name, process id, parent process id
+:: Filter self of lzmw.exe please append with:
+::    --nx lzmw.exe or --nt lzmw\.exe
+:: ####### to "echo off" for debuging this script : ###################
 :: lzmw -p psall.bat -it "^\s*(@?echo)\s+off\b" -o "$1 on" -R && lzmw -p psall.bat -it "^\s*rem\s+(echo\s+.*)$" -o "$1" -R
 :: ####### to restore "echo off" , run following : ###################
 :: lzmw -p psall.bat -it "^\s*(@?echo)\s+on\b" -o "$1 off" -R && lzmw -p psall.bat -it "^\s*(echo\s+.*)$" -o "rem $1" -L 30 -R
 :: ############################################################################
 
 SetLocal EnableExtensions EnableDelayedExpansion
-set lzmw=lzmw
-set FilterSelf=where (name != "lzmw.exe")
+:: set FilterSelf=where (name != "lzmw.exe")
 
 if "%~1" == "-h"     set ToShowUsage=1
 if "%~1" == "--help" set ToShowUsage=1
-if "%~1" == "/?"       set ToShowUsage=1
+if "%~1" == "/?"     set ToShowUsage=1
+
+set ThisDir=%~dp0
+if %ThisDir:~-1%==\ set ThisDir=%ThisDir:~0,-1%
+
+where lzmw.exe 2>nul >nul || if not exist %ThisDir%\lzmw.exe powershell -Command "Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/lzmw.exe?raw=true -OutFile %ThisDir%\lzmw.exe"
+where lzmw.exe 2>nul >nul || set "PATH=%ThisDir%;%PATH%"
+for /f "tokens=*" %%a in ('where lzmw.exe 2^>nul') do set "lzmwPath=%%a"
 
 if "%ToShowUsage%" == "1" (
-    :: %lzmw%
-    echo To see %lzmw% matching options just run %lzmw% | lzmw -PA -ie "options|lzmw" -x %lzmw%
-    echo Usage    : %0 -t "process-info-text"  -e "to-enhance"  -H "header-lines", ... -P, etc. | lzmw -PA -e "\s+-+\w+\s+" -x %0
-    echo Example-1: %0 -H 9 -T 9    | lzmw -PA -e "\s+-+\w+\s+" -x %0
-    echo Example-2: %0 -it cmd.exe --nx lzmw.exe | lzmw -PA -e "\s+-\w\s+" | lzmw -PA -e "\s+-+\w+\s+" -x %0
-    echo Example-3: %0 -t C:.Windows -H 3 --nx C:\Windows\system32 --nt lzmw.exe | lzmw -PA -e "\s+-+\w+\s+" -x %0
-    exit /b 5
+    :: lzmw --help
+    echo To see lzmw.exe matching options just run %lzmwPath% | lzmw -PA -ie "options|\S*lzmw\S*" -x lzmw
+    echo Usage    : %~n0 -t/-x "process-match-options"  -e "to-enhance"  -H "header-lines", ... -P, etc. | lzmw -aPA -e "\s+-+\w+\s+|-[txP]" -x %~n0
+    echo Example-1: %~n0 -H 9 -T 9 -P  | lzmw -aPA -e "\s+-+\w+\s+" -x %~n0
+    echo Example-2: %~n0 -it C:\\Windows --nx lzmw.exe | lzmw -PA -e "\s+-\w\s+" | lzmw -aPA -e "\s+-+\w+\s+" -x %~n0
+    echo Example-3: %~n0 -ix C:\Windows -t "java.*" -H 3 --nx C:\Windows\system32 --nt lzmw\.exe | lzmw -aPA -e "\s+-+\w+\s+" -x %~n0
+    exit /b 0
 )
 
-set textOption=
+:: Test args for lzmw.exe
+lzmw -z test-string %* >nul 2>nul
+if %ERRORLEVEL% LSS 0 (
+    echo Error parameters for %~nx0: %* , test with: -z test-string: | lzmw -aPA -t "Error.*for \S+(.*(test with.*(-z (test-string))))"
+    lzmw -z test-string %*
+    exit /b -1
+)
+
 set enhanceOption=
 set otherOption=
 set textCmd=
+set textOption=
+set plainTextCmd=
+set plainTextOption=
+set ignoreCaseOption=
 
-:start
-if "%~1" == ""  goto done
-
-if "%1" == "-t" (
-    set textOption=%2
+:CheckArgs
+if "%~1" == ""  goto CheckArgsCompleted
+if "%~1" == "-i" (
+    set ignoreCaseOption=%1
+    shift & goto CheckArgs
+)
+if "%~1" == "-t" (
     set textCmd=%1
-    shift
-    shift
-    goto start
-) 
-if "%1" == "-it" (
     set textOption=%2
-    set textCmd=%1
-    shift
-    shift
-    goto start
-) 
-if "%1" == "-e" (
+    shift & shift & goto CheckArgs
+)
+if "%~1" == "-it" (
+    set ignoreCaseOption=-i
+    set textCmd=-t
+    set textOption=%2
+    shift & shift & goto CheckArgs
+)
+if "%~1" == "-e" (
     set enhanceOption=%2
-    shift
-    shift
-    goto start
-) 
-if "%1" == "-ie" (
-    set enhanceOption=%2
-    shift
-    shift
-    goto start
+    shift & shift & goto CheckArgs
 )
 
-if "%1" == "-x"  call :NotSupportNormalGrep %1 %2 & exit /b 1
-if "%1" == "-ix" call :NotSupportNormalGrep %1 %2 & exit /b 1
+if "%~1" == "-ie" (
+    set ignoreCaseOption=-i
+    set enhanceOption=-e
+    shift & shift & goto CheckArgs
+)
 
-set otherOption=%otherOption% %1 
+if "%~1" == "-x" (
+    set plainTextCmd=%1
+    set plainTextOption=%2
+    shift & shift & goto CheckArgs
+)
 
+if "%~1" == "-ix" (
+    set ignoreCaseOption=-i
+    set plainTextCmd=-x
+    set plainTextOption=%2
+    shift & shift & goto CheckArgs
+)
+
+set otherOption=%otherOption% %1
 shift
-
-goto start
-
-:done
+goto CheckArgs
+:CheckArgsCompleted
 rem echo textOption = %textOption%
 rem echo otherOption = %otherOption%
+if not "%plainTextCmd%" == "" set "plainTextCmdEnhance=-x"
 
 set finalEnhance=
 if [%textOption%] == [] (
@@ -89,24 +114,15 @@ if [%textOption%] == [] (
 
 rem echo enhanceOption = %enhanceOption%
 rem echo finalEnhance = %finalEnhance%
-
+rem echo plainTextOption = %plainTextOption%
 set WMIC_ARGS=ParentProcessId,ProcessId,Name,CommandLine
 ::set EachMultiLineToOneLine=-t "\s+" -o " " --nt "^(wmic|lzmw)" -PAC
 set EachMultiLineToOneLine=-t "\s+" -o " " --nt "^(wmic)" -PAC
 set ColumnReplace=-t "^(.+?)\s+(\S+)\s+(\S+)\s+(\S+)\s*$" -o "$3 $4 $2 $1"
-set LastArgs=-it "^(?:\d+|ParentProcessId)\s+(\d+|ProcessId)\s+(\S+|Name)" %finalEnhance% %otherOption%
+set LastArgs=%ignoreCaseOption% -t "^(?:\d+|ParentProcessId)\s+(\d+|ProcessId)\s+(\S+|Name)" %finalEnhance% %otherOption%
 
-if [%textOption%] == [] (
-    wmic process get %WMIC_ARGS% | %lzmw% %EachMultiLineToOneLine% | %lzmw% %ColumnReplace% -PAC | %lzmw% %LastArgs%
+if [%textCmd%%plainTextCmd%] == [] (
+    call wmic process get %WMIC_ARGS% | lzmw %EachMultiLineToOneLine% | lzmw %ColumnReplace% -PAC | lzmw %LastArgs%
 ) else (
-    rem echo ParentProcessId ProcessId Name CommandLine | %lzmw% -it "^\w+\s+(\w+)\s+(\w+)\s+(\w+)" -PA
-    wmic process get %WMIC_ARGS% | %lzmw% %EachMultiLineToOneLine% | %lzmw% -PAC %textCmd% %textOption% | %lzmw% %ColumnReplace% -PAC | %lzmw% %LastArgs%
+    call wmic process get %WMIC_ARGS% | lzmw %EachMultiLineToOneLine% | lzmw -PAC %ignoreCaseOption% %textCmd% %textOption% %plainTextCmd% %plainTextOption% | lzmw %ColumnReplace% -PAC | lzmw %LastArgs% %plainTextCmdEnhance% %plainTextOption%
 )
-
-goto :End
-
-:NotSupportNormalGrep
-echo Not support or currently cannot use %~1 %~2 , you can append a pipe with : %lzmw% %~1 %~2 | %lzmw% -e "(?<=cannot use).*(?=you can)" -PA
-
-:End
-
