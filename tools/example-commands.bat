@@ -71,7 +71,7 @@ lzmw -c -p %~dp0\example-commands.bat -it name -e Names -x nameX
 lzmw -c -p %~dp0\example-commands.bat -ix update -t name -e Names
 lzmw -c -p %~dp0\sample-file.txt -ib "<Tag name" -q "Switch" -Q "</Tag" -t MailTo -e Switch
 lzmw -c -p %~dp0\sample-file.txt -ib "<Tag name" -q "Switch" -Q "</Tag" -t MailTo -e Switch -a
-lzmw -c -p %~dp0\sample-file.txt -it "<name>(#.+?)</name>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\"" -L 14
+lzmw -c -p %~dp0\sample-file.txt -it "<name>(#.+?)</name>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\"" -L 14 -e "-x (\S+)|-o (\S+)|lzmw "
 lzmw -c -p %~dp0\sample-file.txt -it Tag -x ref -U 5 -D 5
 lzmw -c -p %~dp0\sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:03"
 lzmw -c -p %~dp0\sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -E "2012-12-27 00:03"
@@ -88,6 +88,7 @@ lzmw -c -p %~dp0\example-commands.bat -it "\w+" -H 0 -T 2  ## Must out only 2 ma
 lzmw -c -p %~dp0\example-commands.bat -it "\w+" -T 0       ## Must NOT out any matched.
 lzmw -c -p %~dp0\example-commands.bat -it "\w+" -T 0 -H 2  ## Must out only 2 matched of top.
 lzmw -c -p %~dp0\example-commands.bat -it just -U 3 -D 3
+lzmw -c -p %~dp0\sample-file.txt -it "\W(function)\W" -e "name=(\S+)"
 ::Stop calling for linux-test.sh as following are advanced test. On Linux , need to replace the double quotes "" to single quotes '' in -o xxxx if contains $1 or $2 etc.
 ::Example bellow extract to a file then generate replacing commands and execute them.
 lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PA -e "#\S+?#"

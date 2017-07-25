@@ -4,11 +4,8 @@
 @echo off
 SetLocal EnableExtensions EnableDelayedExpansion
 
-set ThisDir=%~dp0
-IF %ThisDir:~-1%==\ set ThisDir=%ThisDir:~0,-1%
-
-where lzmw.exe 2>nul >nul || if not exist %ThisDir%\lzmw.exe powershell -Command "Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/lzmw.exe?raw=true -OutFile %ThisDir%\lzmw.exe"
-where lzmw.exe 2>nul >nul || set "PATH=%ThisDir%;%PATH%"
+where lzmw.exe 2>nul >nul || if not exist %~dp0\lzmw.exe powershell -Command "Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/lzmw.exe?raw=true -OutFile %~dp0\lzmw.exe"
+where lzmw.exe 2>nul >nul || set "PATH=%PATH%;%~dp0"
 
 @if "%~1" == "" (
     echo Usage  : %~n0  Files-or-Directories  [options]
@@ -20,7 +17,7 @@ where lzmw.exe 2>nul >nul || set "PATH=%ThisDir%;%PATH%"
     echo Example: %~n0  %%CD%% -r
     echo Example: %~n0  . -r --nf "\.(log|md|exe|cygwin|gcc\w*|txt)$"
     echo Example: %~n0  . -r -f "\.(bat|cmd|ps1|sh)$" --nd "^(target|bin)$"
-    echo Should not use --np and --pp as used by this; and -p also used. | lzmw -PA -t "-\S+|(\w+)"
+    echo Should not use --np and --pp as used by this; and -p also used. | lzmw -PA -t "(-\S+)|\w+"
     exit /b -1
 )
 
@@ -47,14 +44,16 @@ if not defined lzmwOptions (
 @echo ## Remove white spaces at each line end | lzmw -PA -e .+
 lzmw !lzmwOptions! -p %PathToDo% -it "(\S+)\s+$" -o "$1" -R -c Remove white spaces at each line end.
 
-@echo ## Add a tail new line to files | lzmw -PA -e .+
-lzmw !lzmwOptions! -p %PathToDo% -S -t "(\S+)$" -o "$1\n" -R -c Add a tail new line to files.
+::@echo ## Add a tail new line to files | lzmw -PA -e .+
+::lzmw !lzmwOptions! -p %PathToDo% -S -t "(\S+)$" -o "$1\n" -R -c Add a tail new line to files.
+
+@echo ## Add/Delete to have only one tail new line in files | lzmw -PA -e .+
+lzmw !lzmwOptions! -p %PathToDo% -S -t "(\S+)\s*$" -o "$1\n" -R -c Add a tail new line to files.
 
 :: Convert tab at head of each lines in a file, util all tabs are replaced.
 :ConvertTabTo4Spaces
     if exist %PathToDo%\* (
-        set FileFilterConvertTab=-f "\.(cpp|cxx|hp*|cs|java|scala|py|bat|cmd|ps1|sh)$"
-        if !hasFileFilter! NEQ 0 set FileFilterConvertTab=
+        if !hasFileFilter! EQU 0 set FileFilterConvertTab=-f "\.(cpp|cxx|hp*|cs|java|scala|py|bat|cmd|ps1|sh)$"
         lzmw !lzmwOptions! -p %PathToDo% !FileFilterConvertTab! -it "^^(\s*)\t" -o "$1    " -R -c Covert TAB to 4 spaces.
     ) else (
         lzmw !lzmwOptions! -p %PathToDo% -it "^^(\s*)\t" -o "$1    " -R -c Covert TAB to 4 spaces.
@@ -62,12 +61,12 @@ lzmw !lzmwOptions! -p %PathToDo% -S -t "(\S+)$" -o "$1\n" -R -c Add a tail new l
     if !ERRORLEVEL! GTR 0 goto :ConvertTabTo4Spaces else exit /b 0
 
 
-@echo ## Convert line ending style of CR LF to LF for Linux files | lzmw -PA -e .+
+@echo ## Convert line ending style from CR LF to LF for Linux files | lzmw -PA -e .+
 set FileFilterForLinuxLineEnding=-f "^makefile$|\.sh$|\.mak\w*$"
 if !hasFileFilter! NEQ 0 set FileFilterForLinuxLineEnding=--pp "[\\\\/]*makefile$|\.sh$|\.mak\w*$"
 lzmw !lzmwOptions! -p %PathToDo% !FileFilterForLinuxLineEnding! -l -PICc | lzmw -t ".+" -o "dos2unix \"$0\"" -XA
 
-@echo ## Convert line ending style of LF to CR LF for Windows files | lzmw -PA -e .+
+@echo ## Convert line ending style from LF to CR LF for Windows files | lzmw -PA -e .+
 set FileFilterForWindowsLineEnding=-f "\.(bat|cmd|ps1)$"
 if !hasFileFilter! NEQ 0 set FileFilterForWindowsLineEnding=--pp "\.(bat|cmd|ps1)$"
 lzmw !lzmwOptions! -p %PathToDo% !FileFilterForWindowsLineEnding! -l -PICc | lzmw -t ".+" -o "unix2dos \"$0\"" -XA

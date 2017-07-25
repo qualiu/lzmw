@@ -44,7 +44,7 @@ function GetCPUCoresInfo() {
 }
 
 function GetOSVersionBit() {
-    export OSVersionBit="$(uname -omsr)"
+    export OSVersionBit="$(uname -mors)"
 : '
     OSArchitecture=""
     SystemCaption=""

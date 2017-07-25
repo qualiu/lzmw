@@ -7,11 +7,11 @@ Performance comparison with findstr and grep on Windows and Cygwin:
 https://github.com/qualiu/lzmw/blob/master/perf/summary-full-Cygwin-comparison.md
 https://github.com/qualiu/lzmw/blob/master/perf/summary-full-Windows-comparison.md
 
-lzmw.exe / lzmw.cygwin / lzmw.gcc**
+Match/Search/Replace: lzmw.exe / lzmw.cygwin / lzmw.gcc**
     Search/Replace/Execute/* Files/Pipe Lines/Blocks.
     Filter/Load/Extract/Transform/Stats/* Files/Pipe Lines/Blocks.
     
-nin.exe / nin.cygwin / nin.gcc**
+Not-In-latter: nin.exe / nin.cygwin / nin.gcc**
     Get Exclusive/Mutual Line-Set or Key-Set;
     Remove Line-Set or Key-Set matched in latter file/pipe;
     Get Unique/Mutual/Distribution/Stats/* Files/Pipe Line-Set or Key-Set.
@@ -25,7 +25,7 @@ Easy to search and get colorful usages of nin.exe/lzmw.exe like :
 For example, running lzmw and nin on Windows:
 
 # nin.exe -------------------------------------------------
-Get difference-set(not-in-latter) for first file/pipe; Or intersection-set with latter file. by LQM:
+Get difference-set(not-in-latter) for first file/pipe; Or intersection-set with latter file/pipe. by LQM:
   -u [ --unique ]            Discard self/mutual duplicated lines/keys.
   -m [ --intersection ]      Get intersection: reverse default 'not-in-latter'.
   -i [ --ignore-case ]       Ignore case for text or regex pattern.
@@ -59,7 +59,7 @@ Example-3: type daily-sample.txt | nin nul -up
 Example-1 uses regex capture1 to get new queries: only in daily-sample.txt but not in latter file. (if use -m will get intersection set of the 2 files)
 Example-2/3 are same : get unique(-u) lines in file and show each percentage(-p) with order.
 Return value is line count in {only first file/pipe} or {common intersection}.
-Useful options : -H 0, -M, -S, -PAC, -i -u, -ium, -iwn, -im, -imw, -iupdw, -iupdPAC
+Useful options : -H 0, -M, -S, -PAC, -i -u, -iuw, -ium, iumw, -iwn, -im, -imw, -iupdw, -iupdPAC
 -iwn : remove lines matched in latter from first (get lines captured + not-captured in first), ignore case.
 -ium : get unique common intersection, ignore case.
 -iup : get top distributions and percentages, ignore case.
@@ -96,7 +96,7 @@ Call@Anywhere: Add to system environment variable PATH with nin.exe parent direc
 
 
 # lzmw.exe ------------------------------------------------
-Line/Block matching/replacing (IGNORE case of file and directory name) by LQM:
+Match/Search/Replace Command/File/Pipe String/Line/Block. (IGNORE case of file and directory name) by LQM:
   -r [ --recursive ]          Recursively search sub-directories.
   -p [ --path ] arg           Directories or files, use ',' or ';' to separate.
   -f [ --file-match ] arg     Regex pattern for file name to search.
@@ -139,7 +139,7 @@ Line/Block matching/replacing (IGNORE case of file and directory name) by LQM:
   -D [ --down ] arg           Out bellow lines of matched by -t or found by -x
   -H [ --head ] arg           Out only top [N] lines of whole output,except -T
   -T [ --tail ] arg           Out only bottom [N] lines of whole, except -H
-  -J [ --jump-out ]           Jump out if has -H [N] output line count >= [N].
+  -J [ --jump-out ]           Jump out if has -H [N], output line count >= [N].
   -L [ --row-begin ] arg      Begin row of reading pipe or files.
   -N [ --row-end ] arg        End row of reading pipe or files.
   -b [ --start-pattern ] arg  Regex pattern to begin each reading/replacing.
@@ -197,7 +197,7 @@ Example-1 : Find env in profiles:
     D:\lztool\lzmw.exe --recursive --path "/home/qualiu , /etc , /d/cygwin/profile"  --file-match "\.(env|xml|\w*rc)$"  --text-match "^\s*export \w+=\S+" --ignore-case
 
 Example-2 : Find error in log files : row text (contain time) start matching(-t xxx) from -B xxx with given format(-F xxx); last-write-time between [--w1,--w2]
-    lzmw -rp /var/log/nova/,/var/log/swift -f "\.log$"  -F "^(\d{2,4}-\d+-\d+ [\d+:]+(\D\d+)?)" -B "2013-03-12 14:35" -i -t "\b(error|fail|fatal|exception)"  --w1 2013-03-12 --w2 "2013-03-13 09"
+    lzmw -rp /var/log/nova/,/var/log/swift -f "\.log$"  -F "^(\d{2,4}-\d+-\d+ [\d+:]+(\D\d+)?)" -B "2013-03-12 14" -i -t "\b(error|fail|fatal|exception)"  --w1 2013-03-12 --w2 "2013-03-13 09"
 
 Example-3 : Recursively(-r) replace-file(-R) : IP tail in <SQL> or <Connection>; Only in xxx-test directory skip Prod-xxx; Skip rows>=200 for each file; Backup(-K) if changed.
     lzmw -rp  .  -f "\.xml$" -d "\w+-test$" --nd "Prod-\w+" -b "^\s*<SQL|Connection>" -Q "^\s*</(SQL|Connection)>" -N 200 -it "(\d{1,3})\.(\d{1,3})\.\d{1,3}\.\d{1,3}" -o "${1}.$2.192.203" -RK
@@ -211,8 +211,8 @@ Example-5 : Single-line regex mode replacing whole text in each file and backup 
 Example-6 : Multi-line regex mode (normal mode) replacing lines in each file and backup (preview without -R)
     lzmw -rp spark\bin,spark\test -f "\.(bat|cmd)$"  -it "^(\s*@\s*echo)\s+off\b" -o "$1 on" -R -K
 
-Example-7 : Display current modified code files : Now time = 2017-06-30 10:30:17.757678 CST - China Standard Time
-    for /f %a in ('lzmw -l -f "\.(cs|java|cpp|cx*|hp*|py|scala)$" -rp "%CD%" --nd "^(debug|release)$"  --w1 "2017-06-30 10:30:17" -PAC 2^>nul ') do @echo code file : %a
+Example-7 : Display current modified code files : Now time = 2017-07-21 23:35:17.979279 CST - China Standard Time
+    for /f %a in ('lzmw -l -f "\.(cs|java|cpp|cx*|hp*|py|scala)$" -rp "%CD%" --nd "^(debug|release)$"  --w1 "2017-07-21 23:35:17" -PAC 2^>nul ') do @echo code file : %a
 
 Example-8 : Get 2 oldest and newest mp3 (4 files) which 3.0MB<=size<=9.9MB and show size unit, in current directory (Can omit -p . or -p %CD%)
     lzmw -l --wt -H 2 -T 2 -f "\.mp3$" --sz --s1 3.0MB --s2 9.9m
@@ -246,12 +246,12 @@ Helpful commands - Just 1 command line: Preview replacing just remove -R
 (8) Replace files to have only one new line at tail: (Add a new line or remove redundant new lines)
     lzmw -rp directory-1,dir-2 -f "\.(cpp|cxx|hp*|cs|java|scala|py)$" -S -t "(\S+)\s*$" -o "$1\n" -R
 (9) Remove tail new lines and white spaces in pipe result:
-    lzmw --help | lzmw -S -t "\s*$" -o "" -P
+    lzmw --help -C | lzmw -S -t "\s*$" -o "" -P
 (10) Get precise time of now in millisecond; in seconds with abbreviation CST of time zone: China Standard Time
-    lzmw --help | lzmw -t ".*Now time = (\d+\S+) (\d+[:\d]+)\.(\d{3})(\d*)\s+(\w+)?.*" -o "$1 $2 $5" -PAC
-    lzmw --help | lzmw -t ".*Now time = (\d+\S+) (\d+[:\d]+)\.(\d{3})(\d*)\s+(\w+)?.*" -o "$1 $2.$3" -PAC
+    lzmw -hC | lzmw -t ".*Now time = (\d+\S+) (\d+[:\d]+)\.(\d{3})(\d*)\s+(\w+)?.*" -o "$1 $2 $5" -PAC
+    lzmw -hC | lzmw -t ".*Now time = (\d+\S+) (\d+[:\d]+)\.(\d{3})(\d*)\s+(\w+)?.*" -o "$1 $2.$3" -PAC
 (11) Get precise time of now in microsecond and set to %TimeNow% variable for latter commands:
-    for /f "tokens=*" %a in ('lzmw -h ^| lzmw -t ".*Now time = (\d+\S+) (\d+[:\d]+)\.(\d{3})(\d*)\s+(\w+)?.*" -o "$1__$2.$3$4" -PAC ^| lzmw -t ":" -o _ -aPAC') do SET "TimeNow=%a"
+    for /f "tokens=*" %a in ('lzmw -hC ^| lzmw -t ".*Now time = (\d+\S+) (\d+[:\d]+)\.(\d{3})(\d*)\s+(\w+)?.*" -o "$1__$2.$3$4" -PAC ^| lzmw -t ":" -o _ -aPAC') do SET "TimeNow=%a"
 (12) Debug batch files, turn on all ECHO/echo:
     lzmw -rp directory-1,dir-2 -f "\.(bat|cmd)$" -it "\b(echo)\s+off\b" -o "$1 on"  -R
 
@@ -271,5 +271,5 @@ For example: Remove/Display/Remove+Merge duplicated path in %PATH% and merge to 
 As a portable cross platform tool, lzmw has been running on: Windows / Linux / Cygwin / Ubuntu / CentOS / Fedora
 Any good ideas please to : QQ : 94394344 , aperiodic updates and docs on https://github.com/qualiu/lzmw
 Call@Anywhere: Add to system environment variable PATH with lzmw.exe parent directory: D:\lztool
-     or temporarily : SET PATH=%PATH%;D:\lztool
-     or rudely but simple and permanent: copy D:\lztool\lzmw.exe C:\WINDOWS
+	 or temporarily : SET PATH=%PATH%;D:\lztool
+	 or rudely but simple and permanent: copy D:\lztool\lzmw.exe C:\WINDOWS

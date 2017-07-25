@@ -10,7 +10,7 @@
 @echo off
 SetLocal EnableExtensions EnableDelayedExpansion
 set IsSavingToFile=%1
-set lzmwName=%2
+set lzmwExeName=%2
 set SleepSeconds=%3
 set ReplaceTo=%4
 
@@ -29,8 +29,12 @@ where nin.exe 2>nul >nul || if not exist %ThisDir%\nin.exe powershell -Command "
 where nin.exe 2>nul >nul || set "PATH=%ThisDir%;%PATH%"
 
 set SourceFile=%ThisDir%\example-commands.bat
-if "%1" == "-h" (
-    echo Usage   : %0  IsSavingToFile  lzmwName   SleepSeconds  ReplaceTo
+if "%1" == "-h" set IsShowUsage=1
+if "%1" == "--help" set IsShowUsage=1
+if "%1" == "/?" set IsShowUsage=1
+
+if "%IsShowUsage%" == "1" (
+    echo Usage   : %0  IsSavingToFile  lzmwExeName   SleepSeconds  ReplaceTo
     echo Example : %0       -- directly test and output on this command window, using lzmw.
     echo Example : %0   1   -- output to files and compare with base-windows-**.log, using lzmw.
     echo Example : %0   0              lzmw           3    -- output to window, sleep 3 seconds for each execution.
@@ -38,38 +42,42 @@ if "%1" == "-h" (
     exit /b 0
 )
 
-if "%lzmwName%" == "" set lzmwName=lzmw
+if "%lzmwExeName%" == "" set lzmwExeName=lzmw
 if "%SleepSeconds%" == "" set SleepSeconds=3
 
 if "%~4" == "" (
     set "ReplaceTo=-c"
 )
 
-set lzmwThis=%lzmwName%
+set lzmwThis=lzmw
+:: Check and add tool directory to %PATH% in case of no %lzmwExeName%.exe
+%lzmwThis% -z "%PATH%" -ix "%ThisDir%;" -PAC >nul -- Can also use -H 0 to hide result and -M to hide summary.
+if %ERRORLEVEL% LSS 1 SET "PATH=%PATH%;%ThisDir%;"
 
 :: Check and add tool directory to %PATH% in case of no lzmw.exe
 %lzmwThis% -z "%PATH%" -ix "%ThisDir%;" -PAC >nul -- Can also use -H 0 to hide result and -M to hide summary.
 if %ERRORLEVEL% LSS 1 SET "PATH=%PATH%;%ThisDir%;"
 
 set StopCalling="::Stop calling"
-set FirstReplaceForFile=%lzmwName% -it "lzmw -c" -o "lzmw %ReplaceTo%" -p %SourceFile% --nt "\s+-R\b" -PAC
-set FirstReplaceForPipe=%lzmwName% -it "lzmw -c" -o "lzmw %ReplaceTo% -A" -p %SourceFile% --nt "\s+(-R|-PAC|-PIC)\b" -PAC
-set ReplaceExeName=%lzmwName% -it "\blzmw\s+" -o "%lzmwName% " -PAC
-::set ReplaceToThisDirMainCmd=%lzmwName% -ix "%%~dp0" -o "%ThisDir2Slash%"
-set ReplaceToThisDirMainCmd=%lzmwName% -ix "%%~dp0" -o %ThisDir% -a
+set FirstReplaceForFile=%lzmwExeName% -it "%lzmwThis% -c" -o "%lzmwExeName% %ReplaceTo%" -p %SourceFile% --nt "\s+-R\b" -PAC
+set FirstReplaceForPipe=%lzmwExeName% -it "%lzmwThis% -c" -o "%lzmwExeName% %ReplaceTo% -A" -p %SourceFile% --nt "\s+(-R|-PAC|-PIC)\b" -PAC
+set ReplaceExeName=%lzmwExeName% -it "\b%lzmwExeName%\s+" -o "%lzmwExeName% " -PAC
+::set ReplaceToThisDirMainCmd=%lzmwExeName% -ix "%%~dp0" -o "%ThisDir2Slash%"
+set ReplaceToThisDirMainCmd=%lzmwExeName% -ix "%%~dp0" -o %ThisDir% -a
 
 :: Need append file like : -p %pipeResult%  or -p %fileResult%
-set UnifyPipeTestExeName=%lzmwName% -it "(\|\s*)%lzmwName%\b" -o "${1}lzmw" -ROc
-set UnifyFileTestExeName=%lzmwName% -it "(^|\|\s+|^\s*echo\s+)%lzmwName%\b" -o "$1lzmw" -ROc
-set UnifyExtraExeName=%lzmwName% -it "%lzmwName% (-cA|-x)" -o "lzmw $1" -ROc
-set RemoveDateTimeDir=%lzmwName% -it "Used\s*\d+.*from\s*\d+.*|[,;]*\s*(Directory|command)\s*=.*|[,;]*\s*read\s+\d+\s+line.*" -o "" -ROc
-set UnifyDirectory=%lzmwName% -it "(^|\s+)[\\\\/\w\.:-]+(example-commands.bat|sample-file.txt)" -o "$1$2" -ROc
-set UnifyCurrentToDot=%lzmwName% -ix "%ThisDir%" -o "." -ROc
+set UnifyPipeTestExeName=%lzmwExeName% -it "(\|\s*)%lzmwExeName%\b" -o "${1}%lzmwThis%" -ROc UnifyPipeTestExeName
+set UnifyFileTestExeName=%lzmwExeName% -it "(^|\|\s+|^\s*echo\s+)%lzmwExeName%\b" -o "$1%lzmwThis%" -ROc UnifyFileTestExeName
+set UnifyExtraExeName=%lzmwExeName% -it "%lzmwExeName% (-cA?|-x)" -o "%lzmwThis% $1" -ROc UnifyExtraExeName
+set RemoveDateTimeDir=%lzmwExeName% -it "Used\s*\d+.*from\s*\d+.*|[,;]*\s*(Directory|command)\s*=.*|[,;]*\s*read\s+\d+\s+line.*" -o "" -ROc RemoveDateTimeDir
+set UnifyDirectory=%lzmwExeName% -it "(^|\s+)[\\\\/\w\.:-]+(example-commands.bat|sample-file.txt)" -o "$1$2" -ROc UnifyDirectory
+set UnifyCurrentToDot=%lzmwExeName% -ix "%ThisDir%" -o "." -ROc UnifyCurrentToDot
 
 :: Directly test and output result on current command window
 if not "%IsSavingToFile%" == "1" (
     if %SleepSeconds% GTR 0 (
-        :: %FirstReplaceForFile% -q %StopCalling%| %ReplaceExeName% | %ReplaceToThisDirMainCmd% -PAC | %lzmwName% -t "^.+$" -o "$0 && sleep %SleepSeconds%" -XI
+        :: %FirstReplaceForFile% -q %StopCalling%| %ReplaceExeName% | %ReplaceToThisDirMainCmd% -PAC | %lzmwExeName% -t "^.+$" -o "$0 && sleep %SleepSeconds%" -XI
+        echo %FirstReplaceForFile% -q %StopCalling% ^| %ReplaceExeName% ^| %ReplaceToThisDirMainCmd%
         for /F "tokens=*" %%a in ('%FirstReplaceForFile% -q %StopCalling% ^| %ReplaceExeName% ^| %ReplaceToThisDirMainCmd% -PAC ') do (
             echo %%a | %lzmwThis% -XI 2>nul
             :: a trick to sleep
@@ -77,32 +85,35 @@ if not "%IsSavingToFile%" == "1" (
             echo.
         )
     )  else (
+        echo %FirstReplaceForFile% -q %StopCalling% ^| %ReplaceExeName% ^| %ReplaceToThisDirMainCmd%
         %FirstReplaceForFile% -q %StopCalling% | %ReplaceExeName% | %ReplaceToThisDirMainCmd% -I -X
     )
 
-    echo %SourceFile% | %lzmwName% -t .+  -o "findstr xml $0" -XI
-    %lzmwName% -p %SourceFile% -b %StopCalling% -ix "%%~dp0" -o %ThisDir% -a -XI
+    echo %SourceFile% | %lzmwExeName% -t .+  -o "findstr xml $0" -XI
+    %lzmwExeName% -p %SourceFile% -b %StopCalling% -ix "%%~dp0" -o %ThisDir% -a -XI
     exit /b 0
 )
 
 echo ######### Reading from file test begin ######################## | %lzmwThis% -PA -e .+
 set fileResult=%ThisDir%\file-test-result-on-windows.log
 if exist %fileResult% del %fileResult%
+echo %FirstReplaceForFile% -q %StopCalling% ^| %ReplaceExeName% ^| %ReplaceToThisDirMainCmd%
 for /F "tokens=*" %%a in ('%FirstReplaceForFile% -q %StopCalling% ^| %ReplaceExeName% ^| %ReplaceToThisDirMainCmd% -PIC ') do (
     echo %%a >> %fileResult%
     %%a >> %fileResult%
     echo Return = !ERRORLEVEL! : %%a >> %fileResult%
-    ::%%a --verbose 2>&1 | lzmw -it "^(Return\s*=\s*\d+).*" -o "$1" -T 1 -PAC >> %fileResult%
+    ::%%a --verbose 2>&1 | %lzmwExeName% -it "^(Return\s*=\s*\d+).*" -o "$1" -T 1 -PAC >> %fileResult%
     echo.>> %fileResult%
 )
 
 echo.>>%fileResult%
-echo echo %SourceFile% ^| %lzmwName% -t .+  -o "findstr xml $0" -XA >> %fileResult%
-echo %SourceFile% | %lzmwName% -t .+  -o "findstr xml $0" -XA >>  %fileResult%
+echo echo %SourceFile% ^| %lzmwExeName% -t .+  -o "findstr xml $0" -XA >> %fileResult%
+echo %SourceFile% | %lzmwExeName% -t .+  -o "findstr xml $0" -XA >>  %fileResult%
 
 echo.>>%fileResult% & echo.>>%fileResult%
-echo %lzmwName% -p %SourceFile% -b %StopCalling% --nt %StopCalling% -ix "%%~dp0" -o %%~dp0 -a -PAC ^| %lzmwName% -it "\blzmw\b" -o "%lzmwName%" -a -XPAC >> %fileResult%
-%lzmwName% -p %SourceFile% -b %StopCalling% --nt %StopCalling% -ix "%%~dp0" -o %ThisDir% -a -PAC | %lzmwName% -it "\blzmw\b" -o "%lzmwName%" -a -XPAC >> %fileResult%
+echo %lzmwExeName% -p %SourceFile% -b %StopCalling% --nt %StopCalling% -ix "%%~dp0" -o %%~dp0 -a -PAC ^| %lzmwExeName% -it "\b%lzmwThis%\b" -o "%lzmwExeName%" -a -XPAC
+echo %lzmwExeName% -p %SourceFile% -b %StopCalling% --nt %StopCalling% -ix "%%~dp0" -o %%~dp0 -a -PAC ^| %lzmwExeName% -it "\b%lzmwThis%\b" -o "%lzmwExeName%" -a -XPAC >> %fileResult%
+%lzmwExeName% -p %SourceFile% -b %StopCalling% --nt %StopCalling% -ix "%%~dp0" -o %ThisDir% -a -PAC | %lzmwExeName% -it "\b%lzmwThis%\b" -o "%lzmwExeName%" -a -XPAC >> %fileResult%
 
 %UnifyFileTestExeName% -p %fileResult%
 %RemoveDateTimeDir% -p %fileResult%
@@ -117,7 +128,8 @@ echo. & echo.
 set /a allDifferences=0
 echo ######### Reading from pipe test begin ######################## | %lzmwThis% -PA -e .+
 set pipeResult=%ThisDir%\pipe-test-result-on-windows.log
-%FirstReplaceForPipe% -q %StopCalling% | %ReplaceExeName% | %ReplaceToThisDirMainCmd% -PAC | %lzmwName% --nt "--wt|--sz"  -it "^(lz.*)\s+-p\s+(\S+)(\s*.*)" -o "type $2 | $1 $3" -XI > %pipeResult%
+echo %FirstReplaceForPipe% -q %StopCalling% ^| %ReplaceExeName% ^| %ReplaceToThisDirMainCmd% -PAC ^| %lzmwExeName% --nt "--wt|--sz" -it "^(%lzmwExeName%.*?)\s+-p\s+(\S+)(\s*.*)" -o "type $2 | $1 $3" -XI
+%FirstReplaceForPipe% -q %StopCalling% | %ReplaceExeName% | %ReplaceToThisDirMainCmd% -PAC | %lzmwExeName% --nt "--wt|--sz" -it "^(%lzmwExeName%.*?)\s+-p\s+(\S+)(\s*.*)" -o "type $2 | $1 $3" -XI > %pipeResult%
 %UnifyPipeTestExeName% -p %pipeResult%
 %RemoveDateTimeDir% -p %pipeResult%
 %UnifyExtraExeName% -p %pipeResult%
