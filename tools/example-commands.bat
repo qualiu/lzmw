@@ -5,8 +5,8 @@ lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t "\\\\" -o \\
 lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -H 0         # Check return value, output nothing
 lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)$" -H 0            # Check return value, output nothing
 lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\n$" -H 0          # Check return value, output nothing
-lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1\n" -R # Add a new line to tail
 lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1" -R   # Remove tail new line
+lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1\n" -R # Add a new line to tail
 lzmw -c -p %~dp0 -f bat -l -PAC -H 0
 lzmw -c -p %~dp0 -f bat -l -PIC -H 0
 lzmw -c -p %~dp0\sample-file.txt -L 7 -N 9 -t Not -U 2 -D 2
@@ -50,7 +50,6 @@ lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
 lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
 lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
 lzmw -c -p %~dp0\example-commands.bat -x name -o NAME -ie "name|come" -U 3 -D 3 -L 16 -H 9
-::lzmw -c -p %~dp0\sample-file.txt -t "\b(NotMatchedLine|MatchedLine|UpLine|DownLine)" -o "LineType::$1" --nt "=\s*\d+" -R
 lzmw -c -p %~dp0\example-commands.bat -t name -o NAME -ie Names -H 9
 lzmw -c -p %~dp0\example-commands.bat -t name -o NAME -T 1 -C
 lzmw -c -p %~dp0\example-commands.bat -it name -l
@@ -60,8 +59,6 @@ lzmw -c -p %~dp0\example-commands.bat -it NOT -U 2 -e "SRC|DIR" -H 5
 lzmw -c -p %~dp0\example-commands.bat -x name -o NAME -ie "name|come" -T 3
 lzmw -c -p %~dp0\example-commands.bat -t name -o come -ie "name|come" -a -L 19 -H 9
 lzmw -c -p %~dp0\example-commands.bat -t name -a -o NAM -ie "name|come" -L 19 -H 9
-lzmw -c -p %~dp0\example-commands.bat -b "garbage" -Q publish-update -t ping -e "me|ping|you|(publish-update)"
-lzmw -c -p %~dp0\example-commands.bat -b "garbage" -q publish-update -t ping -e "me|ping|you|(publish-update)"
 lzmw -c -p %~dp0\example-commands.bat -x name -o NAME -ie "name|come" -t not -U 3 -D 3
 lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(Node1|Node2)\b" -Q "<MailAddress>|</Tag>" -e "MailTo" -t body -o BODY -a
 lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(Node2)\b" -Q "<MailAddress>|</Tag>" -e MailTo -t body -o BODY -a
@@ -71,7 +68,7 @@ lzmw -c -p %~dp0\example-commands.bat -it name -e Names -x nameX
 lzmw -c -p %~dp0\example-commands.bat -ix update -t name -e Names
 lzmw -c -p %~dp0\sample-file.txt -ib "<Tag name" -q "Switch" -Q "</Tag" -t MailTo -e Switch
 lzmw -c -p %~dp0\sample-file.txt -ib "<Tag name" -q "Switch" -Q "</Tag" -t MailTo -e Switch -a
-lzmw -c -p %~dp0\sample-file.txt -it "<name>(#.+?)</name>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\"" -L 14 -e "-x (\S+)|-o (\S+)|lzmw "
+lzmw -c -p %~dp0\sample-file.txt -it "<name>(#.+?)</name>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\"" -L 14 -e "-x (\S+)|-o (\S+)|lzmw " -q "block"
 lzmw -c -p %~dp0\sample-file.txt -it Tag -x ref -U 5 -D 5
 lzmw -c -p %~dp0\sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:03"
 lzmw -c -p %~dp0\sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -E "2012-12-27 00:03"
@@ -89,10 +86,118 @@ lzmw -c -p %~dp0\example-commands.bat -it "\w+" -T 0       ## Must NOT out any m
 lzmw -c -p %~dp0\example-commands.bat -it "\w+" -T 0 -H 2  ## Must out only 2 matched of top.
 lzmw -c -p %~dp0\example-commands.bat -it just -U 3 -D 3
 lzmw -c -p %~dp0\sample-file.txt -it "\W(function)\W" -e "name=(\S+)"
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 92
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 93
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 96
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 97
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 100 -L 90
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 100 -L 91
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 90 -N 99 -it key2 -a
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 90 -N 100 -it key2 -a
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 90 -N 100 -it key2 -a -o KEY
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 100
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 101
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 102
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 103 -N 110
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 103 -N 111
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 109
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 109 -N 111
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 109 -N 112
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 109 -N 113
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 111 -y
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 111
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -L 111
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -t key
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -t key -a
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -t key -a -y
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -a
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -a -y
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -a
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -a -y
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" --nt Node3 -a
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t title -o TITLE --nt Node3 -a
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t title -o TITLE --nt Node3
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t title -o TITLE --nt Node3 -y
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t title -o TITLE --nt Node3 -y -a
+lzmw -c -p %~dp0\sample-file.txt -S -L 90 -N 100 -it "\s*\[section1.*?value2\s*" -o ""
+lzmw -c -p %~dp0\sample-file.txt -S -it "\s*\[section1.*?value2" -o ""
+lzmw -c -p %~dp0\sample-file.txt -S -it "\s*\[section1.*?(value2)" -o "$1" -L 88 -N 101
+lzmw -c -p %~dp0\sample-file.txt -S -it "\[section1.*?(value2)" -o "$1" -L 88 -N 101
+lzmw -c -p %~dp0\sample-file.txt -S -it "\[section1.*?(value2)" -o "$1"  -b "arbitrary block" -N 101
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section1.*" -o ""
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section1.*?value2" -o "value2"
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "\s*\[section1.*?value2" -o "value2"
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section.*" -o ""
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section.*" -y
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -x section1 -S -it "^\s*\[section.*" -o ""
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 90 -N 93 -S -it "\[section1.*?(value2)" -o "$1"
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 90 -N 93 -S -it "\[section1.*?(value2)\s*" -o "$1"
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 90 -N 100 -S -it "\[section1.*?(value2)" -o "$1"
+lzmw -c -p %~dp0\sample-file.txt -L 90 -N 93 -S -it "\[section1.*?(value2)" -o "$1"
+lzmw -c -p %~dp0\sample-file.txt -L 90 -N 100 -S -it "\[section1.*?(value2)" -o "$1"
+
+:: Block matching: stop pipe test
+
+copy /y %~dp0\sample-file.txt %~dp0\original-sample.txt
+
+lzmw -c -p %~dp0\sample-file.txt -b "^\[" -Q "no-such-end" -t section -o SECTION -R
+lzmw -c -p %~dp0\sample-file.txt -b "^\[" -Q "no-such-end" -t SECTION
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
+lzmw -c -p %~dp0\sample-file.txt -b "--section1" -Q "^---|^\s*$" -q "--section3" -t section -o SEC -ya -R
+lzmw -c -p %~dp0\sample-file.txt -b "--section1" -Q "^---|^\s*$" -q "--section3" -t SEC -ya
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t title -o TITLE --nt Node3 -R
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t title -o TITLE --nt Node3
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section1.*" -o "" -R
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section1.*"
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
+lzmw -c -p %~dp0\sample-file.txt -S -L 90 -N 100 -it "\s*\[section1.*?value2\s*" -o "" -R
+lzmw -c -p %~dp0\sample-file.txt -S -L 90 -N 100 -it "\s*\[section1.*?value2\s*" -o ""
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section1.*" -o "" -R
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section1.*" -o ""
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section.*" -o "" -R
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section.*" -o ""
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
+lzmw -c -p %~dp0\sample-file.txt -S -it "\s*\[section1.*?value2" -o "" -R
+lzmw -c -p %~dp0\sample-file.txt -S -it "\s*\[section1.*?value2" -o ""
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section.*" -o ""
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section.*" -o "" -R
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section.*" -o ""
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section.*" -o "" -y
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section.*" -o "" -y -R
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -S -it "^\s*\[section.*" -o "" -y
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -x section1 -S -it "^\s*\[section.*" -o "" -R
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -x section1 -S -it "^\s*\[section.*" -o ""
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
+lzmw -c -p %~dp0\sample-file.txt -t "\b(NotMatchedLine|MatchedLine|UpLine|DownLine)" -o "LineType::$1" --nt "=\s*\d+" -R
+lzmw -c -p %~dp0\sample-file.txt -t "\b(NotMatchedLine|MatchedLine|UpLine|DownLine)" -o "LineType::$1" --nt "=\s*\d+"
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
+lzmw -c -p %~dp0\sample-file.txt -t "\b(NotMatchedLine|MatchedLine|UpLine|DownLine)" -o "LineType::$1" -R
+lzmw -c -p %~dp0\sample-file.txt -t "\b(NotMatchedLine|MatchedLine|UpLine|DownLine)" -o "LineType::$1"
+copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
+
 ::Stop calling for linux-test.sh as following are advanced test. On Linux , need to replace the double quotes "" to single quotes '' in -o xxxx if contains $1 or $2 etc.
 ::Example bellow extract to a file then generate replacing commands and execute them.
 lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PA -e "#\S+?#"
 lzmw -c -p %~dp0\sample-file.txt -b "<Tag Name.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
-(lzmw -c -p %~dp0\sample-file.txt -it "<name>(#.+?#)</name>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\""  -PAC | lzmw -t "^\s*(lzmw -x .*)" -o "$1 -p Node1.tmp -R" -PAC) |lzmw -XI -c
+(lzmw -c -p %~dp0\sample-file.txt -it "<name>(#.+?#)</name>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\""  -PAC | lzmw -t "^\s*(lzmw -x .*)" -o "$1 -p Node1.tmp -R" -PAC) |lzmw -XI -c Automatic extract macro and replace to real values.
 lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000"  ## This is an expanded xml that has replaced name value settings.
 lzmw -z "if exist Node1.tmp del Node1.tmp" -XPI

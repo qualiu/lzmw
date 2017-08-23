@@ -1,8 +1,8 @@
 ### Liberate & Digitize daily works by 2 exe : Data Mining; Map-Reduce; Pipe Endless.
-#### lzmw.exe/lzmw.cygwin/lzmw.gcc**
+#### **M**atch/**S**earch/**R**eplace: `lzmw.exe`/`lzmw-Win32.exe`/`lzmw.cygwin`/`lzmw.gcc**`/`lzmw-i386.gcc**`
 - **Search/Replace/Execute/*** Files/Pipe Lines/Blocks.
 - **Filter/Load/Extract/Transform/Stats/*** Files/Pipe Lines/Blocks.
-#### nin.exe/nin.cygwin/nin.gcc**
+#### **N**ot-**IN**-latter: `nin.exe`/`nin-Win32.exe`/`nin.cygwin`/`nin.gcc**`/`nin-i386.gcc**`
 - Get **Exclusive/Mutual** Line-Set or Key-Set;
 - **Remove** Line-Set or Key-Set matched in latter file/pipe;
 - Get **Unique/Mutual/Distribution/Stats/*** Files/Pipe Line-Set or Key-Set.
@@ -20,10 +20,11 @@
 * Helpful scripts use **lzmw.exe** and **nin.exe** : https://github.com/qualiu/lzmwTools , and also *.bat files in [tools](https://github.com/qualiu/lzmw/tree/master/tools)
 
 ### Almost no learning cost:
-* Using general Regex in **C++, C#, Java, Scala**, needless to learn strange Regex syntax like FINDSTR, Awk and Sed, etc.
-* **Most** of the time **only** use searching(Regex: **-t**/**-i -t**, Plain text: **-x**/**-i -x**);
-* **Some** of the time use searching with replacing-to(**-o**);
-* Just use **-PAC** to get pure result as same as other tools (no **P**ath-number: **-P**, no **A**ny-info : **-A**, no **C**olor: **-C**)
+* You can use plain text to search/replace (**-x**/**-ix** `search-text` to **-o** `replace-to`) if you're not farmiliar with `Regex`.
+* You can use general `Regex` as **C++, C#, Java, Scala**, needless to learn strange Regex syntax like `FINDSTR`, `Awk` and `Sed`, etc.
+* **Most** of the time **only** use searching(Regex: **-t**/**-i -t**, Plain text: **-x**/**-i -x**).
+* **Some** of the time search and replace-to(**-o**);
+* Just use **-PAC** or **-PIC** to get pure result as same as other tools (no **P**ath-number: **-P**, no **A**ny-info : **-A**, no **C**olor: **-C**)
 * All options are **optional** and **no order** and **effective mean while**; Free with abbreviations/full-names.
 
 ### Powerful
@@ -37,7 +38,7 @@
       * Write-time range(**--w1**,**--w2**)
     * 3 kinds of file row / block filters to start/stop/skip reading/replacing each files/pipe: <br>
       * Row/line number begin/end (**-L**, **-N**);
-      * Block begin/end patterns (**-b**, **-Q**);
+      * Block begin/end patterns (**-b**, **-Q**) for each block in each file/pipe; with **-q** to stop at once for pipe/each file. 
       * Normal begin/end patterns (**b**, **-q**).
 * Process pipe (output of self/other commands) **endless** as you want.
 * Two composable single exe: [lzmw.exe/cygwin/gcc*](https://github.com/qualiu/lzmw/blob/master/tools/readme.txt) especially powerful with [nin.exe/cygwin/gcc*](https://github.com/qualiu/lzmw/blob/master/tools/readme.txt).
@@ -70,7 +71,7 @@ Search/Replace text by **lzmw.exe** / **lzmw.gcc**** / **lzmw.cygwin**
 
 ## Typical scenarios of lzmw: Coding/Deploying/Test/Operation/Log-Mining
 1. Find text in pipe (command line result) or files (such as code, log)
-2. Replace text from pipe or files **recursively** in **multiple** root path.
+2. Replace/Extract/Tranform text from pipe or files **recursively** in **multiple** root path.
 3. Search/Replace and get percentage, distribution; further extraction on previous pipe or even command line.
 4. [Find processes](https://github.com/qualiu/lzmw/blob/master/tools/psall.bat) / [Kill processes](https://github.com/qualiu/lzmw/blob/master/tools/pskill.bat) by regex/pid with colorful matching.
 5. Find files with specified name, in modification time range, size range and other filters, then use the path list to operate (**-X** is helpful).
@@ -80,7 +81,7 @@ Search/Replace text by **lzmw.exe** / **lzmw.gcc**** / **lzmw.cygwin**
 9. Map <--> Reduce : Filter files and load, extract, transform, ... , pipe endless.
  ... ...
 
-### With requirements of : (you can use short alias like -t/-o , or full name --text-match/--replace-to )
+### With requirements of:
 1. Basic text searching(**-x**) / replacing-to(**-o**) , plus case sensitive or not (**-i**).
 2. General Regex (regular expression) searching(**-t**)/replacing(**-o**) : consistent regex syntax with C#/C++/Java, not like strange or limited regex as AWK/GAWK/SED/FINDSTR …
 3. Recursively (**-r**) search / replace files in paths (**-p**) (multiple paths separated by "," or ";")
@@ -101,11 +102,11 @@ Search/Replace text by **lzmw.exe** / **lzmw.gcc**** / **lzmw.cygwin**
       - file size range filter: **--s1** , **--s2** : like --s1 100KB --s2 1M
       - show file modification time and sort : **--wt** : useful if list file with **-l**
       - show file size and unit and sort : **--sz** : useful if list file with **-l**
-   * For file row : if not begin or stopped, not output/match/replace even if matched.
+   * Line matching + **Arbitrary** block matching: if not begin or stopped, not output/match/replace even if matched.
      - Regex pattern
-       * start reading  (**-b**)
+       * start reading  (**-b**), or start matching a block begin (with **-Q** to perform block syntax).
        * stop reading (**-q**) ignore if has matched start pattern.
-       * stop reading if has matched start pattern (**-Q**)
+       * stop reading if has matched start pattern (**-Q**) as one block end (with **-b**) in pipe/each file.
      - File line number
        * start at row (**-L**)
        * stop at row (**-N**)
@@ -133,7 +134,8 @@ Search/Replace text by **lzmw.exe** / **lzmw.gcc**** / **lzmw.cygwin**
    * If has **-c** in command line, can append any extra text, useful with **-O** **-H 0** or **>nul** to do further extraction based on summary info:
      - lzmw -x "D:\data" -p xx.log -O >nul | lzmw -xxx xxx -c Checking D:\data
    * Use **-z** to directly input string to read, avoid using echo which is clumsy in pipe on Windows.
-
+   * Use **-J** and **-H** output/match count to jump out.
+   
 #### lzmw on Windows : also can see [tools/readme.txt](https://github.com/qualiu/lzmw/tree/master/tools)
 ![lzmw on Windows](https://raw.githubusercontent.com/qualiu/lzmw/master/usage-picture/lzmw-Windows.png)
 
