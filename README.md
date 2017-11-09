@@ -1,4 +1,5 @@
-### Liberate & Digitize daily works by 2 exe : Data Mining; Map-Reduce; Pipe Endless.
+### Liberate & Digitize daily works by 2 exe: File Processing, Data Mining, Map-Reduce.
+Most time **Just 1 command line** to solve your daily text or file processing work, pipe endless.
 #### **M**atch/**S**earch/**R**eplace: `lzmw.exe`/`lzmw-Win32.exe`/`lzmw.cygwin`/`lzmw.gcc**`/`lzmw-i386.gcc**`
 - **Search/Replace/Execute/*** Files/Pipe Lines/Blocks.
 - **Filter/Load/Extract/Transform/Stats/*** Files/Pipe Lines/Blocks.
