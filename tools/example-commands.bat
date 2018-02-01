@@ -111,7 +111,7 @@ lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -t key
 lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -t key -a
 lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -t key -a -y
 lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -a
-lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -a -y
+lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -a -y
 lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -a
 lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -a -y
 lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" --nt Node3 -a
