@@ -2,6 +2,8 @@
 :: Kill processes by their id or command line matching pattern.
 :: Will show the processes info with colors before killing.
 :: This scripts depends and will call psall.bat.
+::
+:: Latest version in: https://github.com/qualiu/lzmwTools/
 ::============================================================
 @echo off
 
@@ -16,7 +18,7 @@ if "%~1" == "/?"     set ToShowUsage=1
 :: set ThisDir=%~dp0
 :: if %ThisDir:~-1%==\ set ThisDir=%ThisDir:~0,-1%
 
-where lzmw.exe 2>nul >nul || if not exist %~dp0\lzmw.exe powershell -Command "Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/lzmw.exe?raw=true -OutFile %~dp0\lzmw.exe"
+where lzmw.exe 2>nul >nul || if not exist %~dp0\lzmw.exe powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/lzmw.exe?raw=true -OutFile %~dp0\lzmw.exe"
 where lzmw.exe 2>nul >nul || set "PATH=%~dp0;%PATH%"
 
 for /f "tokens=*" %%a in ('where lzmw.exe 2^>nul') do set "lzmwPath=%%a"

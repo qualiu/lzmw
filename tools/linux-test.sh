@@ -3,50 +3,57 @@ if [ -z "$1" ]; then
     echo "Usage:   $0  Sleep-Seconds"
     echo "Example: $0  0"
     echo "Example: $0  3"
+    echo "This file leverages test cases in windows-test.bat to test."
     exit -1
 fi
 
 # For example of lzmw.gcc48, just replace the windows test command and execute them by -X
 SleepSeconds=$1
 ThisDir="$( cd "$( dirname "$0" )" && pwd )"
-SYS_TYPE=$(uname | sed 's/_.*//g' | awk '{print tolower($0)}')
 
-lzmwExisted=$(whereis lzmw 2>/dev/null | lzmw -t "^.*?:\s*(\S+?lzmw\S*).*" -o '$1' -PAC 2>/dev/null | tr -d '\r')
-if [ -f "$lzmwExisted" ]; then
-    md5Existed=$(md5sum $lzmwExisted | lzmw -t "^(\w+\S+).*" -o '$1' -PAC | tr -d '\r')
-    if [ ! -x $lzmwExisted ]; then
-        chmod +x $lzmwExisted
-    fi
-fi
-
-if [ "$SYS_TYPE"x = "linux"x ]; then
-    lzmwThis=$ThisDir/lzmw.gcc48
-elif [ "$SYS_TYPE"x = "cygwin"x ]; then
+if [ -n "$(uname -o | grep -ie Cygwin)" ]; then
     lzmwThis=$ThisDir/lzmw.cygwin
+elif [ -n "$(uname -o | grep -ie Linux)" ]; then
+    if [ -n "$(uname -m | grep 64)" ]; then
+        lzmwThis=$ThisDir/lzmw.gcc48
+    else
+        lzmwThis=$ThisDir/lzmw-i386.gcc48
+    fi
 else
-    echo "Unknow system type: $SYS_TYPE"
+    echo "Unknow system type: $(uname -a)"
     exit -1
 fi
 
-chmod +x $lzmwThis
+if [ -f $lzmwThis ]; then
+    chmod +x $lzmwThis
+else
+    lzmwThis=$(basename $lzmwThis)
+fi
 
-md5This=$(md5sum $lzmwThis | lzmw -t "^(\w+\S+).*" -o '$1' -PAC 2>/dev/null | tr -d '\r')
+
+ninThis=$($lzmwThis -z "$lzmwThis" -t 'lzmw([^/]*?\.\w+)$' -o 'nin$1' -PAC)
+if [ -f $ninThis ]; then
+    chmod +x $ninThis
+else
+    ninThis=$(basename $ninThis)
+fi
+
+alias lzmw=$lzmwThis
+alias nin=$ninThis
 
 cd $ThisDir
 
 alias lzmw=$lzmwThis
 if [ "$md5Existed" = "$md5This" ] && [[ -x $lzmwExisted ]] && [ -z "$SleepSeconds" ] ; then
-    lzmw -p example-commands.bat -x %~dp0\\ -o "" -iq "^::.*Stop" --nt "^::" | lzmw -t "-o\s+.*-R" -x '"' -o "'" -a -X
+    # lzmw -p example-commands.bat -x %~dp0\\ -o "" -iq "^::.*Stop" --nt "^::" | lzmw -t "-o\s+.*-R" -x '"' -o "'" -a -X
+    lzmw -p example-commands.bat -i -q "stop" -x "lzmw -c -p" -t "%~dp0\\\\?" -o './' -PAC --nt "-o\s+.*\s+-R" | lzmw -t '-o\s+\"(\$\d)\"' -o " -o '\1'" -aPAC -X
 else
-    # echo "$lzmwThis -p example-commands.bat -x %~dp0\\ -o "" -iq "^::\s*Stop" --nt "^::" -PAC | $lzmwThis -t "^\s*lzmw" -o \"$lzmwThis\" -aPAC"
-    $lzmwThis -p example-commands.bat -x %~dp0\\ -o "" -iq "^::.*Stop" --nt "^::" -PAC | $lzmwThis -t "^\s*lzmw" -o "$lzmwThis" -aPAC | $lzmwThis -t '\s+-o\s+\"(\$.*?)\"' -o " -o '\$1'" -aPAC | $lzmwThis -t '\s+-o\s+\"(lzmw.*)\"' -o " -o '\$1'" -aPAC |
+    lzmw -p example-commands.bat -i -q "stop" -x "lzmw -c -p" -t "%~dp0\\\\?" -o './' -PAC --nt "-o\s+.*\s+-R" | lzmw  -t '-o\s+\"(\$\d)\"' -o " -o '\1'" -aPAC | lzmw -t "^lzmw" -o "$lzmwThis" -PAC |
     while IFS= read -r cmdLine ; do
+        echo $cmdLine | lzmw -aPA -e "(.+)"
         sh -c "$cmdLine"
         if(($SleepSeconds > 0)); then
             sleep $SleepSeconds
         fi
     done
 fi
-
-sh $ThisDir/../fix-file-style.sh sample-file.txt
-unix2dos sample-file.txt
