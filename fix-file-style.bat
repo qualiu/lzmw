@@ -5,7 +5,7 @@
 @echo off
 SetLocal EnableExtensions EnableDelayedExpansion
 
-where lzmw.exe 2>nul >nul || if not exist %~dp0\lzmw.exe powershell -Command "Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/lzmw.exe?raw=true -OutFile %~dp0\lzmw.exe"
+where lzmw.exe 2>nul >nul || if not exist %~dp0\lzmw.exe powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/lzmw.exe?raw=true -OutFile %~dp0\lzmw.exe"
 where lzmw.exe 2>nul >nul || set "PATH=%PATH%;%~dp0"
 
 if "%~1" == "" (
@@ -66,11 +66,11 @@ lzmw !lzmwOptions! -p %PathToDo% !FileFilter! -S -t "(\S+)\s*$" -o "$1\n" -R -c 
 :: Convert tab at head of each lines in a file, util all tabs are replaced.
 :ConvertTabTo4Spaces
     if exist %PathToDo%\* (
-        lzmw !lzmwOptions! -p %PathToDo% !FileFilter! -it "^^(\s*)\t" -o "$1    " -R -c Covert TAB to 4 spaces.
+        lzmw !lzmwOptions! -p %PathToDo% !FileFilter! -it "^^(\s*)\t" -o "$1    " -R -g -1 -c Covert TAB to 4 spaces.
     ) else (
-        lzmw !lzmwOptions! -p %PathToDo% -it "^^(\s*)\t" -o "$1    " -R -c Covert TAB to 4 spaces.
+        lzmw !lzmwOptions! -p %PathToDo% -it "^^(\s*)\t" -o "$1    " -R -g -1 -c Covert TAB to 4 spaces.
     )
-    if !ERRORLEVEL! GTR 0 goto :ConvertTabTo4Spaces else exit /b 0
+    REM if !ERRORLEVEL! GTR 0 goto :ConvertTabTo4Spaces else exit /b 0
 
 
 where dos2unix >nul 2>nul
