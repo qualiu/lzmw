@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 if [ -z "$1" ]; then
     echo "Usage:   $0  Sleep-Seconds"
     echo "Example: $0  0"
@@ -12,45 +12,55 @@ SleepSeconds=$1
 ThisDir="$( cd "$( dirname "$0" )" && pwd )"
 
 if [ -n "$(uname -o | grep -ie Cygwin)" ]; then
-    lzmwThis=$ThisDir/lzmw.cygwin
+    lzmw=$ThisDir/lzmw.cygwin
 elif [ -n "$(uname -o | grep -ie Linux)" ]; then
     if [ -n "$(uname -m | grep 64)" ]; then
-        lzmwThis=$ThisDir/lzmw.gcc48
+        lzmw=$ThisDir/lzmw.gcc48
     else
-        lzmwThis=$ThisDir/lzmw-i386.gcc48
+        lzmw=$ThisDir/lzmw-i386.gcc48
     fi
 else
-    echo "Unknow system type: $(uname -a)"
+    echo "Unknown system type: $(uname -a)"
     exit -1
 fi
 
-if [ -f $lzmwThis ]; then
-    chmod +x $lzmwThis
+if [ -f "$lzmw" ]; then
+    chmod +x $lzmw
+elif [ -n "$(whereis lzmw 2>/dev/null)" ]; then
+    lzmw=$(whereis lzmw | sed -r 's/.*?:\s*(\S+).*/\1/')
+elif [ -n "$(alias lzmw)" ]; then
+    lzmw=$(alias lzmw | sed -r 's/.*?=\s*(\S+).*/\1/')
 else
-    lzmwThis=$(basename $lzmwThis)
+    lzmw=$ThisDir/$(basename $lzmw)
+    if [ !-f "$lzmw" ]; then
+        echo "Not exist lzmw nor $lzmw"
+        exit /b -1
+    fi
+    chmod +x $lzmw
 fi
 
-
-ninThis=$($lzmwThis -z "$lzmwThis" -t 'lzmw([^/]*?\.\w+)$' -o 'nin$1' -PAC)
-if [ -f $ninThis ]; then
-    chmod +x $ninThis
+nin=$(echo $lzmw | sed -r 's/lzmw([^/]*)$/nin\1/')
+if [ -f "$nin" ]; then
+    chmod +x $nin
 else
-    ninThis=$(basename $ninThis)
+    nin=$ThisDir/$(basename $nin)
+    if [ !-f "$nin" ]; then
+        echo "Not exist nin nor $nin"
+        exit /b -1
+    fi
 fi
 
-alias lzmw=$lzmwThis
-alias nin=$ninThis
+alias lzmw=$lzmw
+alias nin=$nin
 
 cd $ThisDir
 
-alias lzmw=$lzmwThis
 if [ "$md5Existed" = "$md5This" ] && [[ -x $lzmwExisted ]] && [ -z "$SleepSeconds" ] ; then
-    # lzmw -p example-commands.bat -x %~dp0\\ -o "" -iq "^::.*Stop" --nt "^::" | lzmw -t "-o\s+.*-R" -x '"' -o "'" -a -X
-    lzmw -p example-commands.bat -i -q "stop" -x "lzmw -c -p" -t "%~dp0\\\\?" -o './' -PAC --nt "-o\s+.*\s+-R" | lzmw -t '-o\s+\"(\$\d)\"' -o " -o '\1'" -aPAC -X
+    $lzmw -p example-commands.bat -i -q "stop" -x "lzmw -c -p" -t "%~dp0\\\\?" -o './' -PAC --nt "-o\s+.*\s+-R" | $lzmw -t '-o\s+\"(\$\d)\"' -o " -o '\1'" -aPAC -X
 else
-    lzmw -p example-commands.bat -i -q "stop" -x "lzmw -c -p" -t "%~dp0\\\\?" -o './' -PAC --nt "-o\s+.*\s+-R" | lzmw  -t '-o\s+\"(\$\d)\"' -o " -o '\1'" -aPAC | lzmw -t "^lzmw" -o "$lzmwThis" -PAC |
+    $lzmw -p example-commands.bat -i -q "stop" -x "lzmw -c -p" -t "%~dp0\\\\?" -o './' -PAC --nt "-o\s+.*\s+-R" | $lzmw  -t '-o\s+\"(\$\d)\"' -o " -o '\1'" -aPAC | $lzmw -t "^lzmw" -o "$lzmw" -PAC |
     while IFS= read -r cmdLine ; do
-        echo $cmdLine | lzmw -aPA -e "(.+)"
+        echo $cmdLine | $lzmw -aPA -e "(.+)"
         sh -c "$cmdLine"
         if(($SleepSeconds > 0)); then
             sleep $SleepSeconds
