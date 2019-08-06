@@ -1,7 +1,7 @@
 #!/bin/sh
 #==================================================================
 # Check and fix file style.
-# Latest version in: https://github.com/qualiu/lzmwTools
+# Latest version in: https://github.com/qualiu/msrTools
 #==================================================================
 
 ThisDir="$( cd "$( dirname "$0" )" && pwd )"

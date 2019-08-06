@@ -1,7 +1,7 @@
 #!/bin/bash
 #================================================================
 # Initialize tools.
-# Latest version in: https://github.com/qualiu/lzmwTools
+# Latest version in: https://github.com/qualiu/msrTools
 #================================================================
 ThisDir="$( cd "$( dirname "$0" )" && pwd )"
 SYS_TYPE=$(uname | sed 's/_.*//g' | awk '{print tolower($0)}')

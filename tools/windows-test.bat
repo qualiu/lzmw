@@ -16,7 +16,7 @@ set ThisDir2Slash=%ThisDir:\=\\%
 where lzmw.exe 2>nul >nul || if not exist %ThisDir%\lzmw.exe powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/lzmw.exe?raw=true -OutFile %ThisDir%\lzmw.exe"
 where lzmw.exe 2>nul >nul || set "PATH=%ThisDir%;%PATH%"
 
-where nin.exe 2>nul >nul || if not exist %ThisDir%\nin.exe powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/nin.exe?raw=true -OutFile %ThisDir%\nin.exe"
+where nin.exe 2>nul >nul || if not exist %ThisDir%\nin.exe powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://github.com/qualiu/msr/blob/master/tools/nin.exe?raw=true -OutFile %ThisDir%\nin.exe"
 where nin.exe 2>nul >nul || set "PATH=%ThisDir%;%PATH%"
 
 if "%~1" == ""       set IsShowUsage=1

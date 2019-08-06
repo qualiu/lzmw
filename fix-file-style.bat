@@ -1,6 +1,6 @@
 ::=======================================================
 :: Check and fix file style.
-:: Latest version in: https://github.com/qualiu/lzmwTools/
+:: Latest version in: https://github.com/qualiu/msrTools/
 ::=======================================================
 @echo off
 SetLocal EnableExtensions EnableDelayedExpansion
