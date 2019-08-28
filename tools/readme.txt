@@ -37,7 +37,7 @@ Get difference-set(not-in-latter) for first file/pipe; Or intersection-set with 
   -d [ --descending ]          Descending sort output by line or captured-key or percentage.
   -k [ --stop-at-count ] arg   Stop if matched count of a key/line > [N] when ascending output, or if count < [N] when descending output.
   -K [ --stop-percentage ] arg Stop if matched percentage of a key/line > [P%] when ascending output, or if percentage < [P%] when descending output.
-  -A [ --no-any-info ]         Not output any info nor summary, only pure result (Please always use -PAC or -PIC to get pure result).
+  -A [ --no-any-info ]         Not output any info, no warnings no summary (if no errors), only pure result (Please always use -PAC or -PC).
   -I [ --info-normal-out ]     Output summary info to stdout (default is to stderr).
   -M [ --no-summary ]          Not output summary info.
   -O [ --out-not-0-sum ]       Output summary only if result count is not 0.
@@ -55,7 +55,7 @@ Get difference-set(not-in-latter) for first file/pipe; Or intersection-set with 
   -t [ --text-match ] arg      Regex pattern for line text must match (Can use meanwhile: -t, -x, --nt, --nx).
   --nt arg                     Regex pattern for lines must NOT match.
   --verbose                    Show parsed arguments, return value, time zone and EXE path, etc.
-  -h [ --help ]                See usage and examples below. More detail: https://github.com/qualiu/lzmw
+  -h [ --help ]                See usage and examples below. More detail: https://github.com/qualiu/msr
 
 Usage: nin  File1-or-pipe  File2-or-nul  [Regex-capture1-pattern-1]  [Regex-capture1-pattern-2]  [Options like: -i -u -m -w -H 2 -t xxx --nt xxx]
 All [Quoted Args Options] above are Optional, can be omitted.
@@ -100,16 +100,16 @@ nin -h -C | nin nul "^\s{2}-(\w)\s+" -wpdi -k 2 -K 5.0 -P : Get percentages of n
 
 One limitation: Cannot process Unicode files or pipe for now; Fine with UTF-8/ANSI/etc.
 
-With lzmw.exe more powerful to load files/read pipe, extract/transform, pre/post-processing: https://github.com/qualiu/lzmw
+With msr.exe more powerful to load files/read pipe, extract/transform, pre/post-processing: https://github.com/qualiu/msr
 For example: Remove/Display/Remove+Merge duplicate path in %PATH% and merge to new %PATH%:
-    lzmw -z "%PATH%" -t "\\*\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui
-    lzmw -z "%PATH%" -t "\\*\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -uipd -H 9
-    lzmw -z "%PATH%" -t "\\*\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui -PAC | lzmw -S -t "[\r\n]+(\S+)" -o ";$1" -aPAC | lzmw -S -t "\s+$" -o "" -aPAC
+    msr -z "%PATH%" -t "\\*\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui
+    msr -z "%PATH%" -t "\\*\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -uipd -H 9
+    msr -z "%PATH%" -t "\\*\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui -PAC | msr -S -t "[\r\n]+(\S+)" -o ";$1" -aPAC | msr -S -t "\s+$" -o "" -aPAC
 
-And search usage like: nin | lzmw -it return.*value  or  nin -hC | lzmw -it "summary.*stdout|jump out"  or  nin | lzmw -it switch -U 2 -D 2 -e latter
+And search usage like: nin | msr -it return.*value  or  nin -hC | msr -it "summary.*stdout|jump out"  or  nin | msr -it switch -U 2 -D 2 -e latter
 
 As a portable cross platform tool, nin has been running on: Windows / Cygwin / Ubuntu / CentOS / Fedora
-Any good ideas please to : QQ : 94394344 , aperiodic updates and docs on https://github.com/qualiu/lzmw , more tools/examples see: https://github.com/qualiu/lzmwTools
+Any good ideas please to : QQ : 94394344 , aperiodic updates and docs on https://github.com/qualiu/msr , more tools/examples see: https://github.com/qualiu/msrTools
 Call@Everywhere: Add to system environment variable PATH with nin.exe parent directory: D:\lztool
 	 or temporarily: SET "PATH=%PATH%;D:\lztool"
 	 or rudely but simple and permanent: copy D:\lztool\nin.exe C:\WINDOWS\
@@ -131,15 +131,17 @@ Match/Search/Replace String/Lines/Blocks in Command/Files/Pipe. (IGNORE case of 
   --np arg                    Regex pattern for full file path must NOT match.
   --nd arg                    Regex pattern for file's parent directory names must NOT match.
   -d [ --dir-has ] arg        Regex pattern for file's parent directory names must has one name matched at least.
+  --xp arg                    Exclude full paths or sub-paths by plain text matching. Use ',' or ';' to separate.
   --xd                        Skip link directories.
   --xf                        Skip link files.
+  -G [ --read-once ]          Read once for link files (link folders must be or under input paths) which multiple paths link to one real path.
   -i [ --ignore-case ]        Ignore case of matching/replacing for -t/-x/-e . You can add to one of them like: -it/-ix/-ie .
   -e [ --enhance ] arg        Regex pattern to enhance text (just add color from some text), inferior to : -t -x -o.
   -o [ --replace-to ] arg     Replace text from -x/-t XXX to -o XXX .
   -j [ --out-replaced ]       Just output replaced lines by -o xxx (no impact to replacing file, -R will ignore this).
   -a [ --out-all ]            Output all lines including not matched; Or each whole block range if used -b and -Q.
   -W [ --out-full-path ]      Output full paths if input relative paths by -p or -w. This can avoid duplicates and trim extra slashes and dots.
-  -A [ --no-any-info ]        Not output any info nor summary, warnings etc., only pure result (Please always use -PAC or -PIC to get pure result).
+  -A [ --no-any-info ]        Not output any info, no warnings no summary (if no errors), only pure result (Please always use -PAC or -PIC).
   -I [ --no-extra ]           Not output extra info and warnings; Output summary to stderr.
   -P [ --no-path-line ]       Not output path and line number at head of each line.
   -M [ --no-summary ]         Not output summary info.
