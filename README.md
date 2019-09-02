@@ -2,6 +2,8 @@
 
 Most time **Just 1 command line** to solve your daily text or file processing work, pipe endless.
 
+Since 2019-07-19 a [Visual Studio Code](https://code.visualstudio.com/) extension: [**vscode-msr**]( https://marketplace.visualstudio.com/items?itemName=qualiu.vscode-msr) (souce code: [here](https://github.com/qualiu/vscode-msr)) to help your coding work.
+
 #### **M**atch/**S**earch/**R**eplace: `lzmw.exe`/`lzmw-Win32.exe`/`lzmw.cygwin`/`lzmw.gcc**`/`lzmw-i386.gcc**`
 
 - **Match/Search/Replace/Execute/*** Files/Pipe Lines/Blocks.
@@ -85,9 +87,9 @@ Most time **Just 1 command line** to solve your daily text or file processing wo
       - Normal begin/end patterns (**b**, **-q**).
 - Process pipe (output of self/other commands) **endless** as you want.
 - Two composable single exe: [lzmw.exe/cygwin/gcc*](https://github.com/qualiu/lzmw/blob/master/tools/readme.txt) especially powerful with [nin.exe/cygwin/gcc*](https://github.com/qualiu/msr/blob/master/tools/readme.txt).
-- **66** composable options for [lzmw](https://github.com/qualiu/lzmw/blob/master/tools/readme.txt) and **28** composable options for [nin](https://github.com/qualiu/msr/blob/master/tools/readme.txt) (just run them without parameters to get colorful usage/examples or see [readme.txt](https://github.com/qualiu/lzmw/blob/master/tools/readme.txt)) for further extractions/mining.
+- **68** composable options for [lzmw](https://github.com/qualiu/lzmw/blob/master/tools/readme.txt) and **28** composable options for [nin](https://github.com/qualiu/msr/blob/master/tools/readme.txt) (just run them without parameters to get colorful usage/examples or see [readme.txt](https://github.com/qualiu/lzmw/blob/master/tools/readme.txt)) for further extractions/mining.
 
-```(batch)
+```batch
      lzmw --help # same as : lzmw -h / lzmw
      nin  --help # same as : nin  -h / nin
      lzmw | lzmw -t "^\s*-{1,2}\S+" -q "^\s*-h\s+" --nt "--help"
@@ -202,6 +204,8 @@ Use the rich searching options of like below, **combine** these **optional** opt
 - Filter `file name`: **-f** `should-match-Regex` , **--nf** `should-not-match`
 - Filter `directory name`: **-d** `at-least-one-match` , **--nd** `none-should-match`
 - Filter `full path pattern`: **--pp** `should-match` , **--np** `should-not-match`
+- Skip full or sub paths: **--xp** d:\win\dir,my\sub
+- Try to read once for link files: **-G** (link files's folders must be or under input root paths)
 - Filter `file size`: **--s1** <= size <= **s2** , like set one or two: **--s1** `1B` **--s2** `1.5MB`
 - Filter `file time`: like **--w1** `2019-07`, **--w2** `"2019-07-16 13:20"` or `2019-07-16T13:20:01` (quote it if has spaces).
 - Filter rows by begin + end row numbers: like **-L** 10 **-N** 200 (for each file).
