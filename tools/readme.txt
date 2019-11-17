@@ -2,7 +2,7 @@ Liberate & Digitize daily works by 2 exe: File Processing, Data Mining, Map-Redu
 Most time Just 1 command line to solve your daily text or file processing work, pipe endless.
 Vivid Colorful Demo/examples: Run windows-test.bat without parameters.
 Download all by command : git clone https://github.com/qualiu/lzmw/
-If you've downloaded, run an updating command in the directory: git pull or git fetch && git reset --hard origin/master (if get conflictions)
+If you've downloaded, run an updating command in the directory: git pull or git fetch && git reset --hard origin/master (if get conflicts)
 
 Performance comparison with findstr and grep on Windows and Cygwin:
 https://github.com/qualiu/lzmw/blob/master/perf/summary-full-Cygwin-comparison.md
