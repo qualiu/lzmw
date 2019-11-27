@@ -9,13 +9,14 @@ https://github.com/qualiu/lzmw/blob/master/perf/summary-full-Cygwin-comparison.m
 https://github.com/qualiu/lzmw/blob/master/perf/summary-full-Windows-comparison.md
 
 Match/Search/Replace: lzmw.exe / lzmw.cygwin / lzmw.gcc**
-    Search/Replace/Execute/* Files/Pipe Lines/Blocks.
-    Filter/Load/Extract/Transform/Stats/* Files/Pipe Lines/Blocks.
+    Match/Search/Replace Lines/Blocks in Files/Pipe
+    Filter/Load/Extract/Transform/Stats/*** Lines/Blocks in Files/Pipe.
+    Execute** transformed/replaced result lines as command lines.
     
 Not-In-latter: nin.exe / nin.cygwin / nin.gcc**
-    Get Exclusive/Mutual Line-Set or Key-Set;
-    Remove Line-Set or Key-Set matched in latter file/pipe;
-    Get Unique/Mutual/Distribution/Stats/* Files/Pipe Line-Set or Key-Set.
+    Get `Unique` or `Raw` Exclusive/Mutual Line-Set or Key-Set.
+    Stats + Get Distribution in Files/Pipe.
+    Remove(Skip) Line-Set or Key-Set matched in latter file/pipe.
 
 Just run the 2 exe, you'll get their usages and examples. Besides, some script/batch/shell files are also examples.
 Helpful scripts use lzmw.exe and nin.exe : https://github.com/qualiu/lzmwTools
@@ -51,9 +52,9 @@ Get difference-set(not-in-latter) for first file/pipe; Or intersection-set with 
   -c [ --show-command ]        Show command line, and you can append text after -c (if append text, -c and text must be last).
   -Z [ --skip-last-empty ]     Skip last empty line in first/latter file.
   -x [ --has-text ] arg        Line must contain this normal/plain text (Can use meanwhile: -t, -x, --nt, --nx).
-  --nx arg                     Line must NOT contain this normal/plain text.
+  --nx arg                     Line must not contain normal/plain text: Exclude/Skip rows.
   -t [ --text-match ] arg      Regex pattern for line text must match (Can use meanwhile: -t, -x, --nt, --nx).
-  --nt arg                     Regex pattern for lines must NOT match.
+  --nt arg                     Regex pattern for lines must not match: Exclude/Skip rows.
   --verbose                    Show parsed arguments, return value, time zone and EXE path, etc.
   -h [ --help ]                See usage and examples below. More detail: https://github.com/qualiu/msr
 
@@ -124,21 +125,21 @@ Match/Search/Replace String/Lines/Blocks in Command/Files/Pipe. (IGNORE case of 
   -f [ --file-match ] arg     Regex pattern for file name to search.
   -t [ --text-match ] arg     Regex pattern for line text must match (Can use meanwhile: -t, -x, --nt, --nx, -e).
   -x [ --has-text ] arg       Line must contain this normal/plain text (Can use meanwhile: -t, -x, --nt, --nx, -e).
-  --nx arg                    Line must NOT contain this normal/plain text.
-  --nt arg                    Regex pattern for lines must NOT match.
-  --nf arg                    Regex pattern for file name must NOT match.
+  --nx arg                    Line must not contain normal/plain text: Exclude/Skip rows.
+  --nt arg                    Regex pattern for lines must not match: Exclude/Skip rows.
+  --nf arg                    Regex pattern for file name must not match: Exclude/Skip files.
   --pp arg                    Regex pattern for full file path must match.
-  --np arg                    Regex pattern for full file path must NOT match.
-  --nd arg                    Regex pattern for file's parent directory names must NOT match.
+  --np arg                    Regex pattern for full file path must not match: Exclude/Skip paths.
+  --nd arg                    Regex pattern for file's parent directory names must not match: Exclude/Skip folders.
   -d [ --dir-has ] arg        Regex pattern for file's parent directory names must has one name matched at least.
-  --xp arg                    Exclude full paths or sub-paths by plain text matching. Use ',' or ';' to separate.
-  --xd                        Skip link directories.
-  --xf                        Skip link files.
+  --xp arg                    Exclude/Skip full paths or sub-paths by plain text matching. Use ',' or ';' to separate.
+  --xd                        Exclude/Skip link directories.
+  --xf                        Exclude/Skip link files.
   -G [ --read-once ]          Read once for link files (link folders must be or under input paths) which multiple paths link to one real path.
   -i [ --ignore-case ]        Ignore case of matching/replacing for -t/-x/-e . You can add to one of them like: -it/-ix/-ie .
   -e [ --enhance ] arg        Regex pattern to enhance text (just add color from some text), inferior to : -t -x -o.
-  -o [ --replace-to ] arg     Replace text from -x/-t XXX to -o XXX .
-  -j [ --out-replaced ]       Just output replaced lines by -o xxx (no impact to replacing file, -R will ignore this).
+  -o [ --replace-to ] arg     Replace text from -x/-t XXX to -o XXX. If used both -x and -t: Use the closer one to '-o'; Or the left one if same.
+  -j [ --out-replaced ]       Just output replaced lines by -o xxx (just show changed files + lines which is helpful to preview changes).
   -a [ --out-all ]            Output all lines including not matched; Or each whole block range if used -b and -Q.
   -W [ --out-full-path ]      Output full paths if input relative paths by -p or -w. This can avoid duplicates and trim extra slashes and dots.
   -A [ --no-any-info ]        Not output any info, no warnings no summary (if no errors), only pure result (Please always use -PAC or -PIC).
@@ -162,8 +163,8 @@ Match/Search/Replace String/Lines/Blocks in Command/Files/Pipe. (IGNORE case of 
   --s1 arg                    Lower bound of file size, format like 100kb (No Space between number and unit, use B if no unit).
   --s2 arg                    Upper bound of file size, format like 2.5M (No Space between number and unit, use B if no unit).
   -R [ --replace-file ]       Replace files, search text by -x/-t XXX , replace to -o XXX. Without this, just preview replacing.
-  -K [ --backup ]             Backup files if replaced files content (Rename them by appending last write times like: --bak-2018-06-08__09_15_20).
-  --force                     Force replacing BOM files. Default only replace UTF-8 BOM files which header bytes = 0xEFBBBF.
+  -K [ --backup ]             Backup files if replaced files content (Rename them by appending last write times like: --bak-2019-11-26__21_18_38).
+  --force                     Force replacing BOM files. Default only replace ANSI + UTF-8 BOM files which header bytes = 0xEFBBBF.
   -S [ --single-line ]        Single line Regex mode to match/replace (Treat each file or pipe as one line).
   -g [ --replace-times ] arg  Maximum times to replace a line text with --replace-to. Use a big number or -1 to replace radically. Default = 1.
   -c [ --show-command ]       Show command line, and you can append text after -c for summary or further extraction.
@@ -179,6 +180,7 @@ Match/Search/Replace String/Lines/Blocks in Command/Files/Pipe. (IGNORE case of 
   -Q [ --stop-block ] arg     Regex pattern of a block end (must has set -b) ; Can set to "" if same with -b.
   -y [ --reuse-block-end ]    Reuse a matched block end as next block begin (For cases of a line matched by -Q as next block begin for -b).
   -X [ --execute-out-lines ]  Execute each final output line as a command. Will show command -> run -> show return value, if no: -P -I -A.
+  -V [ --stop-execute ] arg   Quit if a executed command return value matches Regex(like: "-\d+") or Math(like: ">=0", ge0, "!=0", ne0, eq-1, lt0, gt0).
   -Y [ --not-from-pipe ]      Force reading from files other than pipe (To avoid reading pipe if running in another command and no reading paths set).
   -z [ --string ] arg         Input a string and read from it (without reading files or pipe). You can also use it to learn/test Regex, or test input args.
   --verbose                   Show parsed arguments, return value, time zone and EXE path, content error rows, BOM infos, link files' real paths, etc.
@@ -189,39 +191,44 @@ Match/Search/Replace String/Lines/Blocks in Command/Files/Pipe. (IGNORE case of 
 
 Return value/Exit code(%ERRORLEVEL%) = matched/replaced count of lines/blocks/files in files or pipe.
 But if Return value = 0 and caught N errors, will set Return value = -N which is error count.
-If used -X(--execute-out-lines): Return value = non-zero-return-count of all executions if executed count > 1; Return value = One command line return value if executed count = 1.
+If used -X(--execute-out-lines): Return value = non-zero-return-count if executed commands count > 1; Return value = One command line return value if executed count = 1.
 All error messages will be output to stderr . You can redirect them to stdout by appending 2>&1 to your command line.
 
 Detail instruction and examples ( Quick-Start at bottom is more brief ):
-(1) Skip/Stop reading + Arbitrary block matching: 
-    -L/-N: set row range for a pipe or each file: line number begin and end.
-    -b/-q: set row range by begin/end Regex pattern; -q stops immediately for a pipe or each file. 
+(1) Skip/Stop reading + Arbitrary block matching: Helpful to read/extract pipe or large files or extract/replace XML/Json/INI files etc.
+    -L/-N: set row ranges for a pipe or each file: line number begin and end.
+    -b/-q: set row ranges by begin/end Regex pattern; -q stops immediately for a pipe or each file. 
     -b/-Q: set begin/end Regex pattern to match multiple arbitrary blocks in pipe or each file, with -a to output each entire block.
     -L/-b and -N/-Q/-q can all be used at same time, contains the boundary which begin and end line.
     Special meaning of --nt/--nx for block matching(-b + -Q): --nt and --nx exclude a block if one of it's lines matches one of them.
     Special meaning of -S for block matching: -S just has 'single line' meaning for each block, other than whole text in each file or pipe.
     -B and -E only textually/literally compare with time text matched by -F XXX , not parse the text of -B and -E to time then compare.
-    If replacing files, -R (--replace-file), will replace + just copy the lines that out of -L/-b and -N/-Q/-q.
-    -R does NOT change files if no lines replaced; Preview replacing result without -R.
+    If replacing files, -R (--replace-file) will replace matched text + just copy the lines out of -L/-b and -N/-Q/-q.
+    -R will not change files if no lines replaced; Preview replacing result without -R; Recommend using -j to just preview changes before using -R.
     -K(--backup) to backup files if changed, append modify-time (--yyyy-MM-dd__HH_mm_ss) to backup file name. If exists, will append '-N' and N start from 1.
 (2) Replace text/files By Regex expression or normal/plain text: (To not output immediate replaced info, use anyone of : -A , -I , -H 0 , -T 0 )
     If used both -t (--text-match) and -x (--has-text), will use the closer one to -o (--replace-to); 
-    But if -t and -x distances to -o are same, replace by the prior one ( in command line position ).
+    But if -t and -x distances to -o are same, replace by the prior/left one. Example: -t XXX -o XXX -x XXX : will use -t as same distance.
+    lzmw will not add or remove an empty line to tail when replacing files.
+    lzmw will not change/touch/write files for content or file time if found nothing replaced.
+    lzmw will read/count/show the tail empty line exactly as the fact.
 (3) Sort output or file list by time or size: (sort result by time/key see usage and bottom examples)
     Both --sz and --wt only work with -l (--list-count) to display and sort by file size and last-write-time;
-    sort by the prior one (in command line position) if used both of them.
+    sort by the prior/left one (in command line position) if used both of them.
     -s(--sort-by) will sort output by captured regex group[1], if no group[1] will try group[0] of -F(--time-format) at first, then try -t(--text-match) (if found).
     If input empty regex pattern "" for -s, then -s will sort by the pattern of -F(--time-format) if found; else check and use the pattern of -t(--text-match) to sort.
 (4) Execute output line as command : If has -X (--execute-out-lines): 
     -P(--no-path-line) will not output lines(commands) before executing;
     -I(--no-extra) will not output each execution summary;  -O(--out-if-did) will not output execution summary if return value = 0.
     -A(--no-any-info) will not output any info or summary, and new lines (which separates executions).
-    -Y(--not-from-pipe) to force reading from files other than pipe. -Y is rarely used, only for cases which lzmw cannot know where to read from : files or pipe. 
+    -V(--stop-execute) set Regex or Math to stop execution (-X) if a command return value matches it (exit code will be that). Like: -V "-?[1-9]" or -V ne0 or -V lt0 or -V "<0"
+    The value of -V(--stop-execute) will be treated as Regex if not match Math by test: lzmw -t "^\s*(gt|>|lt|<|eq|=|ge|>=|le|<=|ne|!=)\s*(-?\d+)\s*$" -z "input value"
+    -Y(--not-from-pipe) to force reading from files other than pipe. -Y is rarely used, only for cases which lzmw cannot know where to read from: files or pipe. 
     For example, you can remove the -p . and -Y below, then run it, you will see that using -Y can avoid reading pipe:
     echo for /F "tokens=*" %a in ('lzmw -l -p . -H 3 -PICc -Y') do lzmw -Y -l -c --wt --sz -p %a | lzmw -X
 (5) Further extraction by summary:
     Use -c (--show-command), you can append any text to the command line.
-    Use -O to out summary only if matched/replaced/found or execution-result != 0.
+    Use -O to output summary only if matched/replaced/found or execution-result != 0.
     Use -H 0 or -T 0 if you just want summary info, without other outputs.
     Use -J to jump out: Quit(exit) if has set -H [N] and output line count exceeds [N].
 (6) Map <--> Reduce : -o transforms one line to multi-lines; -S changes -t to single-line Regex mode.
@@ -232,14 +239,14 @@ Detail instruction and examples ( Quick-Start at bottom is more brief ):
     robocopy /? | lzmw -it mirror -U 3 -D 3 -e purge
 
 Additional feature: Directly read and match text by -z (--string instead of using echo command on Windows which must escape | to ^|  in for-loop)
-    Example: Finding non-exist path in %PATH% and only check 3 head(top) + 3 tail(bottom) paths:
+    Example: Finding non-exist paths in %PATH% and only check 3 head(top) + 3 tail(bottom) paths:
     lzmw -z "%PATH%" -t "\s*;\s*" -o "\n" -PAC | lzmw -t .+ -o "if not exist \"$0\" echo NOT EXIST $0"  -PI -H 3 -T 3 -X
 
-Example-1 : Find env in profiles:
-    D:\lztool\lzmw.exe --recursive --path "/home/qualiu , /etc , /d/cygwin/profile"  --file-match "\.(env|xml|\w*rc)$"  --text-match "^\s*export \w+=\S+" --ignore-case
+Example-1 : Recursively find text by Regex in files, ignore case, dive in 9 layers at max, only list files + count:
+    D:\lztool\lzmw.exe --recursive --path "%APPDATA%, %TMP%" --file-match "\.(bat|cmd)$" --text-match "^\s*set\s+(\w+)=(.+)" --ignore-case --max-depth 9 --list-count
 
 Example-2 : Find error in log files : row text (contain time) start matching(-t xxx) from -B xxx with given format(-F xxx); last-write-time between [--w1,--w2]
-    lzmw -rp /var/log/nova/,/var/log/swift -f "\.log$"  -F "^(\d{2,4}-\d+-\d+ [\d+:]+(\D\d+)?)" -B "2013-03-12 14" -i -t "\b(error|fail|fatal|exception)"  --w1 2013-03-12 --w2 "2013-03-13 09"
+    lzmw -rp /var/log/,/tmp/log/ -f "\.log$" -F "^(\d{2,4}-\d+-\d+ [\d+:]+(\D\d+)?)" -B "2013-03-12 14" -i -t "\b(error|fail|fatal|exception)"  --w1 2013-03-12 --w2 "2013-03-13 09"
 
 Example-3 : Recursively(-r) replace-file(-R) : IP tail in <SQL> or <Connection>; Only in xxx-test directory skip Prod-xxx; Skip rows>=200 for each file; Backup(-K) if changed.
     lzmw -rp  .  -f "\.xml$" -d "\w+-test$" --nd "Prod-\w+" -b "^\s*<SQL|Connection>" -Q "^\s*</(SQL|Connection)>" -N 200 -it "(\d{1,3})\.(\d{1,3})\.\d{1,3}\.\d{1,3}" -o "${1}.$2.192.203" -RK 
@@ -251,7 +258,7 @@ Example-5 : Single-line regex mode replacing whole text in each file and backup 
     lzmw -rp "%CD%" -f "config\w*\.(xml|ini)$" -S -t "(<Command>).*?(</Command>)" -o "$1 new-content ${2}" -RK 
 
 Example-6 : Multi-line regex mode (normal mode) replacing lines in each file and backup (preview without -R)
-    lzmw -rp myApp\bin,myApp\scripts,D:\myApp\tools -f "\.(bat|cmd)$"  -it "^(\s*@\s*echo)\s+off\b" -o "$1 on" -R -K 
+    lzmw -rp myApp\bin,myApp\scripts,D:\myApp\tools -f "\.(bat|cmd)$"  -it "^(\s*@?\s*echo)\s+off\b" -o "$1 on" -R -K 
 
 Example-7 : Display current modified code files:
     for /f %a in ('lzmw -l -f "\.(cs|java|cpp|cx*|hp*|py|scala)$" -rp "%CD%" --nd "^(debug|release)$"  --w1 "2018-06-08 09:15:20" -PAC 2^>nul ') do @echo code file : %a
@@ -264,34 +271,37 @@ Example-9 : Find files in %PATH% environment variable: such as ATL*.dll, 2 metho
     lzmw -l --wt --sz -p "%PATH%" -f "^ATL.*\.dll$" -M 2>nul
 
 All options/switches are optional + no order + effective mean while, but case sensitive.
-Can merge single char switches/options+values like : -rp -it -ix -PIC -PAC -POC -PIOCcl -PICc -PICcl , -mu -v zod, -muvzod, -uvz
+Can merge single char switches/options+values like: -rp -it -ix -PIC -PAC -POC -PIOCcl -PICc -PICcl , -mu -v zod, -muvzod, -uvz
 Useful options : -a, -H 3, -H 3 -J, -H 0, -T 3, -T -1, -M, -O, -PAC, -PIC, -POC, -POlCc, -XI, -XIP, -XA, -XO, -XOPI, -muvz, 2>&1, 2>nul (2^>nul in pipe)
 Like watching time/elapsed/matched (-muvzd): lzmw | lzmw -it show -v zdo -u -m
 
 One limitation: Cannot process Unicode files or pipe for now; Fine with UTF-8/ANSI/etc.
 
 Helpful commands - Just 1 command line: Preview replacing just remove -R
-(1) Remove white spaces at each line tail in each file in directories:
+(1) Remove whitespaces at each line tail in each file in directories:
     lzmw -r -p dir-1,dir2,file1,file2 -f "\.(cpp|cxx|hp*|cs|java|scala|py)$" -t "\s+$" -o ""  -R
 (2) Replace each tab(\t) to 4 spaces at each line begin in files: (Recursive/Radically change all head tabs in a line by -g -1)
-    lzmw -rp directory-1,dir-2 -f "\.(cp*|cxx|hp*|cs|java|scala|py)$" -t "^(\s*)\t" -o "$1    " -g -1 -R
+    lzmw -rp path1,path2 -f "\.(cp*|cxx|hp*|cs|java|scala|py)$" -t "^(\s*)\t" -o "$1    " -g -1 -R
 (3) Find top 100 largest old garbage log files which size >= 30MB:
-    lzmw -rp directory-1,dir-2 -f "\.(log)$" -l --sz --s1 30MB --w2 "2015-07-27 12:30:00" -H 100 --dsc -PIC
+    lzmw -rp path1,path2 -f "\.(log)$" -l --sz --s1 30MB --w2 "2015-07-27 12:30:00" -H 100 --dsc -PIC
 (4) Get command lines to delete top 100 largest old garbage log files which size >= 30MB:
-    lzmw -rp directory-1,dir-2 -f "\.(log)$" -l --sz --s1 30MB --w2  2015-07-27T12:30  -H 100 --dsc -PAC | lzmw -t .+ -o "del /f /q /s \"$0\"" -PIC
-(5) Delete top 100 largest old garbage log files which size >= 30MB:
-    lzmw -rp directory-1,dir-2 -f "\.(log)$" -l --sz --s1 30MB --w2 "2015-07-27 12:30" -T 100 -PAC | lzmw -t .+ -o "del /f /q /s \"$0\"" -X -PI
-(6) Delete top 100 largest old garbage log files which size >= 30MB:
-    lzmw -rp directory-1,dir-2 -f "\.(log)$" -l --sz --s1 30MB --w2 "2015-07-27T12:30" -T 100 -PAC | lzmw -t .+ -o "del /f /q /s \"$0\"" -H 100 -XPI
+    lzmw -rp path1,path2 -f "\.(log)$" -l --sz --s1 30MB --w2  2015-07-27T12:30 -H 100 --dsc -PAC | lzmw -t .+ -o "del /f /q /s \"$0\"" -PIC
+(5) Delete top 100 largest old garbage log files which size >= 30MB and stop deletion (stop executing command lines) if a command return value < 0:
+    lzmw -rp path1,path2 -f "\.(log)$" -l --sz --s1 30M --w2 "2015-07-27 12:30" -T 100 -PAC | lzmw -t "(.+)" -o "del /f /q /s \"\1\"" -X -V "<0"
+(6) Delete top 100 largest old garbage log files which size >= 30MB and stop deletion (stop executing command lines) if a command return value < 0:
+    lzmw -rp path1,path2 -f "\.(log)$" -l --sz --s1 30m --w2 "2015-07-27T12:30" -PAC | lzmw -T 100 -t "(.+)" -o "del /f /q /s \"\1\"" -X -V lt0
 (7) Check tail new line: Return/Exit code %ERRORLEVEL% > 0 if has a new line:
     lzmw -p my-file -S -t "[\r\n]+$" -H 0 -PIC
-(8) Replace files to have only one new line at tail: (Add a new line or remove redundant new lines)
-    lzmw -rp directory-1,dir-2 -f "\.(cpp|cxx|hp*|cs|java|scala|py)$" -S -t "(\S+)\s*$" -o "$1\n" -R
-(9) Remove tail new lines and white spaces in pipe result:
+(8) Replace files to have only one new empty line at tail (Add an empty line or remove redundant empty lines. Trim tail whitespaces):
+    lzmw -rp path1,path2 -f "\.(cpp|cxx|hp*|cs|java|scala|py)$" -S -t "(\S+)\s*$" -o "$1\n" -R
+(9) Remove tail new lines and whitespaces in pipe result:
     lzmw --help -C | lzmw -S -t "\s*$" -o "" -P
-(10) Debug batch files, turn on all ECHO/echo:
-    lzmw -rp directory-1,dir-2 -f "\.(bat|cmd)$" -it "\b(echo)\s+off\b" -o "$1 on"  -R
-(11) Get precise time of now and set to %TimeNow-XXX% variable for latter commands: Now time = 2018-06-08 09:15:20.524577 +0800 CST = China Standard Time
+(A) Replace batch files on Windows: Turn on all ECHO/echo to debug scripts and skip junk folders when searching files:
+    lzmw -rp path1,path2 -f "\.(bat|cmd)$" -it "^(\s*@?\s*echo)\s+off\b" -o "$1 on" -R --nd "^([\.\$]|(Release|Debug|objd?|bin|node_modules|static|dist|target|(Js)?Packages|\w+-packages?)$|__pycache__)"
+(B) Show a command line -> Execute -> Show return value with begin+end+cost times no summary -> echo No results+errors if return = 0; If return != 0: echo Found N results or Caught N errors if N < 0:
+    echo lzmw -p "%PATH%" -f "\.(bat|cmd|sh|bash)$" -t "^\s*(SET|export)\s+(\w+)=(.+)" -ix HOME -H 5 | lzmw -X -M && echo No results found and no errors: No non-exists paths in this case.
+    echo lzmw -p "%PATH%" -f "\.(bat|cmd|sh|bash)$" -t "^\s*(SET|export)\s+(\w+)=(.+)" -ix HOME -H 5 | lzmw -X -M || echo Found %ERRORLEVEL% results or Caught %ERRORLEVEL% errors no results if negative return.
+(C) Get precise time of now and set to %TimeNow-XXX% variable for latter commands: Now time = 2018-06-08 09:15:20.524577 +0800 CST = China Standard Time
     for /f "tokens=*" %a in ('lzmw -hC ^| lzmw -t ".*Now time = (\d+\S+) (\d+[:\d]+)\.(\d{3})(\d*)\s+([-\+]\d+)?\s*(\w+)?.*" -o "\1 \2" -PAC') do SET "TimeNowInSecond=%a"
     for /f "tokens=*" %a in ('lzmw -hC ^| lzmw -t ".*Now time = (\d+\S+) (\d+[:\d]+)\.(\d{3})(\d*)\s+([-\+]\d+)?\s*(\w+)?.*" -o "\1 \2.\3" -PAC') do SET "TimeNowMillisecond=%a"
     for /f "tokens=*" %a in ('lzmw -hC ^| lzmw -t ".*Now time = (\d+\S+) (\d+[:\d]+)\.(\d{3})(\d*)\s+([-\+]\d+)?\s*(\w+)?.*" -o "\1 \2.\3\4" -PAC') do SET "TimeNowMicrosecond=%a"
@@ -315,22 +325,22 @@ Final brief instruction as Quick-Start: Use -PAC or -PIC to get pure output resu
 (4) Replace files and Backup if changed : lzmw -rp dir1,dir2,fileN -t "my.*(capture-1).*pattern" -o "captured $1 and you want" -R -K
 (5) Get matched file list + distribution: lzmw -rp dir1,dir2,fileN -t "my.*(capture-1).*pattern" -l --nd "^(target|bin)$" 
 (6) Extract or replace arbitrary blocks : lzmw -rp dir1,dir2,fileN -t "my.*(capture-1).*pattern" -b "block-begin" -Q "block-end" -f "\.(xml|ini|conf)$" -o "$1 something"
-(7) Execute top 2 output lines(commands): lzmw -l -f "\.(pdb|obj)$" -rp . -PAC | lzmw -t "(.+)" -o "del \"\1\"" -H 2 -X
+(7) Execute top 9 output lines(commands): lzmw -l -f "\.(pdb|obj)$" -rp . -PAC | lzmw -t "(.+)" -o "del \"\1\"" -H 9 -X -V ne0  Stop if a command return value != 0.
 (8) Radically replace + only out changed: lzmw -z "Same with replacing files or pipe" -t "^(\w+)\s+" -o "$1_" -g -1 -j
 (9) Extract key + Sort as number + Stats: lzmw -rp dir1,dir2,fileN -it "Key\s*=\s*(-?\d+\S*)"  -n -s ""  -c Set pattern for -s if different to -t or as you want.
 (A) Match an input string or Learn Regex: lzmw -z "NotFirstArg%~1" -t "^NotFirstArg(|-h|--help|/\?)$" > nul || echo goto show usage as no input args or input 'help' to script.
-(B) Search in pipe, Skip Head 3 + Tail 2: type my.txt | lzmw -it want-pattern -H -3 -T -2 -PIC
+(B) Search in pipe, Skip Head 3 + Tail 2: type my.txt | lzmw -it Regex-pattern -x and-plain-text -H -3 -T -2 -PIC
 (C) Replace with Many filters + Jump out: lzmw -w path-lines-1.txt,list-3.txt -rp dir1,fileN -k 33 -f "\.(cs|cp*|hp*|cx*)$" --nf "test|unit" -d src --nd "^(\.git|Debug)$" --pp code.*src --np "bin\S*Release" --w1 2016-02 --w2 2016-02-01T23:30:01 --s1 1B --s2 1.5MB -it public.*Find -x class -o Class -U 3 -D 3 -b start-find-line -q stop-line-pattern -L 10 -N 3000 -H 100 -J -O -c Show command + Out summary only if found.
 
-Search usage like: lzmw | lzmw -it block.*match  or  lzmw -hC | lzmw -it "max.*depth|full.*path|jump out"  or  lzmw | lzmw -t Backup -U 2 -D 2 -e replace
-With nin.exe more powerful to remove duplication, get exclusive/mutual key/line set, top distribution: https://github.com/qualiu/msr
-For example: Remove/Display/Remove+Merge duplicate path in %PATH% and merge to new %PATH%:
-    lzmw -z "%PATH%" -t "\\*\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui
-    lzmw -z "%PATH%" -t "\\*\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -uipd -H 9
-    lzmw -z "%PATH%" -t "\\*\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui -PAC | lzmw -S -t "[\r\n]+(\S+)" -o ";$1" -aPAC | lzmw -S -t "\s+$" -o "" -aPAC
+Search usage like: lzmw -h -C | lzmw -i -t block.*match  or  lzmw | lzmw -it "max.*?depth|Full.*?path|jump out" -U 2 -D2  or  lzmw | lzmw -ix File -t "Preview|Replace|Execute" -e "Change|Backup|Command"
+With nin.exe more powerful to remove duplication, get exclusive/mutual key/line set, top distribution: https://github.com/qualiu/lzmw
+For example: Get unique paths insensitive case + Show only top duplicate paths + Get one line paths without redundant slashes + separators from %PATH% to merge/set to new %PATH%:
+    lzmw -z "%PATH%" -t "\\*?\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui
+    lzmw -z "%PATH%" -t "\\*?\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -uipd -k 2
+    lzmw -z "%PATH%" -t "\\*?\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui -PAC | lzmw -S -t "[\r\n]+(\S+)" -o ";\1" -aPAC 
 
 As a portable cross platform tool, lzmw has been running on: Windows / Cygwin / Ubuntu / CentOS / Fedora
-Any good ideas please to : QQ : 94394344 , aperiodic updates and docs on https://github.com/qualiu/lzmw , more tools/examples see: https://github.com/qualiu/lzmwTools
+Aperiodic updates and docs: https://github.com/qualiu/lzmw , more tools/examples see: https://github.com/qualiu/lzmwTools
 Call@Everywhere: Add to system environment variable PATH with lzmw.exe parent directory: D:\lztool
 	 or temporarily: SET "PATH=%PATH%;D:\lztool"
 	 or rudely but simple and permanent: copy D:\lztool\lzmw.exe C:\WINDOWS\
