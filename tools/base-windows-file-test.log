@@ -18,6 +18,22 @@ www.lz.text/temp.normal/samples/my.normal/my-stream.xml
 Matched, input-length(55) - output-length(55) = 0. Input string = www.lz.text/temp.normal/samples/my.normal/my-stream.xml 
 Return-Value = 1 : lzmw -c -z www.lz.text/temp.normal/samples/my.normal/my-stream.xml -x normal/ -t "(www.*)/([/]+\.xml)\s*" 
 
+lzmw -c -p sample-file.txt -b No-Such-Block-Begin -Q No-Such-Block-End  Should return 0 
+Matched 0 blocks with 0 lines in 1 files
+Return-Value = 0 : lzmw -c -p sample-file.txt -b No-Such-Block-Begin -Q No-Such-Block-End  Should return 0 
+
+lzmw -c -p sample-file.txt -b No-Such-Block-Begin -Q No-Such-Block-End -l Should return 0 
+Matched 0 blocks with 0 lines in 1 files
+Return-Value = 0 : lzmw -c -p sample-file.txt -b No-Such-Block-Begin -Q No-Such-Block-End -l Should return 0 
+
+lzmw -c -p sample-file.txt -b No-Such-Begin -q No-Such-End Should return 0 
+Matched 0 lines in 1 files
+Return-Value = 0 : lzmw -c -p sample-file.txt -b No-Such-Begin -q No-Such-End Should return 0 
+
+lzmw -c -p sample-file.txt -b No-Such-Begin -q No-Such-End -l Should return 0 
+Matched 0 lines in 1 files
+Return-Value = 0 : lzmw -c -p sample-file.txt -b No-Such-Begin -q No-Such-End -l Should return 0 
+
 lzmw -c -p sample-file.txt -S -t "^(.+\S+)\s*$" -H 0         # Check return value, output nothing 
 Matched 133 lines(99.25%) in 1 files(100%)
 Return-Value = 133 : lzmw -c -p sample-file.txt -S -t "(.+\S+)\s*$" -H 0         # Check return value, output nothing 
@@ -296,10 +312,10 @@ Return-Value = 1 : lzmw -c -p sample-file.txt -i -b "class DeferredRun" -Q "};" 
 
 lzmw -c -p example-commands.bat -it "class|run" -H 9 
 example-commands.bat:1: ::Just run windows-test.bat which calls this file, or run this file directly, you will get a vivid sense of lzmw.
-example-commands.bat:41: lzmw -c -p %~dp0\sample-file.txt -i -b "class DeferredRun" -Q "^};" -t "(Deferred\w*)" -o "$1Replaced"
-example-commands.bat:42: lzmw -c -p %~dp0\example-commands.bat -it "class|run" -H 9
-example-commands.bat:43: lzmw -c -p %~dp0\example-commands.bat -ie "class|run" -H 9
-Matched 4 lines(1.88%) in 1 files(100%)
+example-commands.bat:48: lzmw -c -p %~dp0\sample-file.txt -i -b "class DeferredRun" -Q "^};" -t "(Deferred\w*)" -o "$1Replaced"
+example-commands.bat:49: lzmw -c -p %~dp0\example-commands.bat -it "class|run" -H 9
+example-commands.bat:50: lzmw -c -p %~dp0\example-commands.bat -ie "class|run" -H 9
+Matched 4 lines(1.82%) in 1 files(100%)
 Return-Value = 4 : lzmw -c -p example-commands.bat -it "class|run" -H 9 
 
 lzmw -c -p example-commands.bat -ie "class|run" -H 9 
@@ -308,235 +324,235 @@ example-commands.bat:2: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -x \ -o
 example-commands.bat:3: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t \\ -o \\
 example-commands.bat:4: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t "\\\\" -o \\
 example-commands.bat:5: lzmw -c -z www.lz.text/temp.normal/samples/my.normal/my-stream.xml -x normal/ -t "(www.*)/([^/]+\.xml)\s*"
-example-commands.bat:6: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -H 0         # Check return value, output nothing
-example-commands.bat:7: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)$" -H 0            # Check return value, output nothing
-example-commands.bat:8: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\n$" -H 0          # Check return value, output nothing
-example-commands.bat:9: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1" -R   # Remove tail new line
-Matched 213 lines(100%) in 1 files(100%)
-Return-Value = 213 : lzmw -c -p example-commands.bat -ie "class|run" -H 9 
+example-commands.bat:6: 
+example-commands.bat:7: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Block-Begin -Q No-Such-Block-End  Should return 0
+example-commands.bat:8: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Block-Begin -Q No-Such-Block-End -l Should return 0
+example-commands.bat:9: 
+Matched 220 lines(100%) in 1 files(100%)
+Return-Value = 220 : lzmw -c -p example-commands.bat -ie "class|run" -H 9 
 
 lzmw -c -p example-commands.bat -it "^lzmw\s+(-c\s+)?" -L 3 -o "lzmw -c " -H 9 
 example-commands.bat:3: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t \\ -o \\
 example-commands.bat:4: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t "\\\\" -o \\
 example-commands.bat:5: lzmw -c -z www.lz.text/temp.normal/samples/my.normal/my-stream.xml -x normal/ -t "(www.*)/([^/]+\.xml)\s*"
-example-commands.bat:6: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -H 0         # Check return value, output nothing
-example-commands.bat:7: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)$" -H 0            # Check return value, output nothing
-example-commands.bat:8: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\n$" -H 0          # Check return value, output nothing
-example-commands.bat:9: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1" -R   # Remove tail new line
-example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1\n" -R # Add a new line to tail
-example-commands.bat:11: lzmw -c -p %~dp0 -f bat -l -PAC -H 0
-Matched 172 lines(80.75%) in 1 files(100%)
-Return-Value = 172 : lzmw -c -p example-commands.bat -it "lzmw\s+(-c\s+)?" -L 3 -o "lzmw -c " -H 9 
+example-commands.bat:7: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Block-Begin -Q No-Such-Block-End  Should return 0
+example-commands.bat:8: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Block-Begin -Q No-Such-Block-End -l Should return 0
+example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End Should return 0
+example-commands.bat:11: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End -l Should return 0
+example-commands.bat:13: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -H 0         # Check return value, output nothing
+example-commands.bat:14: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)$" -H 0            # Check return value, output nothing
+Matched 176 lines(80.00%) in 1 files(100%)
+Return-Value = 176 : lzmw -c -p example-commands.bat -it "lzmw\s+(-c\s+)?" -L 3 -o "lzmw -c " -H 9 
 
 lzmw -c -p example-commands.bat -x bat -o BAT -L 3 -H 5 -T 5      ## Plain text replacing to BAT , begin-row-3, and show top 5 and bottom 5 lines 
-example-commands.bat:11: lzmw -c -p %~dp0 -f BAT -l -PAC -H 0
-example-commands.bat:12: lzmw -c -p %~dp0 -f BAT -l -PIC -H 0
-example-commands.bat:13: lzmw -c -p %~dp0 -l -f BAT -H -2 # Should skip top 2 items.
-example-commands.bat:14: lzmw -c -p %~dp0 -l -f BAT -T -2 # Should skip bottom 2 items.
-example-commands.bat:15: lzmw -c -p %~dp0 -l -f BAT -H -2 --sz # Should skip top 2 items.
-example-commands.bat:75: lzmw -c -p %~dp0\example-commands.BAT -ix update -t name -e Names
-example-commands.bat:86: lzmw -c -p %~dp0\example-commands.BAT -x " -B" -t ".*?(\d+\S+ \d+[\d:]+).*"
-example-commands.bat:90: lzmw -c -p %~dp0\example-commands.BAT -it "\w+" -H 0       ## Must NOT out any matched.
-example-commands.bat:91: lzmw -c -p %~dp0\example-commands.BAT -it "\w+" -T 0       ## Must NOT out any matched.
-example-commands.bat:92: lzmw -c -p %~dp0\example-commands.BAT -it just -U 3 -D 3
-Matched 44 lines(20.66%) in 1 files(100%)
+example-commands.bat:18: lzmw -c -p %~dp0 -f BAT -l -PAC -H 0
+example-commands.bat:19: lzmw -c -p %~dp0 -f BAT -l -PIC -H 0
+example-commands.bat:20: lzmw -c -p %~dp0 -l -f BAT -H -2 # Should skip top 2 items.
+example-commands.bat:21: lzmw -c -p %~dp0 -l -f BAT -T -2 # Should skip bottom 2 items.
+example-commands.bat:22: lzmw -c -p %~dp0 -l -f BAT -H -2 --sz # Should skip top 2 items.
+example-commands.bat:82: lzmw -c -p %~dp0\example-commands.BAT -ix update -t name -e Names
+example-commands.bat:93: lzmw -c -p %~dp0\example-commands.BAT -x " -B" -t ".*?(\d+\S+ \d+[\d:]+).*"
+example-commands.bat:97: lzmw -c -p %~dp0\example-commands.BAT -it "\w+" -H 0       ## Must NOT out any matched.
+example-commands.bat:98: lzmw -c -p %~dp0\example-commands.BAT -it "\w+" -T 0       ## Must NOT out any matched.
+example-commands.bat:99: lzmw -c -p %~dp0\example-commands.BAT -it just -U 3 -D 3
+Matched 44 lines(20.00%) in 1 files(100%)
 Return-Value = 44 : lzmw -c -p example-commands.bat -x bat -o BAT -L 3 -H 5 -T 5      ## Plain text replacing to BAT , begin-row-3, and show top 5 and bottom 5 lines 
 
 lzmw -c -p example-commands.bat -t bat -o BAT -L 3 -H 5           ## Plain text replacing to BAT , begin-row-3, show top 5 lines 
-example-commands.bat:11: lzmw -c -p %~dp0 -f BAT -l -PAC -H 0
-example-commands.bat:12: lzmw -c -p %~dp0 -f BAT -l -PIC -H 0
-example-commands.bat:13: lzmw -c -p %~dp0 -l -f BAT -H -2 # Should skip top 2 items.
-example-commands.bat:14: lzmw -c -p %~dp0 -l -f BAT -T -2 # Should skip bottom 2 items.
-example-commands.bat:15: lzmw -c -p %~dp0 -l -f BAT -H -2 --sz # Should skip top 2 items.
-Matched 44 lines(20.66%) in 1 files(100%)
+example-commands.bat:18: lzmw -c -p %~dp0 -f BAT -l -PAC -H 0
+example-commands.bat:19: lzmw -c -p %~dp0 -f BAT -l -PIC -H 0
+example-commands.bat:20: lzmw -c -p %~dp0 -l -f BAT -H -2 # Should skip top 2 items.
+example-commands.bat:21: lzmw -c -p %~dp0 -l -f BAT -T -2 # Should skip bottom 2 items.
+example-commands.bat:22: lzmw -c -p %~dp0 -l -f BAT -H -2 --sz # Should skip top 2 items.
+Matched 44 lines(20.00%) in 1 files(100%)
 Return-Value = 44 : lzmw -c -p example-commands.bat -t bat -o BAT -L 3 -H 5           ## Plain text replacing to BAT , begin-row-3, show top 5 lines 
 
 lzmw -c -p example-commands.bat -t com -x bat -o BAT T -H 5       ## Use both Regex and plain text , replacing from 
-example-commands.bat:35: lzmw -c -r -p %~dp0 -f "^(example-commands|sample-file)\.(txt|BAT)$" -l --sz --wt -T 3
-example-commands.bat:36: lzmw -c -r -p %~dp0 -f "^(example-commands|sample-file)\.(txt|BAT)$" -l --wt --sz -H 3 --dsc --s1 1KB --s2 1MB --w1 "2015-07-20 13:20"
-example-commands.bat:42: lzmw -c -p %~dp0\example-commands.BAT -it "class|run" -H 9
-example-commands.bat:43: lzmw -c -p %~dp0\example-commands.BAT -ie "class|run" -H 9
-example-commands.bat:44: lzmw -c -p %~dp0\example-commands.BAT -it "^lzmw\s+(-c\s+)?" -L 3 -o "lzmw -c " -H 9
-Matched 36 lines(16.90%) in 1 files(100%)
+example-commands.bat:42: lzmw -c -r -p %~dp0 -f "^(example-commands|sample-file)\.(txt|BAT)$" -l --sz --wt -T 3
+example-commands.bat:43: lzmw -c -r -p %~dp0 -f "^(example-commands|sample-file)\.(txt|BAT)$" -l --wt --sz -H 3 --dsc --s1 1KB --s2 1MB --w1 "2015-07-20 13:20"
+example-commands.bat:49: lzmw -c -p %~dp0\example-commands.BAT -it "class|run" -H 9
+example-commands.bat:50: lzmw -c -p %~dp0\example-commands.BAT -ie "class|run" -H 9
+example-commands.bat:51: lzmw -c -p %~dp0\example-commands.BAT -it "^lzmw\s+(-c\s+)?" -L 3 -o "lzmw -c " -H 9
+Matched 36 lines(16.36%) in 1 files(100%)
 Return-Value = 36 : lzmw -c -p example-commands.bat -t com -x bat -o BAT T -H 5       ## Use both Regex and plain text , replacing from 
 
 lzmw -c -p example-commands.bat -t t -L 9 -e txt -H 9             ## single char matching and coloring test 
-example-commands.bat:9: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1" -R   # Remove tail new line
-example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1\n" -R # Add a new line to tail
-example-commands.bat:11: lzmw -c -p %~dp0 -f bat -l -PAC -H 0
-example-commands.bat:12: lzmw -c -p %~dp0 -f bat -l -PIC -H 0
-example-commands.bat:13: lzmw -c -p %~dp0 -l -f bat -H -2 # Should skip top 2 items.
-example-commands.bat:14: lzmw -c -p %~dp0 -l -f bat -T -2 # Should skip bottom 2 items.
-example-commands.bat:15: lzmw -c -p %~dp0 -l -f bat -H -2 --sz # Should skip top 2 items.
-example-commands.bat:16: lzmw -c -p %~dp0 -l -f bat -T -2 --wt # Should skip bottom 2 items.
-example-commands.bat:17: lzmw -c -p %~dp0 -l -f bat -H 2 --wt # Should show top 2 items.
-Matched 185 lines(86.85%) in 1 files(100%)
-Return-Value = 185 : lzmw -c -p example-commands.bat -t t -L 9 -e txt -H 9             ## single char matching and coloring test 
+example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End Should return 0
+example-commands.bat:11: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End -l Should return 0
+example-commands.bat:13: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -H 0         # Check return value, output nothing
+example-commands.bat:14: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)$" -H 0            # Check return value, output nothing
+example-commands.bat:15: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\n$" -H 0          # Check return value, output nothing
+example-commands.bat:16: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1" -R   # Remove tail new line
+example-commands.bat:17: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1\n" -R # Add a new line to tail
+example-commands.bat:18: lzmw -c -p %~dp0 -f bat -l -PAC -H 0
+example-commands.bat:19: lzmw -c -p %~dp0 -f bat -l -PIC -H 0
+Matched 190 lines(86.36%) in 1 files(100%)
+Return-Value = 190 : lzmw -c -p example-commands.bat -t t -L 9 -e txt -H 9             ## single char matching and coloring test 
 
 lzmw -c -p example-commands.bat -x t -L 9 -e txt -H 9 
-example-commands.bat:9: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1" -R   # Remove tail new line
-example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1\n" -R # Add a new line to tail
-example-commands.bat:11: lzmw -c -p %~dp0 -f bat -l -PAC -H 0
-example-commands.bat:12: lzmw -c -p %~dp0 -f bat -l -PIC -H 0
-example-commands.bat:13: lzmw -c -p %~dp0 -l -f bat -H -2 # Should skip top 2 items.
-example-commands.bat:14: lzmw -c -p %~dp0 -l -f bat -T -2 # Should skip bottom 2 items.
-example-commands.bat:15: lzmw -c -p %~dp0 -l -f bat -H -2 --sz # Should skip top 2 items.
-example-commands.bat:16: lzmw -c -p %~dp0 -l -f bat -T -2 --wt # Should skip bottom 2 items.
-example-commands.bat:17: lzmw -c -p %~dp0 -l -f bat -H 2 --wt # Should show top 2 items.
-Matched 185 lines(86.85%) in 1 files(100%)
-Return-Value = 185 : lzmw -c -p example-commands.bat -x t -L 9 -e txt -H 9 
+example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End Should return 0
+example-commands.bat:11: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End -l Should return 0
+example-commands.bat:13: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -H 0         # Check return value, output nothing
+example-commands.bat:14: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)$" -H 0            # Check return value, output nothing
+example-commands.bat:15: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\n$" -H 0          # Check return value, output nothing
+example-commands.bat:16: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1" -R   # Remove tail new line
+example-commands.bat:17: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1\n" -R # Add a new line to tail
+example-commands.bat:18: lzmw -c -p %~dp0 -f bat -l -PAC -H 0
+example-commands.bat:19: lzmw -c -p %~dp0 -f bat -l -PIC -H 0
+Matched 190 lines(86.36%) in 1 files(100%)
+Return-Value = 190 : lzmw -c -p example-commands.bat -x t -L 9 -e txt -H 9 
 
 lzmw -c -p example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile 
-example-commands.bat:9: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1" -R   # Remove tail new line
-example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1\n" -R # Add a new line to tail
-example-commands.bat:11: lzmw -c -p %~dp0 -f bat -l -PAC -H 0
-example-commands.bat:12: lzmw -c -p %~dp0 -f bat -l -PIC -H 0
-example-commands.bat:13: lzmw -c -p %~dp0 -l -f bat -H -2 # Should skip top 2 items.
-example-commands.bat:14: lzmw -c -p %~dp0 -l -f bat -T -2 # Should skip bottom 2 items.
-example-commands.bat:15: lzmw -c -p %~dp0 -l -f bat -H -2 --sz # Should skip top 2 items.
-example-commands.bat:16: lzmw -c -p %~dp0 -l -f bat -T -2 --wt # Should skip bottom 2 items.
-example-commands.bat:17: lzmw -c -p %~dp0 -l -f bat -H 2 --wt # Should show top 2 items.
-Matched 185 lines(86.85%) in 1 files(100%)
-Return-Value = 185 : lzmw -c -p example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile 
+example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End Should return 0
+example-commands.bat:11: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End -l Should return 0
+example-commands.bat:13: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -H 0         # Check return value, output nothing
+example-commands.bat:14: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)$" -H 0            # Check return value, output nothing
+example-commands.bat:15: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\n$" -H 0          # Check return value, output nothing
+example-commands.bat:16: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1" -R   # Remove tail new line
+example-commands.bat:17: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1\n" -R # Add a new line to tail
+example-commands.bat:18: lzmw -c -p %~dp0 -f bat -l -PAC -H 0
+example-commands.bat:19: lzmw -c -p %~dp0 -f bat -l -PIC -H 0
+Matched 190 lines(86.36%) in 1 files(100%)
+Return-Value = 190 : lzmw -c -p example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile 
 
 lzmw -c -p example-commands.bat -x t -L 9 -e me.txt -H 9 
-example-commands.bat:9: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1" -R   # Remove tail new line
-example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1\n" -R # Add a new line to tail
-example-commands.bat:11: lzmw -c -p %~dp0 -f bat -l -PAC -H 0
-example-commands.bat:12: lzmw -c -p %~dp0 -f bat -l -PIC -H 0
-example-commands.bat:13: lzmw -c -p %~dp0 -l -f bat -H -2 # Should skip top 2 items.
-example-commands.bat:14: lzmw -c -p %~dp0 -l -f bat -T -2 # Should skip bottom 2 items.
-example-commands.bat:15: lzmw -c -p %~dp0 -l -f bat -H -2 --sz # Should skip top 2 items.
-example-commands.bat:16: lzmw -c -p %~dp0 -l -f bat -T -2 --wt # Should skip bottom 2 items.
-example-commands.bat:17: lzmw -c -p %~dp0 -l -f bat -H 2 --wt # Should show top 2 items.
-Matched 185 lines(86.85%) in 1 files(100%)
-Return-Value = 185 : lzmw -c -p example-commands.bat -x t -L 9 -e me.txt -H 9 
+example-commands.bat:10: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End Should return 0
+example-commands.bat:11: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End -l Should return 0
+example-commands.bat:13: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -H 0         # Check return value, output nothing
+example-commands.bat:14: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)$" -H 0            # Check return value, output nothing
+example-commands.bat:15: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\n$" -H 0          # Check return value, output nothing
+example-commands.bat:16: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1" -R   # Remove tail new line
+example-commands.bat:17: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -o "$1\n" -R # Add a new line to tail
+example-commands.bat:18: lzmw -c -p %~dp0 -f bat -l -PAC -H 0
+example-commands.bat:19: lzmw -c -p %~dp0 -f bat -l -PIC -H 0
+Matched 190 lines(86.36%) in 1 files(100%)
+Return-Value = 190 : lzmw -c -p example-commands.bat -x t -L 9 -e me.txt -H 9 
 
 lzmw -c -p example-commands.bat -x me -L 20 -H 9 
-example-commands.bat:50: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile
-example-commands.bat:51: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e me.txt -H 9
-example-commands.bat:52: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
-example-commands.bat:53: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
-example-commands.bat:54: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
-example-commands.bat:55: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:56: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
-example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
-Matched 33 lines(15.49%) in 1 files(100%)
+example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile
+example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e me.txt -H 9
+example-commands.bat:59: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
+example-commands.bat:60: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
+example-commands.bat:61: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
+example-commands.bat:62: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:63: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:64: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
+example-commands.bat:65: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
+Matched 33 lines(15.00%) in 1 files(100%)
 Return-Value = 33 : lzmw -c -p example-commands.bat -x me -L 20 -H 9 
 
 lzmw -c -p example-commands.bat -x me -L 20 -ie me -H 9 
-example-commands.bat:50: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile
-example-commands.bat:51: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e me.txt -H 9
-example-commands.bat:52: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
-example-commands.bat:53: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
-example-commands.bat:54: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
-example-commands.bat:55: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:56: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
-example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
-Matched 33 lines(15.49%) in 1 files(100%)
+example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile
+example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e me.txt -H 9
+example-commands.bat:59: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
+example-commands.bat:60: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
+example-commands.bat:61: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
+example-commands.bat:62: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:63: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:64: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
+example-commands.bat:65: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
+Matched 33 lines(15.00%) in 1 files(100%)
 Return-Value = 33 : lzmw -c -p example-commands.bat -x me -L 20 -ie me -H 9 
 
 lzmw -c -p example-commands.bat -t me -L 20 -ie me -H 9 
-example-commands.bat:50: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile
-example-commands.bat:51: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e me.txt -H 9
-example-commands.bat:52: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
-example-commands.bat:53: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
-example-commands.bat:54: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
-example-commands.bat:55: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:56: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
-example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
-Matched 33 lines(15.49%) in 1 files(100%)
+example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile
+example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e me.txt -H 9
+example-commands.bat:59: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
+example-commands.bat:60: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
+example-commands.bat:61: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
+example-commands.bat:62: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:63: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:64: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
+example-commands.bat:65: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
+Matched 33 lines(15.00%) in 1 files(100%)
 Return-Value = 33 : lzmw -c -p example-commands.bat -t me -L 20 -ie me -H 9 
 
 lzmw -c -p example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -H 9 
-example-commands.bat:50: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e you.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text youanwhile
-example-commands.bat:51: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e you.txt -H 9
-example-commands.bat:52: lzmw -c -p %~dp0\example-commands.bat -x you -L 20 -H 9
-example-commands.bat:53: lzmw -c -p %~dp0\example-commands.bat -x you -L 20 -ie you -H 9
-example-commands.bat:54: lzmw -c -p %~dp0\example-commands.bat -t you -L 20 -ie you -H 9
-example-commands.bat:55: lzmw -c -p %~dp0\example-commands.bat -x you -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:56: lzmw -c -p %~dp0\example-commands.bat -t you -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t you -ie "you|ping|\w+.txt" -L 30 -H 9
-example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x you -ie "you|ping|\w+.txt" -L 30 -H 9
-Matched 33 lines(15.49%) in 1 files(100%)
+example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e you.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text youanwhile
+example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e you.txt -H 9
+example-commands.bat:59: lzmw -c -p %~dp0\example-commands.bat -x you -L 20 -H 9
+example-commands.bat:60: lzmw -c -p %~dp0\example-commands.bat -x you -L 20 -ie you -H 9
+example-commands.bat:61: lzmw -c -p %~dp0\example-commands.bat -t you -L 20 -ie you -H 9
+example-commands.bat:62: lzmw -c -p %~dp0\example-commands.bat -x you -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:63: lzmw -c -p %~dp0\example-commands.bat -t you -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:64: lzmw -c -p %~dp0\example-commands.bat -t you -ie "you|ping|\w+.txt" -L 30 -H 9
+example-commands.bat:65: lzmw -c -p %~dp0\example-commands.bat -x you -ie "you|ping|\w+.txt" -L 30 -H 9
+Matched 33 lines(15.00%) in 1 files(100%)
 Return-Value = 33 : lzmw -c -p example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -H 9 
 
 lzmw -c -p example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9 
-example-commands.bat:50: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e you.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text youanwhile
-example-commands.bat:51: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e you.txt -H 9
-example-commands.bat:52: lzmw -c -p %~dp0\example-commands.bat -x you -L 20 -H 9
-example-commands.bat:53: lzmw -c -p %~dp0\example-commands.bat -x you -L 20 -ie you -H 9
-example-commands.bat:54: lzmw -c -p %~dp0\example-commands.bat -t you -L 20 -ie you -H 9
-example-commands.bat:55: lzmw -c -p %~dp0\example-commands.bat -x you -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:56: lzmw -c -p %~dp0\example-commands.bat -t you -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t you -ie "you|ping|\w+.txt" -L 30 -H 9
-example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x you -ie "you|ping|\w+.txt" -L 30 -H 9
-Matched 33 lines(15.49%) in 1 files(100%)
+example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e you.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text youanwhile
+example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e you.txt -H 9
+example-commands.bat:59: lzmw -c -p %~dp0\example-commands.bat -x you -L 20 -H 9
+example-commands.bat:60: lzmw -c -p %~dp0\example-commands.bat -x you -L 20 -ie you -H 9
+example-commands.bat:61: lzmw -c -p %~dp0\example-commands.bat -t you -L 20 -ie you -H 9
+example-commands.bat:62: lzmw -c -p %~dp0\example-commands.bat -x you -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:63: lzmw -c -p %~dp0\example-commands.bat -t you -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:64: lzmw -c -p %~dp0\example-commands.bat -t you -ie "you|ping|\w+.txt" -L 30 -H 9
+example-commands.bat:65: lzmw -c -p %~dp0\example-commands.bat -x you -ie "you|ping|\w+.txt" -L 30 -H 9
+Matched 33 lines(15.00%) in 1 files(100%)
 Return-Value = 33 : lzmw -c -p example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9 
 
 lzmw -c -p example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9 
-example-commands.bat:50: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile
-example-commands.bat:51: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e me.txt -H 9
-example-commands.bat:52: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
-example-commands.bat:53: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
-example-commands.bat:54: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
-example-commands.bat:55: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:56: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
-example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
-Matched 33 lines(15.49%) in 1 files(100%)
+example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile
+example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e me.txt -H 9
+example-commands.bat:59: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
+example-commands.bat:60: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
+example-commands.bat:61: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
+example-commands.bat:62: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:63: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:64: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
+example-commands.bat:65: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
+Matched 33 lines(15.00%) in 1 files(100%)
 Return-Value = 33 : lzmw -c -p example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9 
 
 lzmw -c -p example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9 
-example-commands.bat:50: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile
-example-commands.bat:51: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e me.txt -H 9
-example-commands.bat:52: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
-example-commands.bat:53: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
-example-commands.bat:54: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
-example-commands.bat:55: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:56: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
-example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
-Matched 33 lines(15.49%) in 1 files(100%)
+example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t t -L 9 -e me.txt -H 9       ## Coloring Regex-matched/Plain-found/Regex-enhance text meanwhile
+example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x t -L 9 -e me.txt -H 9
+example-commands.bat:59: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -H 9
+example-commands.bat:60: lzmw -c -p %~dp0\example-commands.bat -x me -L 20 -ie me -H 9
+example-commands.bat:61: lzmw -c -p %~dp0\example-commands.bat -t me -L 20 -ie me -H 9
+example-commands.bat:62: lzmw -c -p %~dp0\example-commands.bat -x me -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:63: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:64: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
+example-commands.bat:65: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
+Matched 33 lines(15.00%) in 1 files(100%)
 Return-Value = 33 : lzmw -c -p example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9 
 
 lzmw -c -p example-commands.bat -x name -o NAME -ie "name|come" -U 3 -D 3 -L 16 -H 9 
-example-commands.bat:56: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
-example-commands.bat:57: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
-example-commands.bat:58: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
-example-commands.bat:59: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -U 3 -D 3 -L 16 -H 9
-example-commands.bat:60: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -ie NAMEs -H 9
-example-commands.bat:61: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -T 1 -C
-example-commands.bat:62: lzmw -c -p %~dp0\example-commands.bat -it NAME -l
-example-commands.bat:63: lzmw -c -p %~dp0\sample-file.txt -it NAME -l
-example-commands.bat:64: lzmw -c -p %~dp0\example-commands.bat -t NAME -a -o NAME -ie NAMEs -b "come|NAME\w*" -Q "mailTo|Tag" -T 9
-Matched 24 lines(11.27%) in 1 files(100%)
+example-commands.bat:63: lzmw -c -p %~dp0\example-commands.bat -t me -o you -ie "you|txt|ping" -L 30 -H 9
+example-commands.bat:64: lzmw -c -p %~dp0\example-commands.bat -t me -ie "me|ping|\w+.txt" -L 30 -H 9
+example-commands.bat:65: lzmw -c -p %~dp0\example-commands.bat -x me -ie "me|ping|\w+.txt" -L 30 -H 9
+example-commands.bat:66: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -U 3 -D 3 -L 16 -H 9
+example-commands.bat:67: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -ie NAMEs -H 9
+example-commands.bat:68: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -T 1 -C
+example-commands.bat:69: lzmw -c -p %~dp0\example-commands.bat -it NAME -l
+example-commands.bat:70: lzmw -c -p %~dp0\sample-file.txt -it NAME -l
+example-commands.bat:71: lzmw -c -p %~dp0\example-commands.bat -t NAME -a -o NAME -ie NAMEs -b "come|NAME\w*" -Q "mailTo|Tag" -T 9
+Matched 24 lines(10.91%) in 1 files(100%)
 Return-Value = 24 : lzmw -c -p example-commands.bat -x name -o NAME -ie "name|come" -U 3 -D 3 -L 16 -H 9 
 
 lzmw -c -p example-commands.bat -t name -o NAME -ie Names -H 9 
-example-commands.bat:59: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -U 3 -D 3 -L 16 -H 9
-example-commands.bat:60: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -ie NAMEs -H 9
-example-commands.bat:61: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -T 1 -C
-example-commands.bat:62: lzmw -c -p %~dp0\example-commands.bat -it NAME -l
-example-commands.bat:63: lzmw -c -p %~dp0\sample-file.txt -it NAME -l
-example-commands.bat:64: lzmw -c -p %~dp0\example-commands.bat -t NAME -a -o NAME -ie NAMEs -b "come|NAME\w*" -Q "mailTo|Tag" -T 9
-example-commands.bat:66: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -T 3
-example-commands.bat:67: lzmw -c -p %~dp0\example-commands.bat -t NAME -o come -ie "NAME|come" -a -L 19 -H 9
-example-commands.bat:68: lzmw -c -p %~dp0\example-commands.bat -t NAME -a -o NAM -ie "NAME|come" -L 19 -H 9
-Matched 24 lines(11.27%) in 1 files(100%)
+example-commands.bat:66: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -U 3 -D 3 -L 16 -H 9
+example-commands.bat:67: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -ie NAMEs -H 9
+example-commands.bat:68: lzmw -c -p %~dp0\example-commands.bat -t NAME -o NAME -T 1 -C
+example-commands.bat:69: lzmw -c -p %~dp0\example-commands.bat -it NAME -l
+example-commands.bat:70: lzmw -c -p %~dp0\sample-file.txt -it NAME -l
+example-commands.bat:71: lzmw -c -p %~dp0\example-commands.bat -t NAME -a -o NAME -ie NAMEs -b "come|NAME\w*" -Q "mailTo|Tag" -T 9
+example-commands.bat:73: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -T 3
+example-commands.bat:74: lzmw -c -p %~dp0\example-commands.bat -t NAME -o come -ie "NAME|come" -a -L 19 -H 9
+example-commands.bat:75: lzmw -c -p %~dp0\example-commands.bat -t NAME -a -o NAM -ie "NAME|come" -L 19 -H 9
+Matched 24 lines(10.91%) in 1 files(100%)
 Return-Value = 24 : lzmw -c -p example-commands.bat -t name -o NAME -ie Names -H 9 
 
 lzmw -c -p example-commands.bat -t name -o NAME -T 1 -C 
-example-commands.bat:210: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000"  ## This is an expanded xml that has replaced NAME value settings.
-Matched 19 lines(8.92%) in 1 files(100%)
+example-commands.bat:217: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000"  ## This is an expanded xml that has replaced NAME value settings.
+Matched 19 lines(8.64%) in 1 files(100%)
 Return-Value = 19 : lzmw -c -p example-commands.bat -t name -o NAME -T 1 -C 
 
 lzmw -c -p example-commands.bat -it name -l 
 1-1 : example-commands.bat
-Matched 24 lines(11.27%) in 1 files(100%)
+Matched 24 lines(10.91%) in 1 files(100%)
 Return-Value = 24 : lzmw -c -p example-commands.bat -it name -l 
 
 lzmw -c -p sample-file.txt -it name -l 
@@ -545,69 +561,69 @@ Matched 10 lines(7.46%) in 1 files(100%)
 Return-Value = 10 : lzmw -c -p sample-file.txt -it name -l 
 
 lzmw -c -p example-commands.bat -t name -a -o NAME -ie Names -b "come|name\w*" -Q "mailTo|Tag" -T 9 
-example-commands.bat:116: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -t key -a
-example-commands.bat:117: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -t key -a -y
-example-commands.bat:118: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -a
-example-commands.bat:119: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -a -y
-example-commands.bat:120: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -a
-example-commands.bat:121: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -a -y
-example-commands.bat:122: lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" --nt Node3 -a
-example-commands.bat:207: lzmw -c -p %~dp0\sample-file.txt -b "<Tag NAME.*?Node1.*?>" -Q "</Tag>" -PA -e "#\S+?#"
-example-commands.bat:208: lzmw -c -p %~dp0\sample-file.txt -b "<Tag NAME.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
-Matched 7 blocks(87.50%) with 22 lines(10.33%) in 1 files(100%)
+example-commands.bat:123: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -t key -a
+example-commands.bat:124: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -t key -a -y
+example-commands.bat:125: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[" -a
+example-commands.bat:126: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -a -y
+example-commands.bat:127: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -a
+example-commands.bat:128: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -a -y
+example-commands.bat:129: lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" --nt Node3 -a
+example-commands.bat:214: lzmw -c -p %~dp0\sample-file.txt -b "<Tag NAME.*?Node1.*?>" -Q "</Tag>" -PA -e "#\S+?#"
+example-commands.bat:215: lzmw -c -p %~dp0\sample-file.txt -b "<Tag NAME.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
+Matched 7 blocks(87.50%) with 22 lines(10.00%) in 1 files(100%)
 Return-Value = 7 : lzmw -c -p example-commands.bat -t name -a -o NAME -ie Names -b "come|name\w*" -Q "mailTo|Tag" -T 9 
 
 lzmw -c -p example-commands.bat -it NOT -U 2 -e "SRC|DIR" -H 5 
-example-commands.bat:4: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t "\\\\" -o \\
-example-commands.bat:5: lzmw -c -z www.lz.text/temp.normal/samples/my.normal/my-stream.xml -x normal/ -t "(www.*)/([^/]+\.xml)\s*"
-example-commands.bat:6: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -H 0         # Check return value, output nothing
-example-commands.bat:7: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)$" -H 0            # Check return value, output nothing
-example-commands.bat:8: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\n$" -H 0          # Check return value, output nothing
-Matched 14 lines(6.57%) in 1 files(100%)
+example-commands.bat:11: lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End -l Should return 0
+example-commands.bat:12: 
+example-commands.bat:13: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -H 0         # Check return value, output nothing
+example-commands.bat:14: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)$" -H 0            # Check return value, output nothing
+example-commands.bat:15: lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\n$" -H 0          # Check return value, output nothing
+Matched 14 lines(6.36%) in 1 files(100%)
 Return-Value = 14 : lzmw -c -p example-commands.bat -it NOT -U 2 -e "SRC|DIR" -H 5 
 
 lzmw -c -p example-commands.bat -x name -o NAME -ie "name|come" -T 3 
-example-commands.bat:208: lzmw -c -p %~dp0\sample-file.txt -b "<Tag NAME.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
-example-commands.bat:209: (lzmw -c -p %~dp0\sample-file.txt -it "<NAME>(#.+?#)</NAME>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\""  -PAC | lzmw -t "^\s*(lzmw -x .*)" -o "$1 -p Node1.tmp -R -H 0" -PAC) |lzmw -XI -c Automatic extract macro and replace to real values.
-example-commands.bat:210: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000"  ## This is an expanded xml that has replaced NAME value settings.
-Matched 24 lines(11.27%) in 1 files(100%)
+example-commands.bat:215: lzmw -c -p %~dp0\sample-file.txt -b "<Tag NAME.*?Node1.*?>" -Q "</Tag>" -PIC > Node1.tmp
+example-commands.bat:216: (lzmw -c -p %~dp0\sample-file.txt -it "<NAME>(#.+?#)</NAME>\s*<value>(.+?)</value>" -S -o "lzmw -x \"$1\" -o \"$2\""  -PAC | lzmw -t "^\s*(lzmw -x .*)" -o "$1 -p Node1.tmp -R -H 0" -PAC) |lzmw -XI -c Automatic extract macro and replace to real values.
+example-commands.bat:217: lzmw -c -p Node1.tmp -PA -e ".All.|4000|8000"  ## This is an expanded xml that has replaced NAME value settings.
+Matched 24 lines(10.91%) in 1 files(100%)
 Return-Value = 24 : lzmw -c -p example-commands.bat -x name -o NAME -ie "name|come" -T 3 
 
 lzmw -c -p example-commands.bat -t name -o come -ie "name|come" -a -L 19 -H 9 
-example-commands.bat:19: lzmw -c -p %~dp0\sample-file.txt -L 7 -N 9 -t Not -U 2 -D 2
-example-commands.bat:20: lzmw -c -p %~dp0\sample-file.txt -it node --nt "node\d+"
-example-commands.bat:21: lzmw -c -p %~dp0\sample-file.txt -it node --nt "node\d+" -o "NODE"
-example-commands.bat:22: lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t "Node[13]" -a -L 20 -N 50 ## Must no blocks
-example-commands.bat:23: lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t "Node[13]" -a -L 20 -N 80 ## Must have only 1 block
-example-commands.bat:24: lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t "Node[13]" -a  ## Must have and only 2 blocks: Node1 and Node3
-example-commands.bat:25: lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t "Node[1-3]" -x Node2 -a ## Must have only Node2 block
-example-commands.bat:26: lzmw -c -p %~dp0\sample-file.txt -ib "^\s*<tag" -Q "^\s*</tag" --nt "Node[1-3]" -e "Node\d+"  ## Must no block to output
-example-commands.bat:27: lzmw -c -p %~dp0\sample-file.txt -b "^\s*<tag" -iQ "^\s*</tag" --nt "Node[1-3]"  ## Must no block to output
-Matched 24 lines(11.27%) in 1 files(100%)
+example-commands.bat:19: lzmw -c -p %~dp0 -f bat -l -PIC -H 0
+example-commands.bat:20: lzmw -c -p %~dp0 -l -f bat -H -2 # Should skip top 2 items.
+example-commands.bat:21: lzmw -c -p %~dp0 -l -f bat -T -2 # Should skip bottom 2 items.
+example-commands.bat:22: lzmw -c -p %~dp0 -l -f bat -H -2 --sz # Should skip top 2 items.
+example-commands.bat:23: lzmw -c -p %~dp0 -l -f bat -T -2 --wt # Should skip bottom 2 items.
+example-commands.bat:24: lzmw -c -p %~dp0 -l -f bat -H 2 --wt # Should show top 2 items.
+example-commands.bat:25: lzmw -c -p %~dp0 -l -f bat -T 2 # Should show bottom 2 items.
+example-commands.bat:26: lzmw -c -p %~dp0\sample-file.txt -L 7 -N 9 -t Not -U 2 -D 2
+example-commands.bat:27: lzmw -c -p %~dp0\sample-file.txt -it node --nt "node\d+"
+Matched 24 lines(10.91%) in 1 files(100%)
 Return-Value = 24 : lzmw -c -p example-commands.bat -t name -o come -ie "name|come" -a -L 19 -H 9 
 
 lzmw -c -p example-commands.bat -t name -a -o NAM -ie "name|come" -L 19 -H 9 
-example-commands.bat:19: lzmw -c -p %~dp0\sample-file.txt -L 7 -N 9 -t Not -U 2 -D 2
-example-commands.bat:20: lzmw -c -p %~dp0\sample-file.txt -it node --nt "node\d+"
-example-commands.bat:21: lzmw -c -p %~dp0\sample-file.txt -it node --nt "node\d+" -o "NODE"
-example-commands.bat:22: lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t "Node[13]" -a -L 20 -N 50 ## Must no blocks
-example-commands.bat:23: lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t "Node[13]" -a -L 20 -N 80 ## Must have only 1 block
-example-commands.bat:24: lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t "Node[13]" -a  ## Must have and only 2 blocks: Node1 and Node3
-example-commands.bat:25: lzmw -c -p %~dp0\sample-file.txt -b "^\s*<Tag" -Q "^\s*</Tag" -t "Node[1-3]" -x Node2 -a ## Must have only Node2 block
-example-commands.bat:26: lzmw -c -p %~dp0\sample-file.txt -ib "^\s*<tag" -Q "^\s*</tag" --nt "Node[1-3]" -e "Node\d+"  ## Must no block to output
-example-commands.bat:27: lzmw -c -p %~dp0\sample-file.txt -b "^\s*<tag" -iQ "^\s*</tag" --nt "Node[1-3]"  ## Must no block to output
-Matched 24 lines(11.27%) in 1 files(100%)
+example-commands.bat:19: lzmw -c -p %~dp0 -f bat -l -PIC -H 0
+example-commands.bat:20: lzmw -c -p %~dp0 -l -f bat -H -2 # Should skip top 2 items.
+example-commands.bat:21: lzmw -c -p %~dp0 -l -f bat -T -2 # Should skip bottom 2 items.
+example-commands.bat:22: lzmw -c -p %~dp0 -l -f bat -H -2 --sz # Should skip top 2 items.
+example-commands.bat:23: lzmw -c -p %~dp0 -l -f bat -T -2 --wt # Should skip bottom 2 items.
+example-commands.bat:24: lzmw -c -p %~dp0 -l -f bat -H 2 --wt # Should show top 2 items.
+example-commands.bat:25: lzmw -c -p %~dp0 -l -f bat -T 2 # Should show bottom 2 items.
+example-commands.bat:26: lzmw -c -p %~dp0\sample-file.txt -L 7 -N 9 -t Not -U 2 -D 2
+example-commands.bat:27: lzmw -c -p %~dp0\sample-file.txt -it node --nt "node\d+"
+Matched 24 lines(10.91%) in 1 files(100%)
 Return-Value = 24 : lzmw -c -p example-commands.bat -t name -a -o NAM -ie "name|come" -L 19 -H 9 
 
 lzmw -c -p example-commands.bat -x name -o NAME -ie "name|come" -t not -U 3 -D 3 
-example-commands.bat:66: lzmw -c -p %~dp0\example-commands.bat -x name -o NAME -ie "name|come" -T 3
-example-commands.bat:67: lzmw -c -p %~dp0\example-commands.bat -t name -o come -ie "name|come" -a -L 19 -H 9
-example-commands.bat:68: lzmw -c -p %~dp0\example-commands.bat -t name -a -o NAM -ie "name|come" -L 19 -H 9
-example-commands.bat:69: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -t not -U 3 -D 3
-example-commands.bat:70: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(Node1|Node2)\b" -Q "<MailAddress>|</Tag>" -e "MailTo" -t body -o BODY -a
-example-commands.bat:71: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(Node2)\b" -Q "<MailAddress>|</Tag>" -e MailTo -t body -o BODY -a
-example-commands.bat:72: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(\w+)\b" -Q "<MailAddress>|</Tag>" -t Node1 -e "<.?Tag.*?>" -a
-Matched 1 lines(0.47%) in 1 files(100%)
+example-commands.bat:73: lzmw -c -p %~dp0\example-commands.bat -x name -o NAME -ie "name|come" -T 3
+example-commands.bat:74: lzmw -c -p %~dp0\example-commands.bat -t name -o come -ie "name|come" -a -L 19 -H 9
+example-commands.bat:75: lzmw -c -p %~dp0\example-commands.bat -t name -a -o NAM -ie "name|come" -L 19 -H 9
+example-commands.bat:76: lzmw -c -p %~dp0\example-commands.bat -x NAME -o NAME -ie "NAME|come" -t not -U 3 -D 3
+example-commands.bat:77: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(Node1|Node2)\b" -Q "<MailAddress>|</Tag>" -e "MailTo" -t body -o BODY -a
+example-commands.bat:78: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(Node2)\b" -Q "<MailAddress>|</Tag>" -e MailTo -t body -o BODY -a
+example-commands.bat:79: lzmw -c -p %~dp0\sample-file.txt -ib "<Tag Name.*?\b(\w+)\b" -Q "<MailAddress>|</Tag>" -t Node1 -e "<.?Tag.*?>" -a
+Matched 1 lines(0.45%) in 1 files(100%)
 Return-Value = 1 : lzmw -c -p example-commands.bat -x name -o NAME -ie "name|come" -t not -U 3 -D 3 
 
 lzmw -c -p sample-file.txt -ib "<Tag Name.*?\b(Node1|Node2)\b" -Q "<MailAddress>|</Tag>" -e "MailTo" -t body -o BODY -a 
@@ -673,20 +689,20 @@ Matched 1 blocks(33.33%) with 3 lines(2.24%) in 1 files(100%)
 Return-Value = 1 : lzmw -c -p sample-file.txt -ib "<Tag Name.*?\b(\w+)\b" -Q "<MailAddress>|</Tag>" -t Node1 -e "<.?Tag.*?>" -a 
 
 lzmw -c -p example-commands.bat -it name -o NAME -e Names -x update 
-example-commands.bat:73: lzmw -c -p %~dp0\example-commands.bat -it NAME -o NAME -e NAMEs -x update
-example-commands.bat:75: lzmw -c -p %~dp0\example-commands.bat -ix update -t NAME -e NAMEs
-Matched 2 lines(0.94%) in 1 files(100%)
+example-commands.bat:80: lzmw -c -p %~dp0\example-commands.bat -it NAME -o NAME -e NAMEs -x update
+example-commands.bat:82: lzmw -c -p %~dp0\example-commands.bat -ix update -t NAME -e NAMEs
+Matched 2 lines(0.91%) in 1 files(100%)
 Return-Value = 2 : lzmw -c -p example-commands.bat -it name -o NAME -e Names -x update 
 
 lzmw -c -p example-commands.bat -it name -e Names -x nameX 
-example-commands.bat:74: lzmw -c -p %~dp0\example-commands.bat -it name -e Names -x nameX
-Matched 1 lines(0.47%) in 1 files(100%)
+example-commands.bat:81: lzmw -c -p %~dp0\example-commands.bat -it name -e Names -x nameX
+Matched 1 lines(0.45%) in 1 files(100%)
 Return-Value = 1 : lzmw -c -p example-commands.bat -it name -e Names -x nameX 
 
 lzmw -c -p example-commands.bat -ix update -t name -e Names 
-example-commands.bat:73: lzmw -c -p %~dp0\example-commands.bat -it name -o NAME -e Names -x update
-example-commands.bat:75: lzmw -c -p %~dp0\example-commands.bat -ix update -t name -e Names
-Matched 2 lines(0.94%) in 1 files(100%)
+example-commands.bat:80: lzmw -c -p %~dp0\example-commands.bat -it name -o NAME -e Names -x update
+example-commands.bat:82: lzmw -c -p %~dp0\example-commands.bat -ix update -t name -e Names
+Matched 2 lines(0.91%) in 1 files(100%)
 Return-Value = 2 : lzmw -c -p example-commands.bat -ix update -t name -e Names 
 
 lzmw -c -p sample-file.txt -ib "<Tag name" -q "Switch" -Q "</Tag" -t MailTo -e Switch 
@@ -827,10 +843,10 @@ Matched 1 lines(33.33%) in 1 files(100%)
 Return-Value = 1 : lzmw -c -p sample-file.txt -F "(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:00" -E "2012-12-27 00:03" -it first 
 
 lzmw -c -p example-commands.bat -x " -B" -t ".*?(\d+\S+ \d+[\d:]+).*" 
-example-commands.bat:80: lzmw -c -p %~dp0\sample-file.txt -t "^(\d+-\d+-\d+)" -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:03"
-example-commands.bat:84: lzmw -c -p %~dp0\sample-file.txt -t "^(\d+-\d+-\d+)" -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:00" -E "2012-12-27 00:03"
-example-commands.bat:85: lzmw -c -p %~dp0\sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:00" -E "2012-12-27 00:03" -it first
-Matched 3 lines(1.41%) in 1 files(100%)
+example-commands.bat:87: lzmw -c -p %~dp0\sample-file.txt -t "^(\d+-\d+-\d+)" -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:03"
+example-commands.bat:91: lzmw -c -p %~dp0\sample-file.txt -t "^(\d+-\d+-\d+)" -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:00" -E "2012-12-27 00:03"
+example-commands.bat:92: lzmw -c -p %~dp0\sample-file.txt -F "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -B "2012-12-27 00:00" -E "2012-12-27 00:03" -it first
+Matched 3 lines(1.36%) in 1 files(100%)
 Return-Value = 3 : lzmw -c -p example-commands.bat -x " -B" -t ".*?(\d+\S+ \d+[\d:]+).*" 
 
 lzmw -c -p sample-file.txt -s "^(\d+-\d+-\d+ [\d:]+(\.\d+)?)" -it 2012 
@@ -861,26 +877,26 @@ Matched 5 lines(3.73%) in 1 files(100%)
 Return-Value = 5 : lzmw -c -p sample-file.txt -t "((((((\d+\D\d+\D\d+[\D\s]*\d+:\d+:\d+))))))(\S*)" -s "\d+\D\d+\D\d+[\D\s]*\d+:\d+:\d+" -e "\d+|(\w+)\s+line" --dsc 
 
 lzmw -c -p example-commands.bat -it "\w+" -H 0       ## Must NOT out any matched. 
-Matched 195 lines(91.55%) in 1 files(100%)
-Return-Value = 195 : lzmw -c -p example-commands.bat -it "\w+" -H 0       ## Must NOT out any matched. 
+Matched 199 lines(90.45%) in 1 files(100%)
+Return-Value = 199 : lzmw -c -p example-commands.bat -it "\w+" -H 0       ## Must NOT out any matched. 
 
 lzmw -c -p example-commands.bat -it "\w+" -T 0       ## Must NOT out any matched. 
-Matched 195 lines(91.55%) in 1 files(100%)
-Return-Value = 195 : lzmw -c -p example-commands.bat -it "\w+" -T 0       ## Must NOT out any matched. 
+Matched 199 lines(90.45%) in 1 files(100%)
+Return-Value = 199 : lzmw -c -p example-commands.bat -it "\w+" -T 0       ## Must NOT out any matched. 
 
 lzmw -c -p example-commands.bat -it just -U 3 -D 3 
 example-commands.bat:1: ::Just run windows-test.bat which calls this file, or run this file directly, you will get a vivid sense of lzmw.
 example-commands.bat:2: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -x \ -o \\
 example-commands.bat:3: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t \\ -o \\
 example-commands.bat:4: lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t "\\\\" -o \\
-example-commands.bat:89: lzmw -c -p %~dp0\sample-file.txt -t "^((((((\d+\D\d+\D\d+[\D\s]*\d+:\d+:\d+))))))(\S*)" -s "^\d+\D\d+\D\d+[\D\s]*\d+:\d+:\d+" -e "\d+|(\w+)\s+line" --dsc
-example-commands.bat:90: lzmw -c -p %~dp0\example-commands.bat -it "\w+" -H 0       ## Must NOT out any matched.
-example-commands.bat:91: lzmw -c -p %~dp0\example-commands.bat -it "\w+" -T 0       ## Must NOT out any matched.
-example-commands.bat:92: lzmw -c -p %~dp0\example-commands.bat -it just -U 3 -D 3
-example-commands.bat:93: lzmw -c -p %~dp0\sample-file.txt -it "\W(function)\W" -e "name=(\S+)"
-example-commands.bat:94: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 92
-example-commands.bat:95: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 93
-Matched 2 lines(0.94%) in 1 files(100%)
+example-commands.bat:96: lzmw -c -p %~dp0\sample-file.txt -t "^((((((\d+\D\d+\D\d+[\D\s]*\d+:\d+:\d+))))))(\S*)" -s "^\d+\D\d+\D\d+[\D\s]*\d+:\d+:\d+" -e "\d+|(\w+)\s+line" --dsc
+example-commands.bat:97: lzmw -c -p %~dp0\example-commands.bat -it "\w+" -H 0       ## Must NOT out any matched.
+example-commands.bat:98: lzmw -c -p %~dp0\example-commands.bat -it "\w+" -T 0       ## Must NOT out any matched.
+example-commands.bat:99: lzmw -c -p %~dp0\example-commands.bat -it just -U 3 -D 3
+example-commands.bat:100: lzmw -c -p %~dp0\sample-file.txt -it "\W(function)\W" -e "name=(\S+)"
+example-commands.bat:101: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 92
+example-commands.bat:102: lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -N 93
+Matched 2 lines(0.91%) in 1 files(100%)
 Return-Value = 2 : lzmw -c -p example-commands.bat -it just -U 3 -D 3 
 
 lzmw -c -p sample-file.txt -it "\W(function)\W" -e "name=(\S+)" 
@@ -1914,24 +1930,24 @@ Replaced 1 lines(7.14%) in 1 files(100%)
 </Tag>
 
 
-.\base-test-only-output-replaced-lines.log:68: Replaced 1 lines(0.47%) in 1 files(100%)
-.\base-test-only-output-replaced-lines.log:214: Replaced 1 lines(0.47%) in 1 files(100%)
-.\base-test-only-output-replaced-lines.log:265: Replaced 2 lines(0.94%) in 1 files(100%)
+.\base-test-only-output-replaced-lines.log:68: Replaced 1 lines(0.45%) in 1 files(100%)
+.\base-test-only-output-replaced-lines.log:214: Replaced 1 lines(0.45%) in 1 files(100%)
+.\base-test-only-output-replaced-lines.log:265: Replaced 2 lines(0.91%) in 1 files(100%)
 .\base-test-only-output-replaced-lines.log:19: Replaced 4 lines(2.99%) in 1 files(100%)
 .\base-test-only-output-replaced-lines.log:883: Replaced 4 lines(2.99%) in 1 files(100%)
 .\base-test-only-output-replaced-lines.log:639: Replaced 3 lines(3.23%) in 1 files(100%)
-.\base-windows-file-test.log:1892: Replaced 1 lines(7.14%) in 1 files(100%)
-.\base-windows-file-test.log:1896: Replaced 1 lines(7.14%) in 1 files(100%)
-.\base-windows-file-test.log:1900: Replaced 1 lines(7.14%) in 1 files(100%)
-.\base-test-only-output-replaced-lines.log:157: Replaced 19 lines(8.92%) in 1 files(100%)
+.\base-windows-file-test.log:1908: Replaced 1 lines(7.14%) in 1 files(100%)
+.\base-windows-file-test.log:1912: Replaced 1 lines(7.14%) in 1 files(100%)
+.\base-windows-file-test.log:1916: Replaced 1 lines(7.14%) in 1 files(100%)
+.\base-test-only-output-replaced-lines.log:157: Replaced 19 lines(8.64%) in 1 files(100%)
 .\base-test-only-output-replaced-lines.log:403: Replaced 10 lines(10.00%) in 1 files(100%)
 .\base-test-only-output-replaced-lines.log:652: Replaced 10 lines(10.00%) in 1 files(100%)
 .\base-test-only-output-replaced-lines.log:668: Replaced 10 lines(10.00%) in 1 files(100%)
-.\base-test-only-output-replaced-lines.log:139: Replaced 24 lines(11.27%) in 1 files(100%)
-.\base-test-only-output-replaced-lines.log:152: Replaced 24 lines(11.27%) in 1 files(100%)
-.\base-test-only-output-replaced-lines.log:177: Replaced 24 lines(11.27%) in 1 files(100%)
-.\base-test-only-output-replaced-lines.log:190: Replaced 24 lines(11.27%) in 1 files(100%)
-.\base-test-only-output-replaced-lines.log:203: Replaced 24 lines(11.27%) in 1 files(100%)
+.\base-test-only-output-replaced-lines.log:139: Replaced 24 lines(10.91%) in 1 files(100%)
+.\base-test-only-output-replaced-lines.log:152: Replaced 24 lines(10.91%) in 1 files(100%)
+.\base-test-only-output-replaced-lines.log:177: Replaced 24 lines(10.91%) in 1 files(100%)
+.\base-test-only-output-replaced-lines.log:190: Replaced 24 lines(10.91%) in 1 files(100%)
+.\base-test-only-output-replaced-lines.log:203: Replaced 24 lines(10.91%) in 1 files(100%)
 .\base-test-only-output-replaced-lines.log:583: Replaced 12 lines(11.88%) in 1 files(100%)
 .\base-test-only-output-replaced-lines.log:552: Replaced 13 lines(12.87%) in 1 files(100%)
 Matched 46 lines(0.67%) in 2 files(28.57%)

@@ -3,6 +3,13 @@ lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -x \ -o \\
 lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t \\ -o \\
 lzmw -c -z "c:\Program Files\LLVM\bin\clang.exe" -t "\\\\" -o \\
 lzmw -c -z www.lz.text/temp.normal/samples/my.normal/my-stream.xml -x normal/ -t "(www.*)/([^/]+\.xml)\s*"
+
+lzmw -c -p %~dp0\sample-file.txt -b No-Such-Block-Begin -Q No-Such-Block-End  Should return 0
+lzmw -c -p %~dp0\sample-file.txt -b No-Such-Block-Begin -Q No-Such-Block-End -l Should return 0
+
+lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End Should return 0
+lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End -l Should return 0
+
 lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\s*$" -H 0         # Check return value, output nothing
 lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)$" -H 0            # Check return value, output nothing
 lzmw -c -p %~dp0\sample-file.txt -S -t "^(.+\S+)\n$" -H 0          # Check return value, output nothing
