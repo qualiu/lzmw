@@ -12,49 +12,13 @@ Specified_Test_Number=$1
 
 ThisDir="$( cd "$( dirname "$0" )" && pwd )"
 cd "$(dirname $0)"
-if [ -n "$(uname -o | grep -ie Cygwin)" ]; then
-    lzmw=$ThisDir/lzmw.cygwin
-elif [ -n "$(uname -o | grep -ie Linux)" ]; then
-    if [ -n "$(uname -m | grep 64)" ]; then
-        lzmw=$ThisDir/lzmw.gcc48
-    else
-        lzmw=$ThisDir/lzmw-i386.gcc48
-    fi
-else
-    echo "Unknown system type: $(uname -a)"
+cd $ThisDir
+lzmw=$(bash $ThisDir/get-exe-path.sh lzmw 1)
+nin=$(bash $ThisDir/get-exe-path.sh nin 1)
+if [ ! -f "$lzmw" ] || [ ! -f "$nin" ]; then
+    echo "Not found lzmw or nin as above." >&2
     exit -1
 fi
-
-if [ -f "$lzmw" ]; then
-    chmod +x $lzmw
-elif [ -n "$(whereis lzmw 2>/dev/null)" ]; then
-    lzmw=$(whereis lzmw | sed -r 's/.*?:\s*(\S+).*/\1/')
-elif [ -n "$(alias lzmw)" ]; then
-    lzmw=$(alias lzmw | sed -r 's/.*?=\s*(\S+).*/\1/')
-else
-    lzmw=$ThisDir/$(basename $lzmw)
-    if [ !-f "$lzmw" ]; then
-        echo "Not exist lzmw nor $lzmw"
-        exit /b -1
-    fi
-    chmod +x $lzmw
-fi
-
-nin=$(echo $lzmw | sed -r 's/lzmw([^/]*)$/nin\1/')
-if [ -f "$nin" ]; then
-    chmod +x $nin
-else
-    nin=$(basename $nin)
-    if [ !-f "$nin" ]; then
-        echo "Not exist nin nor $nin"
-        exit /b -1
-    fi
-fi
-
-alias lzmw=$lzmw
-alias nin=$nin
-
-cd $ThisDir
 
 cp -ap sample-file.txt sample-test-restore.txt  >/dev/null
 unix2dos sample-test-restore.txt 2>/dev/null

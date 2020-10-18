@@ -55,8 +55,8 @@ Get difference-set(not-in-latter) for first file/pipe; Or intersection-set with 
   --nx arg                     Line must not contain normal/plain text: Exclude/Skip rows.
   -t [ --text-match ] arg      Regex pattern for line text must match (Can use meanwhile: -t, -x, --nt, --nx). Use -t value to filter even if used -e.
   --nt arg                     Regex pattern for lines must not match: Exclude/Skip rows.
-  -e [ --enhance ] arg         Regex pattern to enhance text, inferior to: -t -x, used merged Regex value of "(-t)|-e" to enhance if used both -t and -e.
-  --verbose                    Show parsed arguments, return value, time zone and EXE path, etc.
+  -e [ --enhance ] arg         Regex pattern to color text, inferior to: -t -x. Use merged Regex value of "(-t)|-e" to enhance if used both -t and -e.
+  --verbose                    Show parsed arguments, return value, time zone, BOM rows and EXE path, etc.
   -h [ --help ]                See usage and examples below. More detail: https://github.com/qualiu/msr
 
 Usage: nin  File1-or-pipe  File2-or-nul  [Regex-capture1-pattern-1]  [Regex-capture1-pattern-2]  [Options like: -i -u -m -w -H 2 -t xxx --nt xxx]
@@ -103,15 +103,15 @@ nin -h -C | nin nul "^\s{2}-(\w)\s+" -wpdi -k 2 -K 5.0 -P : Get percentages of n
 One limitation: Cannot process Unicode files or pipe for now; Fine with UTF-8/ANSI/etc.
 
 With msr.exe more powerful to load files/read pipe, extract/transform, pre/post-processing: https://github.com/qualiu/msr
-For example: Remove/Display/Remove+Merge duplicate path in %PATH% and merge to new %PATH%:
-    msr -z "%PATH%" -t "\\*\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui
-    msr -z "%PATH%" -t "\\*\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -uipd -H 9
-    msr -z "%PATH%" -t "\\*\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui -PAC | msr -S -t "[\r\n]+(\S+)" -o ";$1" -aPAC | msr -S -t "\s+$" -o "" -aPAC
+For example: Get unique paths insensitive case + Show only top duplicate paths + Get one line paths without redundant slashes + separators from %PATH% to merge/set to new %PATH%:
+    msr -z "%PATH%;" -t "\\*?\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui
+    msr -z "%PATH%;" -t "\\*?\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -uipd -k 2
+    msr -z "%PATH%;" -t "\\*?\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui -PAC | msr -S -t "[\r\n]+(\S+)" -o ";\1" -aPAC 
 
-And search usage like: nin | msr -it return.*value  or  nin -hC | msr -it "summary.*stdout|jump out"  or  nin | msr -it switch -U 2 -D 2 -e latter
+And search usage like: nin -h | msr -i -t return.*value  or  nin -hC | msr -it "Summary|Jump|Sort" -x out -U 2 -D2  or  nin | msr -ix switch -t Regex -e "latter|first" 
 
 As a portable cross platform tool, nin has been running on: Windows / Cygwin / Ubuntu / CentOS / Fedora
-Any good ideas please to : QQ : 94394344 , aperiodic updates and docs on https://github.com/qualiu/msr , more tools/examples see: https://github.com/qualiu/msrTools
+Aperiodic updates and docs: https://github.com/qualiu/msr , more tools/examples see: https://github.com/qualiu/msrTools
 Call@Everywhere: Add to system environment variable PATH with nin.exe parent directory: D:\lztool
 	 or temporarily: SET "PATH=%PATH%;D:\lztool"
 	 or rudely but simple and permanent: copy D:\lztool\nin.exe C:\WINDOWS\
@@ -138,7 +138,7 @@ Match/Search/Replace String/Lines/Blocks in Command/Files/Pipe. (IGNORE case of 
   --xf                        Exclude/Skip link files.
   -G [ --read-once ]          Read once for link files (link folders must be or under input paths) which multiple paths link to one real path.
   -i [ --ignore-case ]        Ignore case of matching/replacing for -t/-x/-e . You can add to one of them like: -it/-ix/-ie .
-  -e [ --enhance ] arg        Regex pattern to enhance text (just add color from some text), inferior to : -t -x -o.
+  -e [ --enhance ] arg        Regex pattern to add color to output text, inferior to : -t -x -o (skip if matched by them).
   -o [ --replace-to ] arg     Replace text from -x/-t XXX to -o XXX. If used both -x and -t: Use the closer one to '-o'; Or the left one if same.
   -j [ --out-replaced ]       Just output replaced lines by -o xxx (just show changed files + lines which is helpful to preview changes).
   -a [ --out-all ]            Output all lines including not matched; Or each whole block range if used -b and -Q.
@@ -150,9 +150,9 @@ Match/Search/Replace String/Lines/Blocks in Command/Files/Pipe. (IGNORE case of 
   -O [ --out-if-did ]         Output summary info only if matched/replaced/found.
   -C [ --no-color ]           No color effect for output (Can ignore color on Windows. For Linux it's better to without color if has latter matching).
   -Z [ --skip-last-empty ]    Skip last empty line in each file.
-  -F [ --time-format ] arg    Regex pattern to grep time for -B and -E , will use captured group[1] if has, else group[0].
-  -B [ --time-begin ] arg     Begin time, format like "2013-01-10 11:00:00". Just text comparison NOT time.
-  -E [ --time-end ] arg       End time, format like "2013-01-10 15:30". Just text comparison NOT time.
+  -F [ --time-format ] arg    Regex pattern to grep time/key for -B and -E : Use captured group[0] or [1] like: "(\d{4}-\d+-\d+\D\d+:\d+:\d+([\.,]\d+)?)"
+  -B [ --time-begin ] arg     Begin time/key, format like "2013-01-10 11:00:00". Just text comparison NOT by time value (if -F XXX is a time pattern).
+  -E [ --time-end ] arg       End time/key, format like "2013-01-10 15:30". Just text comparison NOT by time value (if -F XXX is a time pattern).
   -s [ --sort-by ] arg        Regex pattern to sort result lines by captured group[1] if has, else by group[0]. If set to "" will try groups from -t .
   -n [ --sort-as-number ]     If has used -s : Convert to number or decimal at first then sort the captured group[1] or group[0] of -s .
   --dsc                       Descending order for sorting of matching (-t/-x), list(-l with --wt --sz), sorting-key (-s), time (-F with -B -E), etc.
@@ -187,7 +187,7 @@ Match/Search/Replace String/Lines/Blocks in Command/Files/Pipe. (IGNORE case of 
   --verbose                   Show parsed arguments, return value, time zone and EXE path, content error rows, BOM infos, link files' real paths, etc.
   -m [ --show-count ]         Show matched count at each output line head.
   -u [ --show-elapse ]        Show used time at output line head.
-  -v [ --show-time ] arg      Show time at each output line head: s,dz,dzs,dzo (s = second, m = millisecond, o = microsecond; d = date, z = zone, t = offset).
+  -v [ --show-time ] arg      Show time at each output line head: dt,dtm,dzo (s = second, m = millisecond, o = microsecond; d = date, z = zone, t = offset).
   -h [ --help ]               See usage and examples below. More detail: https://github.com/qualiu/lzmw
 
 Return value/Exit code(%ERRORLEVEL%) = matched/replaced count of lines/blocks/files in files or pipe.
@@ -195,13 +195,13 @@ But if Return value = 0 and caught N errors, will set Return value = -N which is
 If used -X(--execute-out-lines): Return value = non-zero-return-count if executed commands count > 1; Return value = One command line return value if executed count = 1.
 All error messages will be output to stderr . You can redirect them to stdout by appending 2>&1 to your command line.
 
-Detail instruction and examples ( Quick-Start at bottom is more brief ):
+Detail instruction and examples ( Quick-Start at bottom is briefer ):
 (1) Skip/Stop reading + Arbitrary block matching: Helpful to read/extract pipe or large files or extract/replace XML/Json/INI files etc.
     -L/-N: set row ranges for a pipe or each file: line number begin and end.
     -b/-q: set row ranges by begin/end Regex pattern; -q stops immediately for a pipe or each file. 
     -b/-Q: set begin/end Regex pattern to match multiple arbitrary blocks in pipe or each file, with -a to output each entire block.
-    -L/-b and -N/-Q/-q can all be used at same time, contains the boundary which begin and end line.
-    Special meaning of --nt/--nx for block matching(-b + -Q): --nt and --nx exclude a block if one of it's lines matches one of them.
+    -L/-b and -N/-Q/-q can all be used at same time, contains the boundary which are begin and end lines.
+    Special meaning of --nt/--nx for block matching(-b + -Q): --nt and --nx exclude a block if one of its lines matches one of them.
     Special meaning of -S for block matching: -S just has 'single line' meaning for each block, other than whole text in each file or pipe.
     -B and -E only textually/literally compare with time text matched by -F XXX , not parse the text of -B and -E to time then compare.
     If replacing files, -R (--replace-file) will replace matched text + just copy the lines out of -L/-b and -N/-Q/-q.
@@ -241,13 +241,13 @@ Detail instruction and examples ( Quick-Start at bottom is more brief ):
 
 Additional feature: Directly read and match text by -z (--string instead of using echo command on Windows which must escape | to ^|  in for-loop)
     Example: Finding non-exist paths in %PATH% and only check 3 head(top) + 3 tail(bottom) paths:
-    lzmw -z "%PATH%" -t "\s*;\s*" -o "\n" -PAC | lzmw -t .+ -o "if not exist \"$0\" echo NOT EXIST $0"  -PI -H 3 -T 3 -X
+    lzmw -z "%PATH%;" -t "\s*;\s*" -o "\n" -PAC | lzmw -t .+ -o "if not exist \"$0\" echo NOT EXIST $0"  -PI -H 3 -T 3 -X
 
 Example-1 : Recursively find text by Regex in files, ignore case, dive in 9 layers at max, only list files + count:
     D:\lztool\lzmw.exe --recursive --path "%APPDATA%, %TMP%" --file-match "\.(bat|cmd)$" --text-match "^\s*set\s+(\w+)=(.+)" --ignore-case --max-depth 9 --list-count
 
 Example-2 : Find error in log files : row text (contain time) start matching(-t xxx) from -B xxx with given format(-F xxx); last-write-time between [--w1,--w2]
-    lzmw -rp /var/log/,/tmp/log/ -f "\.log$" -F "^(\d{2,4}-\d+-\d+ [\d+:]+(\D\d+)?)" -B "2013-03-12 14" -i -t "\b(error|fail|fatal|exception)"  --w1 2013-03-12 --w2 "2013-03-13 09"
+    lzmw -rp /var/log/,/tmp/log/ -f "\.log$" -F "^(\d{4}-\d+-\d+\D\d+:\d+:\d+([\.,]\d+)?)" -B "2013-03-12 14" -i -t "\b(error|fail|fatal|exception)"  --w1 2013-03-12 --w2 "2013-03-13 09"
 
 Example-3 : Recursively(-r) replace-file(-R) : IP tail in <SQL> or <Connection>; Only in xxx-test directory skip Prod-xxx; Skip rows>=200 for each file; Backup(-K) if changed.
     lzmw -rp  .  -f "\.xml$" -d "\w+-test$" --nd "Prod-\w+" -b "^\s*<SQL|Connection>" -Q "^\s*</(SQL|Connection)>" -N 200 -it "(\d{1,3})\.(\d{1,3})\.\d{1,3}\.\d{1,3}" -o "${1}.$2.192.203" -RK 
@@ -268,10 +268,10 @@ Example-8 : Get 2 oldest and newest mp3 (4 files) which 3.0MB<=size<=9.9MB and s
     lzmw -l --wt -H 2 -T 2 -f "\.mp3$" --sz --s1 3.0MB --s2 9.9m
 
 Example-9 : Find files in %PATH% environment variable: such as ATL*.dll, 2 methods: 
-    for /f "tokens=*" %d in ('lzmw -z "%PATH%" -t "([^;]+);*" -o "$1\n" -PAC ^| lzmw -t "\\\s*$" -o "" -aPAC') do @lzmw -l --wt --sz -p "%d" -f "^ATL.*\.dll$" -O 2>nul
-    lzmw -l --wt --sz -p "%PATH%" -f "^ATL.*\.dll$" -M 2>nul
+    for /f "tokens=*" %d in ('lzmw -z "%PATH%;" -t "([^;]+);*" -o "$1\n" -PAC ^| lzmw -t "\\\s*$" -o "" -aPAC') do @lzmw -l --wt --sz -p "%d" -f "^ATL.*\.dll$" -O 2>nul
+    lzmw -l --wt --sz -p "%PATH%;" -f "^ATL.*\.dll$" -M 2>nul
 
-All options/switches are optional + no order + effective mean while, but case sensitive.
+All options/switches are optional + no order + effective meanwhile, but case sensitive.
 Can merge single char switches/options+values like: -rp -it -ix -PIC -PAC -POC -PIOCcl -PICc -PICcl , -mu -v zod, -muvzod, -uvz
 Useful options : -a, -H 3, -H 3 -J, -H 0, -T 3, -T -1, -M, -O, -PAC, -PIC, -POC, -POlCc, -XI, -XIP, -XA, -XO, -XOPI, -muvz, 2>&1, 2>nul (2^>nul in pipe)
 Like watching time/elapsed/matched (-muvzd): lzmw | lzmw -it show -v zdo -u -m
@@ -300,8 +300,8 @@ Helpful commands - Just 1 command line: Preview replacing just remove -R
 (A) Replace batch files on Windows: Turn on all ECHO/echo to debug scripts and skip junk folders when searching files:
     lzmw -rp path1,path2 -f "\.(bat|cmd)$" -it "^(\s*@?\s*echo)\s+off\b" -o "$1 on" -R --nd "^([\.\$]|(Release|Debug|objd?|bin|node_modules|static|dist|target|(Js)?Packages|\w+-packages?)$|__pycache__)"
 (B) Show a command line -> Execute -> Show return value with begin+end+cost times no summary -> echo No results+errors if return = 0; If return != 0: echo Found N results or Caught N errors if N < 0:
-    echo lzmw -p "%PATH%" -f "\.(bat|cmd|sh|bash)$" -t "^\s*(SET|export)\s+(\w+)=(.+)" -ix HOME -H 5 | lzmw -X -M && echo No results found and no errors: No non-exists paths in this case.
-    echo lzmw -p "%PATH%" -f "\.(bat|cmd|sh|bash)$" -t "^\s*(SET|export)\s+(\w+)=(.+)" -ix HOME -H 5 | lzmw -X -M || echo Found %ERRORLEVEL% results or Caught %ERRORLEVEL% errors no results if negative return.
+    echo lzmw -p "%PATH%;" -f "\.(bat|cmd|sh|bash)$" -t "^\s*(SET|export)\s+(\w+)=(.+)" -ix HOME -H 5 | lzmw -X -M && echo No results found and no errors: No non-exists paths in this case.
+    echo lzmw -p "%PATH%;" -f "\.(bat|cmd|sh|bash)$" -t "^\s*(SET|export)\s+(\w+)=(.+)" -ix HOME -H 5 | lzmw -X -M || echo Found %ERRORLEVEL% results or Caught %ERRORLEVEL% errors no results if negative return.
 (C) Get precise time of now and set to %TimeNow-XXX% variable for latter commands: Now time = 2018-06-08 09:15:20.524577 +0800 CST = China Standard Time
     for /f "tokens=*" %a in ('lzmw -hC ^| lzmw -t ".*Now time = (\d+\S+) (\d+[:\d]+)\.(\d{3})(\d*)\s+([-\+]\d+)?\s*(\w+)?.*" -o "\1 \2" -PAC') do SET "TimeNowInSecond=%a"
     for /f "tokens=*" %a in ('lzmw -hC ^| lzmw -t ".*Now time = (\d+\S+) (\d+[:\d]+)\.(\d{3})(\d*)\s+([-\+]\d+)?\s*(\w+)?.*" -o "\1 \2.\3" -PAC') do SET "TimeNowMillisecond=%a"
@@ -336,9 +336,9 @@ Final brief instruction as Quick-Start: Use -PAC or -PIC to get pure output resu
 Search usage like: lzmw -h -C | lzmw -i -t block.*match  or  lzmw | lzmw -it "max.*?depth|Full.*?path|jump out" -U 2 -D2  or  lzmw | lzmw -ix File -t "Preview|Replace|Execute" -e "Change|Backup|Command"
 With nin.exe more powerful to remove duplication, get exclusive/mutual key/line set, top distribution: https://github.com/qualiu/lzmw
 For example: Get unique paths insensitive case + Show only top duplicate paths + Get one line paths without redundant slashes + separators from %PATH% to merge/set to new %PATH%:
-    lzmw -z "%PATH%" -t "\\*?\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui
-    lzmw -z "%PATH%" -t "\\*?\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -uipd -k 2
-    lzmw -z "%PATH%" -t "\\*?\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui -PAC | lzmw -S -t "[\r\n]+(\S+)" -o ";\1" -aPAC 
+    lzmw -z "%PATH%;" -t "\\*?\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui
+    lzmw -z "%PATH%;" -t "\\*?\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -uipd -k 2
+    lzmw -z "%PATH%;" -t "\\*?\s*;\s*" -o "\n" -aPAC | nin nul "(\S+.+)" -ui -PAC | lzmw -S -t "[\r\n]+(\S+)" -o ";\1" -aPAC 
 
 As a portable cross platform tool, lzmw has been running on: Windows / Cygwin / Ubuntu / CentOS / Fedora
 Aperiodic updates and docs: https://github.com/qualiu/lzmw , more tools/examples see: https://github.com/qualiu/lzmwTools
