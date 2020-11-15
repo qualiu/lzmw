@@ -5,10 +5,10 @@ set ThisDir=%~dp0
 if %ThisDir:~-1% == \ set ThisDir=%ThisDir:~0,-1%
 set ThisScript=%~dp0%~nx0
 
-where msr.exe 2>nul >nul || if not exist %ThisDir%\msr.exe powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://github.com/qualiu/msr/blob/master/tools/msr.exe?raw=true -OutFile %ThisDir%\msr.exe"
-where msr.exe 2>nul >nul || set "PATH=%ThisDir%;%PATH%"
+where lzmw.exe 2>nul >nul || if not exist %ThisDir%\lzmw.exe powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/lzmw.exe?raw=true -OutFile %ThisDir%\lzmw.exe"
+where lzmw.exe 2>nul >nul || set "PATH=%ThisDir%;%PATH%"
 
-where nin.exe 2>nul >nul || if not exist %ThisDir%\nin.exe powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://github.com/qualiu/msr/blob/master/tools/nin.exe?raw=true -OutFile %ThisDir%\nin.exe"
+where nin.exe 2>nul >nul || if not exist %ThisDir%\nin.exe powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/nin.exe?raw=true -OutFile %ThisDir%\nin.exe"
 where nin.exe 2>nul >nul || set "PATH=%ThisDir%;%PATH%"
 
 if "%~1" == ""       set IsShowUsage=1
@@ -32,22 +32,22 @@ set ninTestLog=%ThisDir%\test-nin.log
 for /f "tokens=*" %%a in ("%ninTestLog%") do set "BaseLogFile=%ThisDir%\base-%%~nxa"
 
 set TmpSourceFile=%ThisDir%\tmp-nin-source.txt
-msr -z "1,2,3,4,5" -t "," -o "\n" -PAC | msr -t "\d+" -o "Line $0" -PAC > %TmpSourceFile%
+lzmw -z "1,2,3,4,5" -t "," -o "\n" -PAC | lzmw -t "\d+" -o "Line $0" -PAC > %TmpSourceFile%
 
 set TmpDupliatedFile=%ThisDir%\tmp-nin-duplicated.txt
-msr -z "3,5,5,6,7" -t "," -o "\n" -PAC | msr -t "\d+" -o "Line $0" -PAC > %TmpDupliatedFile%
+lzmw -z "3,5,5,6,7" -t "," -o "\n" -PAC | lzmw -t "\d+" -o "Line $0" -PAC > %TmpDupliatedFile%
 
 set TmpDupliatedDiffFile=%ThisDir%\tmp-nin-duplicated-diff.txt
-msr -z "3,5 one,5 two,5 three,7" -t "," -o "\n" -PAC | msr -t "\d+" -o "Line $0" -PAC > %TmpDupliatedDiffFile%
+lzmw -z "3,5 one,5 two,5 three,7" -t "," -o "\n" -PAC | lzmw -t "\d+" -o "Line $0" -PAC > %TmpDupliatedDiffFile%
 
-msr -p %TmpSourceFile%,%TmpDupliatedFile% -t "\s+$" -o "" -S -R -c Remove tail empty line >nul
+lzmw -p %TmpSourceFile%,%TmpDupliatedFile% -t "\s+$" -o "" -S -R -c Remove tail empty line >nul
 
-set ExtractCmd=msr -p %~dp0%~nx0 -t "^nin\s+(%%\S+%%)" -o "%NIN_EXE% $1" -PIC
-set TransformFile1=msr -x %%TmpSourceFile%% -o %TmpSourceFile% -aPIC
-set TransformFile2=msr -x %%TmpDupliatedFile%% -o %TmpDupliatedFile% -aPIC
-set RepalceFolder=msr -x %%ThisDir%% -o %ThisDir% -aPIC
-set RedirectSummaryAndExecute=msr -t .+ -o "$0 -I" -X -c RedirectSummaryAndExecute
-set ColorCommands=msr -aPA -e "^(nin.+?)\s*(?=\||$|>)" -x %ninTestLog%
+set ExtractCmd=lzmw -p %~dp0%~nx0 -t "^nin\s+(%%\S+%%)" -o "%NIN_EXE% $1" -PIC
+set TransformFile1=lzmw -x %%TmpSourceFile%% -o %TmpSourceFile% -aPIC
+set TransformFile2=lzmw -x %%TmpDupliatedFile%% -o %TmpDupliatedFile% -aPIC
+set RepalceFolder=lzmw -x %%ThisDir%% -o %ThisDir% -aPIC
+set RedirectSummaryAndExecute=lzmw -t .+ -o "$0 -I" -X -c RedirectSummaryAndExecute
+set ColorCommands=lzmw -aPA -e "^(nin.+?)\s*(?=\||$|>)" -x %ninTestLog%
 
 if %SaveToFile% EQU 0 (
     echo %ExtractCmd% ^| %TransformFile1% ^| %TransformFile2% ^| %RepalceFolder% ^| %RedirectSummaryAndExecute% -X
@@ -196,7 +196,7 @@ nin %ThisDir%\sort-nin-test.txt nul "\b([lmn]\w+)$" -p
         for /f "tokens=*" %%a in ("%~2") do set /a fileSize1=%%~za
         for /f "tokens=*" %%a in ("%~3") do set /a fileSize2=%%~za
         if !fileSize1! NEQ !fileSize2! (
-            echo File size: %2 = !fileSize1! NOT equal !fileSize2! = %3 | msr -aPA -t "(\S+)\s*=\s*(\d+)|(\d+)\s*=(\s*(\S+))|\w+" -x "Not equal"
+            echo File size: %2 = !fileSize1! NOT equal !fileSize2! = %3 | lzmw -aPA -t "(\S+)\s*=\s*(\d+)|(\d+)\s*=(\s*(\S+))|\w+" -x "Not equal"
             set /a differences+=1
         )
     )
@@ -205,19 +205,19 @@ nin %ThisDir%\sort-nin-test.txt nul "\b([lmn]\w+)$" -p
     set /a differences=!ERRORLEVEL!
 
     if !differences! NEQ 0 (
-        echo ################## %1 has !differences! differences ###################### | msr -PA -it "(\d+)|\w+" -e "#+"
+        echo ################## %1 has !differences! differences ###################### | lzmw -PA -it "(\d+)|\w+" -e "#+"
         where bcompare >nul 2>nul && start bcompare %2 %3
     ) else (
-        echo ################## %1 passed and no differences ###################### | msr -PA -ie "( no )|\w+|#+"
+        echo ################## %1 passed and no differences ###################### | lzmw -PA -ie "( no )|\w+|#+"
     )
     exit /b !differences!
 
 :Unify_TestLog_Before_Compare
-    msr -p %1 -it "(?<=files)\s*\(\d+\S+\) in \d+ files.*|Used\s*\d+.*from.*\d-\d+.*|[,;]\s*(EXE|Directory|command)\s*=.*|[,;]*\s*read\s+\d+\s+line.*|Used \d+.*?command\S+\s*=\s*" -o "" -ROc RemoveTotalFileInfoAndDateTimeDir
-    msr -p %1 -it "(^|\s+)[\\\\/\w\.:-]+(example-commands.bat|sample-file.txt)" -o "$1$2" -ROc UnifyDirectory
-    for /f "tokens=*" %%a in ('msr -p %ThisScript% -t "^\s*set (\w+)=(\S+)\.\w+\s*$" -o "$1" -PAC') do msr -p %1 -x %%%%a%% -o !%%a! -ROc
-    msr -p %1 -ix %ThisDir%\ -o "" -ROc UnifyCurrentToDot
-    msr -p %1 -t "\s*\d+\.?\d*(\s*[KM]?B)(\s*\t\s*)\d+" -o "  Number-Unit  Bytes" -ROc ReplaceDetailSizeBytes
-    msr -p %1 -t "\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\s*\t\s*)" -o "yyyy-MM-dd HH:mm:ss$1" -ROc ReplaceDetailFileTime
-    msr -p %1 -t "^\d+\S+ \d+:\d+:\S+.*?(Run-Command|Return-Value)" -o "$1" -ROc UnifyExecuteCommands
-    msr -p %1 -t "\b%NIN_EXE%\b" -o "nin" -ROc UnifyExeName
+    lzmw -p %1 -it "(?<=files)\s*\(\d+\S+\) in \d+ files.*|Used\s*\d+.*from.*\d-\d+.*|[,;]\s*(EXE|Directory|command)\s*=.*|[,;]*\s*read\s+\d+\s+line.*|Used \d+.*?command\S+\s*=\s*" -o "" -ROc RemoveTotalFileInfoAndDateTimeDir
+    lzmw -p %1 -it "(^|\s+)[\\\\/\w\.:-]+(example-commands.bat|sample-file.txt)" -o "$1$2" -ROc UnifyDirectory
+    for /f "tokens=*" %%a in ('lzmw -p %ThisScript% -t "^\s*set (\w+)=(\S+)\.\w+\s*$" -o "$1" -PAC') do lzmw -p %1 -x %%%%a%% -o !%%a! -ROc
+    lzmw -p %1 -ix %ThisDir%\ -o "" -ROc UnifyCurrentToDot
+    lzmw -p %1 -t "\s*\d+\.?\d*(\s*[KM]?B)(\s*\t\s*)\d+" -o "  Number-Unit  Bytes" -ROc ReplaceDetailSizeBytes
+    lzmw -p %1 -t "\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\s*\t\s*)" -o "yyyy-MM-dd HH:mm:ss$1" -ROc ReplaceDetailFileTime
+    lzmw -p %1 -t "^\d+\S+ \d+:\d+:\S+.*?(Run-Command|Return-Value)" -o "$1" -ROc UnifyExecuteCommands
+    lzmw -p %1 -t "\b%NIN_EXE%\b" -o "nin" -ROc UnifyExeName
