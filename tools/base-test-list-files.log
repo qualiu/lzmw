@@ -23,8 +23,8 @@ Matched 6 files
 Return-Value15[6] = 6 : lzmw -p . -l -f \.bat$ --sz --wt -H 0 -T -2
 
 Run-Command15[7] = lzmw -p . -l -f \.bat$ --sz --wt
-1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\pskill.bat
-2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\psall.bat
+1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\psall.bat
+2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\pskill.bat
 3-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\test-path-dots.bat
 4-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\replace-file-test.bat
 5-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	example-commands.bat
@@ -33,8 +33,8 @@ Matched 6 files
 Return-Value15[7] = 6 : lzmw -p . -l -f \.bat$ --sz --wt
 
 Run-Command15[8] = lzmw -p . -l -f \.bat$ --sz --wt -H 2
-1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\pskill.bat
-2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\psall.bat
+1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\psall.bat
+2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\pskill.bat
 Matched 6 files
 Return-Value15[8] = 6 : lzmw -p . -l -f \.bat$ --sz --wt -H 2
 
@@ -45,8 +45,8 @@ Matched 6 files
 Return-Value15[9] = 6 : lzmw -p . -l -f \.bat$ --sz --wt -T 2
 
 Run-Command15[10] = lzmw -p . -l -f \.bat$ --sz --wt -H 2 -T 2
-1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\pskill.bat
-2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\psall.bat
+1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\psall.bat
+2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\pskill.bat
 5-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	example-commands.bat
 6-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\windows-test.bat
 Matched 6 files
@@ -61,8 +61,8 @@ Matched 6 files
 Return-Value15[11] = 6 : lzmw -p . -l -f \.bat$ --sz --wt -H -2
 
 Run-Command15[12] = lzmw -p . -l -f \.bat$ --sz --wt -T -2
-1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\pskill.bat
-2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\psall.bat
+1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\psall.bat
+2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\pskill.bat
 3-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\test-path-dots.bat
 4-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\replace-file-test.bat
 Matched 6 files
@@ -75,8 +75,8 @@ Matched 6 files
 Return-Value15[13] = 6 : lzmw -p . -l -f \.bat$ --sz --wt -H -2 -T -2
 
 Run-Command15[14] = lzmw -p . -l -f \.bat$ --sz --wt -H 2 -T -2
-1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\pskill.bat
-2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\psall.bat
+1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\psall.bat
+2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\pskill.bat
 3-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\test-path-dots.bat
 4-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	.\replace-file-test.bat
 Matched 6 files
@@ -90,169 +90,84 @@ Return-Value15[15] = 6 : lzmw -p . -l -f \.bat$ --sz --wt -H -2 -T 2
 
 Total executed lines = 15 , non-zero-return-count = 15 , return-zero-count = 0 , positive-return-count = 15 , negative-return-count = 0 , positive-return-sum = 90 , negative-return-sum = 0 , exceptions = 0 . Matched 15 lines(100%) from stdin
  
-Run-Command[1] = lzmw -l -f \.bat$ -T 6
-1 : example-commands.bat
-2 : psall.bat
-3 : pskill.bat
-4 : replace-file-test.bat
-5 : test-path-dots.bat
-6 : windows-test.bat
+Run-Command[1] = lzmw -l -f \.bat$ --sz --wt -T 6
+1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	psall.bat
+2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	pskill.bat
+3-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	test-path-dots.bat
+4-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	replace-file-test.bat
+5-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	example-commands.bat
+6-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	windows-test.bat
 Matched 6 files
 
  
-Run-Command[1] = lzmw -l -f \.bat$ -T 7
-1 : example-commands.bat
-2 : psall.bat
-3 : pskill.bat
-4 : replace-file-test.bat
-5 : test-path-dots.bat
-6 : windows-test.bat
+Run-Command[1] = lzmw -l -f \.bat$ --sz --wt -T 7
+1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	psall.bat
+2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	pskill.bat
+3-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	test-path-dots.bat
+4-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	replace-file-test.bat
+5-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	example-commands.bat
+6-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	windows-test.bat
 Matched 6 files
 
  
-Run-Command[1] = lzmw -l -f \.bat$ -H 2 -T -1
-1 : example-commands.bat
-2 : psall.bat
-3 : pskill.bat
-4 : replace-file-test.bat
-5 : test-path-dots.bat
+Run-Command[1] = lzmw -l -f \.bat$ --sz --wt -H 2 -T -1
+1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	psall.bat
+2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	pskill.bat
+3-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	test-path-dots.bat
+4-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	replace-file-test.bat
+5-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	example-commands.bat
 Matched 6 files
 
  
-Run-Command[1] = lzmw -l -f \.bat$ -H 2 -T 4
-1 : example-commands.bat
-2 : psall.bat
-3 : pskill.bat
-4 : replace-file-test.bat
-5 : test-path-dots.bat
-6 : windows-test.bat
+Run-Command[1] = lzmw -l -f \.bat$ --sz --wt -H 2 -T 4
+1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	psall.bat
+2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	pskill.bat
+3-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	test-path-dots.bat
+4-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	replace-file-test.bat
+5-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	example-commands.bat
+6-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	windows-test.bat
 Matched 6 files
 
  
-Run-Command[1] = lzmw -l -f \.bat$ -H 2 -T 5
-1 : example-commands.bat
-2 : psall.bat
-3 : pskill.bat
-4 : replace-file-test.bat
-5 : test-path-dots.bat
-6 : windows-test.bat
+Run-Command[1] = lzmw -l -f \.bat$ --sz --wt -H 2 -T 5
+1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	psall.bat
+2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	pskill.bat
+3-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	test-path-dots.bat
+4-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	replace-file-test.bat
+5-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	example-commands.bat
+6-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	windows-test.bat
 Matched 6 files
 
  
-Run-Command[1] = lzmw -l -f \.bat$ -H 2 -T -4
-1 : example-commands.bat
-2 : psall.bat
+Run-Command[1] = lzmw -l -f \.bat$ --sz --wt -H 2 -T -4
+1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	psall.bat
+2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	pskill.bat
 Matched 6 files
 
  
-Run-Command[1] = lzmw -l -f \.bat$ -H 2 -T -5
-1 : example-commands.bat
-2 : psall.bat
-1 : pskill.bat
-2 : replace-file-test.bat
-3 : test-path-dots.bat
+Run-Command[1] = lzmw -l -f \.bat$ --sz --wt -H 2 -T -5
+1-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	psall.bat
+2-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	pskill.bat
 Matched 6 files
 
  
-Run-Command[1] = lzmw -l -f \.bat$ -H -2 -T -4
+Run-Command[1] = lzmw -l -f \.bat$ --sz --wt -H -2 -T -4
 Matched 6 files
 
  
-Run-Command[1] = lzmw -l -f \.bat$ -H -2 -T 4
-3 : pskill.bat
-4 : replace-file-test.bat
-5 : test-path-dots.bat
-6 : windows-test.bat
+Run-Command[1] = lzmw -l -f \.bat$ --sz --wt -H -2 -T 4
+3-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	test-path-dots.bat
+4-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	replace-file-test.bat
+5-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	example-commands.bat
+6-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	windows-test.bat
 Matched 6 files
 
  
-Run-Command[1] = lzmw -l -f \.bat$ -H -2 -T 5
-3 : pskill.bat
-4 : replace-file-test.bat
-5 : test-path-dots.bat
-6 : windows-test.bat
-Matched 6 files
-
- 
- 
-Run-Command[1] = lzmw -l -f \.bat$ --wt -T 6
-1-6 : yyyy-MM-dd HH:mm:ss	example-commands.bat
-2-6 : yyyy-MM-dd HH:mm:ss	psall.bat
-3-6 : yyyy-MM-dd HH:mm:ss	pskill.bat
-4-6 : yyyy-MM-dd HH:mm:ss	replace-file-test.bat
-5-6 : yyyy-MM-dd HH:mm:ss	test-path-dots.bat
-6-6 : yyyy-MM-dd HH:mm:ss	windows-test.bat
-Matched 6 files
-
- 
-Run-Command[1] = lzmw -l -f \.bat$ --wt -T 7
-1-6 : yyyy-MM-dd HH:mm:ss	example-commands.bat
-2-6 : yyyy-MM-dd HH:mm:ss	psall.bat
-3-6 : yyyy-MM-dd HH:mm:ss	pskill.bat
-4-6 : yyyy-MM-dd HH:mm:ss	replace-file-test.bat
-5-6 : yyyy-MM-dd HH:mm:ss	test-path-dots.bat
-6-6 : yyyy-MM-dd HH:mm:ss	windows-test.bat
-Matched 6 files
-
- 
-Run-Command[1] = lzmw -l -f \.bat$ --wt -H 2 -T -1
-1-6 : yyyy-MM-dd HH:mm:ss	example-commands.bat
-2-6 : yyyy-MM-dd HH:mm:ss	psall.bat
-3-6 : yyyy-MM-dd HH:mm:ss	pskill.bat
-4-6 : yyyy-MM-dd HH:mm:ss	replace-file-test.bat
-5-6 : yyyy-MM-dd HH:mm:ss	test-path-dots.bat
-Matched 6 files
-
- 
-Run-Command[1] = lzmw -l -f \.bat$ --wt -H 2 -T 4
-1-6 : yyyy-MM-dd HH:mm:ss	example-commands.bat
-2-6 : yyyy-MM-dd HH:mm:ss	psall.bat
-3-6 : yyyy-MM-dd HH:mm:ss	pskill.bat
-4-6 : yyyy-MM-dd HH:mm:ss	replace-file-test.bat
-5-6 : yyyy-MM-dd HH:mm:ss	test-path-dots.bat
-6-6 : yyyy-MM-dd HH:mm:ss	windows-test.bat
-Matched 6 files
-
- 
-Run-Command[1] = lzmw -l -f \.bat$ --wt -H 2 -T 5
-1-6 : yyyy-MM-dd HH:mm:ss	example-commands.bat
-2-6 : yyyy-MM-dd HH:mm:ss	psall.bat
-3-6 : yyyy-MM-dd HH:mm:ss	pskill.bat
-4-6 : yyyy-MM-dd HH:mm:ss	replace-file-test.bat
-5-6 : yyyy-MM-dd HH:mm:ss	test-path-dots.bat
-6-6 : yyyy-MM-dd HH:mm:ss	windows-test.bat
-Matched 6 files
-
- 
-Run-Command[1] = lzmw -l -f \.bat$ --wt -H 2 -T -4
-1-6 : yyyy-MM-dd HH:mm:ss	example-commands.bat
-2-6 : yyyy-MM-dd HH:mm:ss	psall.bat
-Matched 6 files
-
- 
-Run-Command[1] = lzmw -l -f \.bat$ --wt -H 2 -T -5
-1-6 : yyyy-MM-dd HH:mm:ss	example-commands.bat
-2-6 : yyyy-MM-dd HH:mm:ss	psall.bat
-Matched 6 files
-
- 
-Run-Command[1] = lzmw -l -f \.bat$ --wt -H -2 -T -4
-Matched 6 files
-
- 
-Run-Command[1] = lzmw -l -f \.bat$ --wt -H -2 -T 4
-3-6 : yyyy-MM-dd HH:mm:ss	pskill.bat
-4-6 : yyyy-MM-dd HH:mm:ss	replace-file-test.bat
-5-6 : yyyy-MM-dd HH:mm:ss	test-path-dots.bat
-6-6 : yyyy-MM-dd HH:mm:ss	windows-test.bat
-Matched 6 files
-
- 
-Run-Command[1] = lzmw -l -f \.bat$ --wt -H -2 -T 5
-3-6 : yyyy-MM-dd HH:mm:ss	pskill.bat
-4-6 : yyyy-MM-dd HH:mm:ss	replace-file-test.bat
-5-6 : yyyy-MM-dd HH:mm:ss	test-path-dots.bat
-6-6 : yyyy-MM-dd HH:mm:ss	windows-test.bat
+Run-Command[1] = lzmw -l -f \.bat$ --sz --wt -H -2 -T 5
+3-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	test-path-dots.bat
+4-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	replace-file-test.bat
+5-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	example-commands.bat
+6-6 :  Number-Unit  Bytes	yyyy-MM-dd HH:mm:ss	windows-test.bat
 Matched 6 files
 
  

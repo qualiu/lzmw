@@ -3,28 +3,16 @@
 :: Will show the processes info with colors before killing.
 :: This scripts depends and will call psall.bat.
 ::
-:: Latest version in: https://github.com/qualiu/msrTools/
+:: Latest version in: https://github.com/qualiu/lzmwTools/
 ::============================================================
 @echo off
 
 SetLocal EnableDelayedExpansion
-
-rem @echo %* | findstr "[A-Za-z]">nul && call :KillByRegex %* || call :KillByPID %*
-if "%~1" == ""       set ToShowUsage=1
-if "%~1" == "-h"     set ToShowUsage=1
-if "%~1" == "--help" set ToShowUsage=1
-if "%~1" == "/?"     set ToShowUsage=1
-
-:: set ThisDir=%~dp0
-:: if %ThisDir:~-1%==\ set ThisDir=%ThisDir:~0,-1%
-
 where lzmw.exe 2>nul >nul || if not exist %~dp0\lzmw.exe powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://github.com/qualiu/lzmw/blob/master/tools/lzmw.exe?raw=true -OutFile %~dp0\lzmw.exe"
 where lzmw.exe 2>nul >nul || set "PATH=%~dp0;%PATH%"
 
-for /f "tokens=*" %%a in ('where lzmw.exe 2^>nul') do set "lzmwPath=%%a"
-
-if "%ToShowUsage%" == "1" (
-    echo To see lzmw.exe matching options just run %lzmwPath% | lzmw -PA -ie "options|\S*lzmw\S*" -x lzmw
+lzmw -z "LostArg%~1" -t "^LostArg(|-h|--help|/\?)$" > nul || (
+    echo To see lzmw.exe matching options just run: lzmw --help | lzmw -PA -ie "options|\S*lzmw\S*" -x lzmw
     echo Usage   : %~n0  process-match-options or process-id-list | lzmw -PA -e "option\w*|\b(id)\b" -x %~n0
     echo Example : %~n0  -i -t "java.*-X\S+|cmd.exe" -x C:\Windows --nx Windows\System32 ---- kill processes by commandline matching | lzmw -PA -e "\s+-+\w+|lzmw" -x %~n0
     echo Example : %~n0    -it "java.*-X\S+|cmd.exe" -x C:\Windows --nx Windows\System32 --nt lzmw\.exe ---- kill processes by commandline matching | lzmw -PA -e "\s+-+\w+|lzmw" -x %~n0
@@ -57,15 +45,14 @@ if !ERRORLEVEL! NEQ -1 set NoPathToPsAll=-P
 lzmw -z justTestArgs %* -A >nul 2>nul
 if !ERRORLEVEL! NEQ -1 set NoInfoToPsAll=-A
 
-call psall %* !NoPathToPsAll! -c Before killing processes %~nx0 calls psall.bat to check and display.
+call psall.bat %* !NoPathToPsAll! -c Before killing processes %~nx0 calls psall.bat to check and display.
 
 if !ERRORLEVEL! LSS 1 exit /b !ERRORLEVEL!
 
 set pids=
 if "!NotAllNumbersAsPIDs!" == "true" (
-    for /f "tokens=*" %%a in ('call psall %* !NoPathToPsAll! !NoInfoToPsAll! ^| lzmw -t "^[^^\t]+\t(\d+).*" -o "/pid $1" -PAC ^| lzmw -S -t "\s+" -o " " -PAC') do set pids=%%a
+    for /f "tokens=*" %%a in ('call psall.bat %* !NoPathToPsAll! !NoInfoToPsAll! ^| lzmw -t "^\d+\t(\d+).*" -o "/pid \1" -PAC ^| lzmw -S -t "\s+" -o " " -PAC') do set pids=%%a
 ) else (
-    :: for %%a in ( %* ) do if "!pids!"=="" ( set "pids=/pid %%a" ) else ( set "pids=!pids! /pid %%a" )
     for /f "tokens=*" %%a in ('echo %* ^| lzmw -t "\s*(\d+)\s*" -o " /pid $1" -PAC') do set pids=%%a
 )
 
