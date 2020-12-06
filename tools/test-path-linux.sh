@@ -8,6 +8,7 @@ if [ ! -f "$lzmw" ]; then
     exit -1
 fi
 
+cd $(dirname $0)
 $lzmw -c -l --wt --sz -H 5 -T 5 -p /home/../usr/bin/ -f "bash|grep"
 $lzmw -c -l --wt --sz -H 5 -T 5 -p /home/../usr/bin/ -f "bash|grep" -W
 $lzmw -c -l --wt --sz -H 5 -T 5 -p . -f "bash|grep"
@@ -29,3 +30,5 @@ if [ -d /cygdrive/c/ ]; then
     $lzmw -c -l --wt --sz -H 3 -p /cygdrive/c/
     $lzmw -c -l --wt --sz -H 3 -p /cygdrive/c/ -W
 fi
+
+exit 0

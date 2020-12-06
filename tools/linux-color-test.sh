@@ -36,8 +36,10 @@ if [ $diff -ne 0 ]; then
         bcompare base-linux-color-test.log tmp-linux-color-test.log /fv="Text Compare" &
     else
         echo Tests failed in $0 as above. | $lzmw -aPA -t "($0)|\w+"
+	exit -1
     fi
 elif [ $diff -eq 0 ]; then
     rm tmp-linux-color-test.log
     echo Passed all tests in $0 | $lzmw -aPA -e "($0)|\w+"
+    exit 0
 fi
