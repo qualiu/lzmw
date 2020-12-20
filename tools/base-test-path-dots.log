@@ -14,16 +14,16 @@ Run-Command60[3] = lzmw -c -l --sz -H 5 -T 5 -p .. -f "\.(txt|cmd|bat)$" --nf "t
 1-5 :  Number-Unit  Bytes	..\psall.bat
 2-5 :  Number-Unit  Bytes	..\pskill.bat
 3-5 :  Number-Unit  Bytes	..\replace-file-test.bat
-4-5 :  Number-Unit  Bytes	example-commands.bat
-5-5 :  Number-Unit  Bytes	..\windows-test.bat
+4-5 :  Number-Unit  Bytes	..\windows-test.bat
+5-5 :  Number-Unit  Bytes	example-commands.bat
 Matched 5 files
 
 Run-Command60[4] = lzmw -c -l --sz -H 5 -T 5 -p .. -f "\.(txt|cmd|bat)$" --nf "test-path|env.*for" -W
 1-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\psall.bat
 2-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\pskill.bat
 3-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\replace-file-test.bat
-4-5 :  Number-Unit  Bytes	example-commands.bat
-5-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\windows-test.bat
+4-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\windows-test.bat
+5-5 :  Number-Unit  Bytes	example-commands.bat
 Matched 5 files
 
 Run-Command60[5] = lzmw -c -l --sz -H 5 -T 5 -p .\ -f "\.(txt|cmd|bat)$" --nf "test-path|env.*for"
@@ -42,16 +42,16 @@ Run-Command60[7] = lzmw -c -l --sz -H 5 -T 5 -p ..\ -f "\.(txt|cmd|bat)$" --nf "
 1-5 :  Number-Unit  Bytes	..\psall.bat
 2-5 :  Number-Unit  Bytes	..\pskill.bat
 3-5 :  Number-Unit  Bytes	..\replace-file-test.bat
-4-5 :  Number-Unit  Bytes	example-commands.bat
-5-5 :  Number-Unit  Bytes	..\windows-test.bat
+4-5 :  Number-Unit  Bytes	..\windows-test.bat
+5-5 :  Number-Unit  Bytes	example-commands.bat
 Matched 5 files
 
 Run-Command60[8] = lzmw -c -l --sz -H 5 -T 5 -p ..\ -f "\.(txt|cmd|bat)$" --nf "test-path|env.*for" -W
 1-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\psall.bat
 2-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\pskill.bat
 3-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\replace-file-test.bat
-4-5 :  Number-Unit  Bytes	example-commands.bat
-5-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\windows-test.bat
+4-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\windows-test.bat
+5-5 :  Number-Unit  Bytes	example-commands.bat
 Matched 5 files
 
 Run-Command60[9] = lzmw -c -l --sz -H 5 -T 5 -p ..\.. -f "\.(txt|cmd|bat)$" --nf "test-path|env.*for"
@@ -60,10 +60,10 @@ Run-Command60[9] = lzmw -c -l --sz -H 5 -T 5 -p ..\.. -f "\.(txt|cmd|bat)$" --nf
  3-15 :  Number-Unit  Bytes	..\..\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	..\..\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	..\..\md5.txt
-11-15 :  Number-Unit  Bytes	..\..\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	..\..\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	..\..\windows-test.bat
+11-15 :  Number-Unit  Bytes	..\..\test-nin.cmd
+12-15 :  Number-Unit  Bytes	..\..\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	..\..\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	..\..\readme.txt
 Matched 15 files
 
@@ -73,10 +73,10 @@ Run-Command60[10] = lzmw -c -l --sz -H 5 -T 5 -p ..\.. -f "\.(txt|cmd|bat)$" --n
  3-15 :  Number-Unit  Bytes	.\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	.\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	.\md5.txt
-11-15 :  Number-Unit  Bytes	.\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	.\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	.\windows-test.bat
+11-15 :  Number-Unit  Bytes	.\test-nin.cmd
+12-15 :  Number-Unit  Bytes	.\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	.\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	.\readme.txt
 Matched 15 files
 
@@ -86,10 +86,10 @@ Run-Command60[11] = lzmw -c -l --sz -H 5 -T 5 -p ..\..\ -f "\.(txt|cmd|bat)$" --
  3-15 :  Number-Unit  Bytes	..\..\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	..\..\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	..\..\md5.txt
-11-15 :  Number-Unit  Bytes	..\..\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	..\..\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	..\..\windows-test.bat
+11-15 :  Number-Unit  Bytes	..\..\test-nin.cmd
+12-15 :  Number-Unit  Bytes	..\..\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	..\..\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	..\..\readme.txt
 Matched 15 files
 
@@ -99,10 +99,10 @@ Run-Command60[12] = lzmw -c -l --sz -H 5 -T 5 -p ..\..\ -f "\.(txt|cmd|bat)$" --
  3-15 :  Number-Unit  Bytes	.\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	.\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	.\md5.txt
-11-15 :  Number-Unit  Bytes	.\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	.\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	.\windows-test.bat
+11-15 :  Number-Unit  Bytes	.\test-nin.cmd
+12-15 :  Number-Unit  Bytes	.\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	.\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	.\readme.txt
 Matched 15 files
 
@@ -112,10 +112,10 @@ Run-Command60[13] = lzmw -c -l --sz -H 5 -T 5 -p ..\..\. -f "\.(txt|cmd|bat)$" -
  3-15 :  Number-Unit  Bytes	..\..\.\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	..\..\.\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	..\..\.\md5.txt
-11-15 :  Number-Unit  Bytes	..\..\.\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	..\..\.\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	..\..\.\windows-test.bat
+11-15 :  Number-Unit  Bytes	..\..\.\test-nin.cmd
+12-15 :  Number-Unit  Bytes	..\..\.\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	..\..\.\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	..\..\.\readme.txt
 Matched 15 files
 
@@ -125,10 +125,10 @@ Run-Command60[14] = lzmw -c -l --sz -H 5 -T 5 -p ..\..\. -f "\.(txt|cmd|bat)$" -
  3-15 :  Number-Unit  Bytes	.\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	.\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	.\md5.txt
-11-15 :  Number-Unit  Bytes	.\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	.\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	.\windows-test.bat
+11-15 :  Number-Unit  Bytes	.\test-nin.cmd
+12-15 :  Number-Unit  Bytes	.\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	.\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	.\readme.txt
 Matched 15 files
 
@@ -148,16 +148,16 @@ Run-Command60[17] = lzmw -c -l --sz -H 5 -T 5 -p ../ -f "\.(txt|cmd|bat)$" --nf 
 1-5 :  Number-Unit  Bytes	..\psall.bat
 2-5 :  Number-Unit  Bytes	..\pskill.bat
 3-5 :  Number-Unit  Bytes	..\replace-file-test.bat
-4-5 :  Number-Unit  Bytes	example-commands.bat
-5-5 :  Number-Unit  Bytes	..\windows-test.bat
+4-5 :  Number-Unit  Bytes	..\windows-test.bat
+5-5 :  Number-Unit  Bytes	example-commands.bat
 Matched 5 files
 
 Run-Command60[18] = lzmw -c -l --sz -H 5 -T 5 -p ../ -f "\.(txt|cmd|bat)$" --nf "test-path|env.*for" -W
 1-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\psall.bat
 2-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\pskill.bat
 3-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\replace-file-test.bat
-4-5 :  Number-Unit  Bytes	example-commands.bat
-5-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\windows-test.bat
+4-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\windows-test.bat
+5-5 :  Number-Unit  Bytes	example-commands.bat
 Matched 5 files
 
 Run-Command60[19] = lzmw -c -l --sz -H 5 -T 5 -p ../.. -f "\.(txt|cmd|bat)$" --nf "test-path|env.*for"
@@ -166,10 +166,10 @@ Run-Command60[19] = lzmw -c -l --sz -H 5 -T 5 -p ../.. -f "\.(txt|cmd|bat)$" --n
  3-15 :  Number-Unit  Bytes	..\..\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	..\..\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	..\..\md5.txt
-11-15 :  Number-Unit  Bytes	..\..\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	..\..\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	..\..\windows-test.bat
+11-15 :  Number-Unit  Bytes	..\..\test-nin.cmd
+12-15 :  Number-Unit  Bytes	..\..\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	..\..\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	..\..\readme.txt
 Matched 15 files
 
@@ -179,10 +179,10 @@ Run-Command60[20] = lzmw -c -l --sz -H 5 -T 5 -p ../.. -f "\.(txt|cmd|bat)$" --n
  3-15 :  Number-Unit  Bytes	.\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	.\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	.\md5.txt
-11-15 :  Number-Unit  Bytes	.\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	.\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	.\windows-test.bat
+11-15 :  Number-Unit  Bytes	.\test-nin.cmd
+12-15 :  Number-Unit  Bytes	.\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	.\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	.\readme.txt
 Matched 15 files
 
@@ -192,10 +192,10 @@ Run-Command60[21] = lzmw -c -l --sz -H 5 -T 5 -p ../../ -f "\.(txt|cmd|bat)$" --
  3-15 :  Number-Unit  Bytes	..\..\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	..\..\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	..\..\md5.txt
-11-15 :  Number-Unit  Bytes	..\..\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	..\..\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	..\..\windows-test.bat
+11-15 :  Number-Unit  Bytes	..\..\test-nin.cmd
+12-15 :  Number-Unit  Bytes	..\..\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	..\..\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	..\..\readme.txt
 Matched 15 files
 
@@ -205,10 +205,10 @@ Run-Command60[22] = lzmw -c -l --sz -H 5 -T 5 -p ../../ -f "\.(txt|cmd|bat)$" --
  3-15 :  Number-Unit  Bytes	.\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	.\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	.\md5.txt
-11-15 :  Number-Unit  Bytes	.\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	.\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	.\windows-test.bat
+11-15 :  Number-Unit  Bytes	.\test-nin.cmd
+12-15 :  Number-Unit  Bytes	.\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	.\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	.\readme.txt
 Matched 15 files
 
@@ -218,10 +218,10 @@ Run-Command60[23] = lzmw -c -l --sz -H 5 -T 5 -p ../../. -f "\.(txt|cmd|bat)$" -
  3-15 :  Number-Unit  Bytes	..\..\.\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	..\..\.\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	..\..\.\md5.txt
-11-15 :  Number-Unit  Bytes	..\..\.\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	..\..\.\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	..\..\.\windows-test.bat
+11-15 :  Number-Unit  Bytes	..\..\.\test-nin.cmd
+12-15 :  Number-Unit  Bytes	..\..\.\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	..\..\.\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	..\..\.\readme.txt
 Matched 15 files
 
@@ -231,10 +231,10 @@ Run-Command60[24] = lzmw -c -l --sz -H 5 -T 5 -p ../../. -f "\.(txt|cmd|bat)$" -
  3-15 :  Number-Unit  Bytes	.\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	.\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	.\md5.txt
-11-15 :  Number-Unit  Bytes	.\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	.\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	.\windows-test.bat
+11-15 :  Number-Unit  Bytes	.\test-nin.cmd
+12-15 :  Number-Unit  Bytes	.\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	.\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	.\readme.txt
 Matched 15 files
 
@@ -445,10 +445,10 @@ Run-Command60[51] = lzmw -c -l --sz -H 5 -T 5 -p .,deep\..\.. -f "\.(txt|cmd|bat
 2-8 :  Number-Unit  Bytes	color-group-test.cmd
 3-8 :  Number-Unit  Bytes	..\psall.bat
 4-8 :  Number-Unit  Bytes	..\pskill.bat
-5-8 :  Number-Unit  Bytes	..\replace-file-test.bat
-6-8 :  Number-Unit  Bytes	test-nin.cmd
-7-8 :  Number-Unit  Bytes	example-commands.bat
-8-8 :  Number-Unit  Bytes	..\windows-test.bat
+5-8 :  Number-Unit  Bytes	test-nin.cmd
+6-8 :  Number-Unit  Bytes	..\replace-file-test.bat
+7-8 :  Number-Unit  Bytes	..\windows-test.bat
+8-8 :  Number-Unit  Bytes	example-commands.bat
 Matched 8 files
 
 Run-Command60[52] = lzmw -c -l --sz -H 5 -T 5 -p .,deep\..\.. -f "\.(txt|cmd|bat)$" --nf "test-path|env.*for" -W
@@ -456,26 +456,26 @@ Run-Command60[52] = lzmw -c -l --sz -H 5 -T 5 -p .,deep\..\.. -f "\.(txt|cmd|bat
 2-8 :  Number-Unit  Bytes	.\test-dots-path.tmp\dots\color-group-test.cmd
 3-8 :  Number-Unit  Bytes	.\test-dots-path.tmp\psall.bat
 4-8 :  Number-Unit  Bytes	.\test-dots-path.tmp\pskill.bat
-5-8 :  Number-Unit  Bytes	.\test-dots-path.tmp\replace-file-test.bat
-6-8 :  Number-Unit  Bytes	.\test-dots-path.tmp\dots\test-nin.cmd
-7-8 :  Number-Unit  Bytes	example-commands.bat
-8-8 :  Number-Unit  Bytes	.\test-dots-path.tmp\windows-test.bat
+5-8 :  Number-Unit  Bytes	.\test-dots-path.tmp\dots\test-nin.cmd
+6-8 :  Number-Unit  Bytes	.\test-dots-path.tmp\replace-file-test.bat
+7-8 :  Number-Unit  Bytes	.\test-dots-path.tmp\windows-test.bat
+8-8 :  Number-Unit  Bytes	example-commands.bat
 Matched 8 files
 
 Run-Command60[53] = lzmw -c -l --sz -H 5 -T 5 -p deep\..\.. -f "\.(txt|cmd|bat)$" --nf "test-path|env.*for"
 1-5 :  Number-Unit  Bytes	..\psall.bat
 2-5 :  Number-Unit  Bytes	..\pskill.bat
 3-5 :  Number-Unit  Bytes	..\replace-file-test.bat
-4-5 :  Number-Unit  Bytes	example-commands.bat
-5-5 :  Number-Unit  Bytes	..\windows-test.bat
+4-5 :  Number-Unit  Bytes	..\windows-test.bat
+5-5 :  Number-Unit  Bytes	example-commands.bat
 Matched 5 files
 
 Run-Command60[54] = lzmw -c -l --sz -H 5 -T 5 -p deep\..\.. -f "\.(txt|cmd|bat)$" --nf "test-path|env.*for" -W
 1-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\psall.bat
 2-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\pskill.bat
 3-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\replace-file-test.bat
-4-5 :  Number-Unit  Bytes	example-commands.bat
-5-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\windows-test.bat
+4-5 :  Number-Unit  Bytes	.\test-dots-path.tmp\windows-test.bat
+5-5 :  Number-Unit  Bytes	example-commands.bat
 Matched 5 files
 
 Run-Command60[55] = lzmw -c -l --sz -H 5 -T 5 -p deep\\ -f "\.(txt|cmd|bat)$" --nf "test-path|env.*for"
@@ -504,10 +504,10 @@ Run-Command60[57] = lzmw -c -l --sz -H 5 -T 5 -p .\\ -f "\.(txt|cmd|bat)$" --nf 
  3-15 :  Number-Unit  Bytes	.\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	.\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	.\md5.txt
-11-15 :  Number-Unit  Bytes	.\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	.\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	.\windows-test.bat
+11-15 :  Number-Unit  Bytes	.\test-nin.cmd
+12-15 :  Number-Unit  Bytes	.\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	.\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	.\readme.txt
 Matched 15 files
 
@@ -517,10 +517,10 @@ Run-Command60[58] = lzmw -c -l --sz -H 5 -T 5 -p .\\ -f "\.(txt|cmd|bat)$" --nf 
  3-15 :  Number-Unit  Bytes	.\sort-nin-test.txt
  4-15 :  Number-Unit  Bytes	.\collection-and-description.txt
  5-15 :  Number-Unit  Bytes	.\md5.txt
-11-15 :  Number-Unit  Bytes	.\replace-file-test.bat
-12-15 :  Number-Unit  Bytes	.\test-nin.cmd
-13-15 :  Number-Unit  Bytes	example-commands.bat
-14-15 :  Number-Unit  Bytes	.\windows-test.bat
+11-15 :  Number-Unit  Bytes	.\test-nin.cmd
+12-15 :  Number-Unit  Bytes	.\replace-file-test.bat
+13-15 :  Number-Unit  Bytes	.\windows-test.bat
+14-15 :  Number-Unit  Bytes	example-commands.bat
 15-15 :  Number-Unit  Bytes	.\readme.txt
 Matched 15 files
 

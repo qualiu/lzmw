@@ -12,6 +12,7 @@ lzmw -PA -z "myFileLog" -t "(.+)(File)(.+)"
 lzmw -PA -z "myFileLog" -t ".+(File)(.+)"
 lzmw -PA -z "myFileLog" -t ".+(File).+"
 lzmw -PA -z "myFileLog" -t ".+(File)"
+lzmw -aPA -z "see 'quotes' | lzmw -t" -e "see (.+?) \| (lzmw.*?)" -t " \| "
 lzmw -PA -z CENTOS_MANTISBT_PROJECT_VERSION-7a -it centos.*7
 lzmw -PA -z "by %%Name%% command: SET Name=Value" -e ".+?(SET \S+)" -t "(%%*Name%%*)"
 lzmw -PA -z "by %%Name%% command: SET Name=Value" -e ".+?(SET \S+)" -t "(%%*Name%%*)|(Value)"

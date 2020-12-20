@@ -94,7 +94,7 @@ if %TestMode% EQU 0 (
     popd & exit /b 0
 )
 
-set /a TestGroupNumber+=1 & echo. & echo.
+set /a TestGroupNumber+=1
 echo ################## %TestGroupNumber%-%TestGroupCount%: Test dots paths ##################  | %MSR_EXE% -PA -e .+
 if %TestGroupNumber% GEQ %BeginTestGroup% if %TestGroupNumber% LEQ %EndTestGroup% (
     if not exist %~dp0test-dots-path.tmp\dots\deep md %~dp0test-dots-path.tmp\dots\deep
@@ -131,7 +131,6 @@ if %TestGroupNumber% GEQ %BeginTestGroup% if %TestGroupNumber% LEQ %EndTestGroup
     )
 )
 
-
 set /a TestGroupNumber+=1 & echo. & echo.
 echo ################## %TestGroupNumber%-%TestGroupCount%: Replace file and verify begin ##################  | %MSR_EXE% -PA -e .+
 if %TestGroupNumber% GEQ %BeginTestGroup% if %TestGroupNumber% LEQ %EndTestGroup% (
@@ -150,9 +149,9 @@ set /a TestGroupNumber+=1 & echo. & echo.
 echo ################## %TestGroupNumber%-%TestGroupCount%: Test output only replaced ##################  | %MSR_EXE% -PA -e .+
 if %TestGroupNumber% GEQ %BeginTestGroup% if %TestGroupNumber% LEQ %EndTestGroup% (
     set onlyOuputReplacedTestLog=test-only-output-replaced-lines.log
-    echo %MSR_EXE% -p example-commands.bat -t "^lzmw -c (.+\s+-o\s+)" --nt "\s+-R" -o "%MSR_EXE% -c -j $1" -PAC ^| %MSR_EXE% -x %%~dp0 -o . -a -X ^> !onlyOuputReplacedTestLog!
-    %MSR_EXE% -p example-commands.bat -t "^lzmw -c (.+\s+-o\s+)" --nt "\s+-R" -o "%MSR_EXE% -c -j $1" -PAC | %MSR_EXE% -x %%~dp0 -o . -a -X > !onlyOuputReplacedTestLog!
-
+    echo %MSR_EXE% -p example-commands.bat -t "^lzmw -c (.+\s+-o\s+)" --nt "\s+-R| -j\b" -o "%MSR_EXE% -c -j $1" -PAC ^| %MSR_EXE% -x %%~dp0 -o . -a -X ^> !onlyOuputReplacedTestLog!
+    %MSR_EXE% -p example-commands.bat -t "^lzmw -c (.+\s+-o\s+)" --nt "\s+-R| -j\b" -o "%MSR_EXE% -c -j $1" -PAC | %MSR_EXE% -x %%~dp0 -o . -a -X > !onlyOuputReplacedTestLog!
+    %MSR_EXE% -p example-commands.bat --nt " -R\b" -t "^lzmw -c -p \S*(sample-block.json)" -o "type \1 | %MSR_EXE%" -X >> !onlyOuputReplacedTestLog!
     call :Compare_Title_Base_TestLog "%TestGroupNumber%-%TestGroupCount%: Test output only replaced" %ThisDir%\base-!onlyOuputReplacedTestLog! %ThisDir%\!onlyOuputReplacedTestLog!
     if !ERRORLEVEL! NEQ 0 (
         set /a failedGroups+=1
@@ -161,7 +160,6 @@ if %TestGroupNumber% GEQ %BeginTestGroup% if %TestGroupNumber% LEQ %EndTestGroup
         del %ThisDir%\!onlyOuputReplacedTestLog!
     )
 )
-
 
 
 set /a TestGroupNumber+=1 & echo. & echo.
@@ -262,6 +260,7 @@ exit /b !ERRORLEVEL!
 :: Call nin.exe to get the differences count which ERRORLEVEL as following. By the way, this is an example of nin.exe .
 :Compare_Title_Base_TestLog
     call :Unify_TestLog_Before_Compare %3
+
     :: nin %2 %3 >nul
     nin %2 %3 -H 0
     set /a diff1=!ERRORLEVEL!

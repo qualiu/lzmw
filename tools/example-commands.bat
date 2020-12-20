@@ -147,7 +147,33 @@ lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 90 -N 93 -S -i
 lzmw -c -p %~dp0\sample-file.txt -b "^\s*\[" -Q "^\s*\[|^\s*$" -L 90 -N 100 -S -it "\[section1.*?(value2)" -o "$1"
 lzmw -c -p %~dp0\sample-file.txt -L 90 -N 93 -S -it "\[section1.*?(value2)" -o "$1"
 lzmw -c -p %~dp0\sample-file.txt -L 90 -N 100 -S -it "\[section1.*?(value2)" -o "$1"
-
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$"
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -a
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" --nx "\"type"
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" --nt "^\s*\"type"
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" --nx "\"type" -a
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" --nt "^\s*\"type" -a
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" --nt "^\s*\"type" --nx "\"type"
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" --nt "^\s*\"type" --nx "\"type" -a
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" --nx "\"type"
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" --nt "^\s*\"type"
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" --nt "^\s*\"type" --nx "\"type" -a -t default
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" --nt "^\s*\"type" -a -t default -x Debug -o debug -j
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" --nt "^\s*\"type" -a -t default -x Debug -o Debug -j
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -S --nt "^\s*.type"
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -S --nt "^\s*.type" -a
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -S --nt "^\s*.type" -a -t default
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -S --nt "^\s*.type" -a -t default -x Debug -o debug -j
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -S --nt "^\s*.type" -a -t default -x Debug -o Debug -j
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -S --nt "^\s*.type" -t default
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -S --nt "^\s*.type" -t default -x Debug -o debug -j
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -S --nt "^\s*.type" -t default -x Debug -o Debug -j
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -S --nt "^\s*.type" -t "^(\s*\"settings.*?\{[^\r\n]*)([\r\n]+)(\s*)" -o "\1\2\3\"type\": \"string\",\2\3"
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -S --nt "^\s*.type" -t "^(\s*\"settings.*?\{[^\r\n]*)([\r\n]+)(\s*)" -o "\1\2\3\"type\": \"string\",\2\3" -j
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -S --nt "^\s*.type" -t "[\r\n]+\s*\"default[^\r\n]*" -o ""
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.*?\{" -Q "^\s*\}\s*,?\s*$" -S --nt "^\s*.type" -t ".*" -o ""
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.skip.*?\{" -q "skip folders" -S -t "[\r\n]+\s*\"default[^\r\n]*" -o ""
+lzmw -c -p %~dp0\sample-block.json -b "^\s*\"settings.skip.*?\{" -q "skip folders" -S -t ".*" -o ""
 :: Block matching: stop pipe test
 
 copy /y %~dp0\sample-file.txt %~dp0\original-sample.txt
@@ -207,6 +233,12 @@ lzmw -c -p %~dp0\sample-file.txt -t "\b(NotMatchedLine|MatchedLine|UpLine|DownLi
 copy /y %~dp0\original-sample.txt %~dp0\sample-file.txt
 
 del %~dp0\original-sample.txt
+
+lzmw -c -p %~dp0\sample-file.txt -b No-Such-Block-Begin -Q No-Such-Block-End  Should return 0
+lzmw -c -p %~dp0\sample-file.txt -b No-Such-Block-Begin -Q No-Such-Block-End -l Should return 0
+
+lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End Should return 0
+lzmw -c -p %~dp0\sample-file.txt -b No-Such-Begin -q No-Such-End -l Should return 0
 
 ::Stop calling for linux-test.sh as following are advanced test. On Linux , need to replace the double quotes "" to single quotes '' in -o xxxx if contains $1 or $2 etc.
 pushd
