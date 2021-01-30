@@ -2,7 +2,7 @@
 
 Most time **Just 1 command line** to solve your daily text or file processing work, pipe endless.
 
-Since 2019-07-19 a `Visual Studio Code` extension: [**vscode-msr**]( https://marketplace.visualstudio.com/items?itemName=qualiu.vscode-msr) (souce code: [here](https://github.com/qualiu/vscode-msr)) to help your coding work.
+Since 2019-07-19 a `Visual Studio Code` extension: [**vscode-msr**]( https://marketplace.visualstudio.com/items?itemName=qualiu.vscode-msr) (source code: [here](https://github.com/qualiu/vscode-msr)) to help your coding work.
 
 #### **M**atch/**S**earch/**R**eplace: `lzmw.exe`/`lzmw-Win32.exe`/`lzmw.cygwin`/`lzmw.gcc**`/`lzmw-i386.gcc**`
 
@@ -21,27 +21,31 @@ Since 2019-07-19 a `Visual Studio Code` extension: [**vscode-msr**]( https://mar
 ### Performance Comparison [lzmw > findstr, lzmw ~ grep](https://github.com/qualiu/lzmw/tree/master/perf)
 
 | findstr + grep + lzmw on Windows                                                                                     | findstr + grep + lzmw on Cygwin                                                                                     | grep + lzmw on CentOS                                                                                               |
-| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
 | [**Summary table**](https://github.com/qualiu/lzmw/blob/gh-pages/perf/summary-full-Windows-comparison-2019-08-11.md) | [**Summary table**](https://github.com/qualiu/lzmw/blob/gh-pages/perf/summary-full-Cygwin-comparison-2019-08-11.md) | [**Summary table**](https://github.com/qualiu/lzmw/blob/gh-pages/perf/summary-part-CentOS-comparison-2019-08-11.md) |
 
-### **Vivid Colorful Demo/Examples**: [windows-test.bat](https://github.com/qualiu/lzmw/blob/master/tools/windows-test.bat) without parameters: [Windows screenshot](https://qualiu.github.io/lzmw/demo/windows-test.html)
+### **Vivid Colorful Demo/Examples** like [Windows screenshot](https://qualiu.github.io/lzmw/demo/windows-test.html)
 
 - Download all by command (Install [git](https://git-scm.com/downloads)) : **git clone** <https://github.com/qualiu/lzmw/>
-- If you've downloaded, run an updating command in the directory: **git pull** or **git fetch && git reset --hard origin/master** (if get conflicts)
+- If you've cloned it, run command in the folder: **git pull origin master** && **git reset --hard origin/master** (if conflicts).
 - Helpful scripts use **lzmw.exe** and **nin.exe** : <https://github.com/qualiu/lzmwTools> , and also *.bat files in [tools](https://github.com/qualiu/lzmw/tree/master/tools)
 
 ### Almost No Learning Cost
 
 - Just general `Regex` as **C++, C#, Java, Scala**, needless to learn strange Regex syntax like `FINDSTR`, `Awk`, `Sed` etc.
-- You can use plain text to search/replace (**-x**/**-ix** `search-text` to **-o** `replace-to`) if you're not familiar with `Regex`.
-- **Most** of the time **only** use searching(Regex: **-t**/**-i -t**, Plain text: **-x**/**-i -x**).
-- **Some** of the time search and replace-to(**-o**);
-- Just use **-PAC** or **-PIC** to get pure result as same as other tools (no **P**ath-number: **-P**, no **A**ny-info : **-A**, no **C**olor: **-C**)
-- All options are **optional** and **no order** and **effective meanwhile**; Free with abbreviations/full-names.
+- **Search**: (`-i` = `--ignore-case` like: `-i -t` or `-it` or `-ix`)
+  - **Normal search**: lzmw -r -p `"path1,pathN"` -i -t `"Regex-pattern"` -x `"and-plain-text"` [Optional-Args](#optional-args)
+  - **Advanced search**: [**code mining**](https://github.com/qualiu/vscode-msr#code-mining-without-or-with-little-knowledge) with the [cooked `doskeys`/`alias`](https://github.com/qualiu/vscode-msr#command-shortcuts) in `CMD`/`Bash` console or VSCode terminals.
+- **Replace**: (You can use both `-x` and `-t`)
+  - **Prereview changes**: lzmw -r -p `path1,pathN` -t `"Regex-pattern"` -o `"replace-to"` **-j** [Optional-Args](#optional-args)
+  - **Replace files**: lzmw -r -p `path1,pathN` -t `"Regex-pattern"` -o `"replace-to"` **-R** [Optional-Args](#optional-args)
+- Use [optional args](#optional-args) like **-P -A -C** or **-PAC** or **-PIC** to get pure result as same as other tools like `grep`/`findstr`.
+- All options are **optional** and **no order** and **effective meanwhile**; Free with **abbreviations** or **full-names** (like **-i** = `--ignore-case`).
 
 ## Usage + Examples + Color-Text-Screenshots
 
-- For **lzmw** : See [**Scenario Glance**](https://github.com/qualiu/lzmw/blob/master/README.md#scenario-glance) + [Brief Summary of lzmw EXE](https://github.com/qualiu/lzmw/blob/master/README.md#brief-summary-of-lzmw-exe) at bottom.
+- Just run `lzmw --help` or `lzmw -h` or `lzmw` (same for `nin`) to see usage and examples, **brief quick start** at the [**bottom of output**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html).
+- For **lzmw** : See [**Scenario Glance**](https://github.com/qualiu/lzmw/blob/master/README.md#scenario-glance) + [Brief Summary of lzmw EXE](https://github.com/qualiu/lzmw/blob/master/README.md#brief-summary-of-lzmw-exe) at the bottom of running `"lzmw -h"`.
 - For **lzmw** + **nin**: Also can see [tools/readme.txt](https://raw.githubusercontent.com/qualiu/lzmw/master/tools/readme.txt)
 - **Zoom out** following screenshots to **90% or smaller** if it's not tidy or comfortable.
 
@@ -50,21 +54,21 @@ Since 2019-07-19 a `Visual Studio Code` extension: [**vscode-msr**]( https://mar
 You can use a **`tool folder`** (already in `%PATH%` or `$PATH`) instead of using **`%SystemRoot%`** or **`/usr/bin/`** (you can also link lzmw to there).
 
 - [lzmw on **Windows**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/lzmwTools/blob/master/system/install-cygwin.bat); or get **lzmw** by [PowerShell command](https://github.com/qualiu/vscode-msr#or-manually-download--set-path-once-and-forever))
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.exe -O lzmw.exe.tmp && `move /y lzmw.exe.tmp lzmw.exe` && `icacls lzmw.exe /grant %USERNAME%:RX` && `copy lzmw.exe %SystemRoot%\`
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.exe -O lzmw.exe.tmp && `move /y lzmw.exe.tmp lzmw.exe`  && `icacls lzmw.exe /grant %USERNAME%:RX` && `copy lzmw.exe %SystemRoot%\`
   - For 32-bit Windows: https://github.com/qualiu/lzmw/raw/master/tools/lzmw-Win32.exe
 - [lzmw on **Cygwin**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Cygwin.html)
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.cygwin -O lzmw.cygwin.tmp && `mv -f lzmw.cygwin.tmp lzmw.cygwin` && `chmod +x lzmw.cygwin` && `cp lzmw.cygwin /usr/bin/lzmw`
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.cygwin -O lzmw.cygwin.tmp && `mv -f lzmw.cygwin.tmp lzmw.cygwin`  && `chmod +x lzmw.cygwin` && `cp lzmw.cygwin /usr/bin/lzmw`
 - [lzmw on **Fedora**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Fedora-25.html) + [**CentOS**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-CentOS-7.html) + **WSL** + **Ubuntu**:
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.gcc48 -O lzmw.gcc48.tmp && `mv -f lzmw.gcc48.tmp lzmw.gcc48` && `chmod +x lzmw.gcc48` && `sudo cp lzmw.gcc48 /usr/bin/lzmw`
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.gcc48 -O lzmw.gcc48.tmp && `mv -f lzmw.gcc48.tmp lzmw.gcc48`  && `chmod +x lzmw.gcc48` && `sudo cp lzmw.gcc48 /usr/bin/lzmw`
   - For 32-bit Linux like [**32-bit CentOS**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-i386-CentOS-32bit.html): Use https://github.com/qualiu/lzmw/raw/master/tools/lzmw-i386.gcc48
 
 ## NIN Color Doc on Windows/Linux + Download Command
 
 - [nin on **Windows**](https://qualiu.github.io/lzmw/usage-by-running/nin-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/lzmwTools/blob/master/system/install-cygwin.bat))
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.exe -O nin.exe.tmp && `move /y nin.exe.tmp nin.exe` && `icacls nin.exe /grant %USERNAME%:RX` && `copy nin.exe %SystemRoot%\`
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.exe -O nin.exe.tmp && `move /y nin.exe.tmp nin.exe`  && `icacls nin.exe /grant %USERNAME%:RX` && `copy nin.exe %SystemRoot%\`
   - For 32-bit Windows: https://github.com/qualiu/lzmw/raw/master/tools/nin-Win32.exe
 - [nin on **Cygwin**](https://qualiu.github.io/lzmw/usage-by-running/nin-Cygwin.html)
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.cygwin -O nin.cygwin.tmp && `mv -f nin.cygwin.tmp nin.cygwin` && `chmod +x nin.cygwin` && `cp nin.cygwin /usr/bin/nin`
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.cygwin -O nin.cygwin.tmp && `mv -f nin.cygwin.tmp nin.cygwin`  && `chmod +x nin.cygwin` && `cp nin.cygwin /usr/bin/nin`
 - [nin on **Fedora**](https://qualiu.github.io/lzmw/usage-by-running/nin-Fedora-25.html) + [**CentOS**](https://qualiu.github.io/lzmw/usage-by-running/nin-CentOS-7.html) + **WSL** + **Ubuntu**:
   - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.gcc48 -O nin.gcc48.tmp && `mv -f nin.gcc48.tmp nin.gcc48`  && `chmod +x nin.gcc48` && `sudo cp nin.gcc48 /usr/bin/nin`
   - For 32-bit Linux like [**32-bit CentOS**](https://qualiu.github.io/lzmw/usage-by-running/nin-i386-CentOS-32bit.html): Use https://github.com/qualiu/lzmw/raw/master/tools/nin-i386.gcc48
@@ -73,23 +77,23 @@ You can use a **`tool folder`** (already in `%PATH%` or `$PATH`) instead of usin
 
 **Zoom out** following screenshots to **90% or smaller** if it's not tidy or comfortable.
 
-- [Windows vivid demo test](https://qualiu.github.io/lzmw/demo/windows-test.html)
+- [Windows vivid demo test](https://qualiu.github.io/lzmw/demo/windows-test.html) (run `git clean -dfx` before re-run test if test failed)
 - [Linux demo and test](https://qualiu.github.io/lzmw/demo/linux-test.html)
 
 ### Powerful
 
 - Single exe for multiple platforms: **Windows** + **Cygwin** + **WSL** + **Ubuntu/CentOS/Fedora**
 - Smart Loading files with 8 composable kinds of filters:
-  - 5 pairs of file attribute filters
+  - 5 pairs of file attribute filters:
     - File name patterns (**-f**/**--nf**)
     - Directory patterns(**-d**/**--nd**)
-    - Full path patterns(**--pp**/**--np**)
-      - Size range(**--s1**,**--s2**)
-      - Write-time range(**--w1**,**--w2**)
-    - 3 kinds of file row / block filters to start/stop/skip reading/replacing each files/pipe:
-      - Row/line number begin/end (**-L**, **-N**);
-      - Block begin/end patterns (**-b**, **-Q**) for each block in each file/pipe; with **-q** to stop at once for pipe/each file.
-      - Normal begin/end patterns (**b**, **-q**).
+    - Full path patterns(**--pp**/**--np**/**--xp**)
+    - Size range(**--s1**,**--s2**)
+    - Write-time range(**--w1**,**--w2**)
+  - 3 kinds of file row / block filters to start/stop/skip reading/replacing each files/pipe:
+    - Row/line number begin/end (**-L**, **-N**);
+    - Block begin/end patterns (**-b**, **-Q**) for each block in each file/pipe; with **-q** to stop at once for pipe/each file.
+    - Normal begin/end patterns (**b**, **-q**).
 - Process pipe (output of self/other commands) **endless** as you want.
 - Two composable single exe: [lzmw.exe/cygwin/gcc*](https://github.com/qualiu/lzmw/blob/master/tools/readme.txt) especially powerful with [nin.exe/cygwin/gcc*](https://github.com/qualiu/lzmw/blob/master/tools/readme.txt).
 - **70** composable options for [lzmw](https://github.com/qualiu/lzmw/blob/master/tools/readme.txt) and **30** composable options for [nin](https://github.com/qualiu/lzmw/blob/master/tools/readme.txt) (just run them without parameters to get colorful usage/examples or see [readme.txt](https://github.com/qualiu/lzmw/blob/master/tools/readme.txt)) for further extractions/mining.
@@ -130,12 +134,14 @@ Use the rich searching options of like below, **combine** these **optional** opt
 - Single-line-Regex mode (**-S**) for Regex `"^"`and `"$"`:
   - Treat each file as one single line. If reading pipe, treat whole output as one line.
   - If block matching (used `-b` + `-Q`): Treat each block as one line in a file. Useful like removing a whole block.
-- Filter `file name`: **-f** `should-match-Regex` , **--nf** `should-not-match`
-- Filter `directory name`: **-d** `at-least-one-match` , **--nd** `none-should-match`
-- Filter `full path pattern`: **--pp** `should-match` , **--np** `should-not-match`
+- Filter `file name`: **-f** `should-match-Regex` , **--nf** `should-not-match-Regex`
+- Filter `directory name`: **-d** `at-least-one-match-Regex` , **--nd** `none-should-match-Regex`
+- Filter `full path pattern`: **--pp** `should-match-Regex` , **--np** `should-not-match-Regex`
+- Skip `full or sub paths`: **--xp** `d:\win\dir,my\sub,\bin\,\out\`
+  - Newer lzmw support **universal slash** `/` for `--pp`/`--np`/`--xp` like: **--xp** `d:/win/dir,my/sub,/bin/,/out/`
+    - Check if support universal slash by command: `lzmw --help | lzmw -x "Support '/' on Windows"`
 - Skip/Exclude link files: **--xf**
 - Skip/Exclude link folders: **--xd**
-- Skip full or sub paths: **--xp** `d:\win\dir,my\sub,\bin\,\out\`
 - Try to read once for link files: **-G** (link files' folders must be or under input root paths of **-p** or/and **-w**)
 - Filter `file size`: **--s1** <= size <= **s2** , like set one or two: **--s1** `1B` **--s2** `1.5MB`
 - Filter `file time`: like **--w1** `2015-07`, **--w2** `"2015-07-16 13:20"` or `2015-07-16T13:20:01` (quote it if has spaces).
@@ -160,7 +166,7 @@ Use the rich searching options of like below, **combine** these **optional** opt
   - lzmw -rp `folder1,folder2,file1,fileN`  -t `"Regex-Pattern"` -o `"Replace-To"`  -l  + [Optional Args](#optional-args)
 
 - Replace text:
-  - lzmw -rp `folder1,folder2,file1,fileN`  -t `"Regex-Pattern"` -o `"Replace-To"`   + [Optional Args](#optional-args)
+  - lzmw -rp `folder1,folder2,file1,fileN`  -t `"Regex-Pattern"` -o `"Replace-To"`    + [Optional Args](#optional-args)
 
 - Just **preview** changed files + lines:
   - lzmw -rp `folder1,folder2,file1,fileN`  -t `"Regex-Pattern"` -o `"Replace-To"` **-j**  + [Optional Args](#optional-args)
@@ -192,26 +198,34 @@ It's better to use **"\1"** than **"$1"** which let you easier to copy/migrate y
   - `"\1"` = `"$1"` for CMD console or batch files (`*.bat` or `*.cmd`) on Windows.
   - `"\1"` = `'$1'` for PowerShell (Windows / Linux) or Bash (Linux / Cygwin).
 
-### Tip for Frequent Usages:
+### Tips for Frequent Usages
 
 - Execute output lines as command lines:
   - Often use **-X -M** (or **-XM**) to hide final summary of executions.
   - Use **-X -I** to avoid show each command's return value + time cost + command line.
   - Use **-X -P -I** or **-X -A** to hide all.
-  - Run a command, exit if return != 0: `echo command line | lzmw -XM || exit -1`
-  - Directly run a simple command line: `lzmw -XM -z "command line" || exit -1`
-  - Restore or set no-BOM encoding changed by `Python` or `PowerShell` if got error when executing output as commands:
+  - Run a command, exit if return != 0: `echo command line | lzmw -XM || exit -1` (use `exit /b -1` on Windows CMD)
+  - Directly run a simple command line: `lzmw -XM -z "command line" || exit -1`  (use `exit /b -1` on Windows CMD).
+  - Set **UTF-8 no-BOM** encoding if **matching head** failed due to encoding changed by `Python`/`PowerShell`/etc, like:
     - `[Console]::InputEncoding = New-Object System.Text.UTF8Encoding $false`
-- Replace Files: 
-  - Use **-M -T 0** to hide summary + final file list.
+    - `file/pipe/command output | lzmw -t "^head-search-Regex" -o "replace-to" ...`
+  - You don't need to change encoding if **execute**(-X) output, lzmw will **auto detect and trim** the BOM header before executing:
+    - `file/pipe/command output | lzmw -X`
+    - `file/pipe/command output | lzmw -t "search-Regex" -o "replace-to" ... -X`
+- Replace Files(**-R**):
+  - Use **-j** to preview changes before replacing(`-R`).
+  - Use **-M -T 0** to hide summary + final changed file list, only output immediate change info (hide by `-H 0`).
 
 ### Optional Args
 
 ``` batch
 :: No order, but case-sensitive. Free to use abbreviations (-i = --ignore-case; -r = recursive; -k = --max-depth)
- lzmw -r -p path1,path2,pathN
+ lzmw
+  -r
+  -p path1,path2,pathN
+  -w path-list-file-1,path-list-file-N
   -k 18
-  
+
   -i
   -t "Match-Regex"
   -x `"And-Plain-text"`
@@ -225,23 +239,23 @@ It's better to use **"\1"** than **"$1"** which let you easier to copy/migrate y
 
   -f "File-Name-Regex"
   --nf "Exclude-File-Name-Regex"
-  
+
   -d "Match-Folder-Name-Regex"
   --nd "^(\.git|bin|Debug|Release|static|packages|test)$"
-  
+
   --pp "Match-Full-Path-Regex"
   --np "Exclude-Full-Path-Regex"
   --xp "Exclude-Full-or-SubPath1,FullPath2,SubPathN"
 
   --s1 1B
   --s2 10.50MB
-  
+
   --w1 "2015-12-30 10:20"
   --w2 "2015-12-30T19:20:30"
-  
+
   -L Begin-Row-Number
   -N End-Row-Number
-  
+
   -F "Match-Regex-to-Sort-By-Text" : Usually for time like "\d{4}-\d{2}-\d{2}\D\d+:\d+:\d+[\.,]?\d*"
   -B "Begin-Text-Regex"
   -E "End-Text-Regex"
@@ -255,7 +269,10 @@ It's better to use **"\1"** than **"$1"** which let you easier to copy/migrate y
   -H {N} : {N} = 0 to hide output;  {N} > 0 to show head N lines;  {N} < 0 to skip head N lines.
   -T {N} : {N} = 0 to hide output;  {N} > 0 to show tail N lines;  {N} < 0 to skip tail N lines.
 
-  ***
+  -U 3 -D 3
+
+  --timeout 30.5
+  *** ***
   More detail/examples see the home doc or just run the exe with '--help' or '-h' or no args.
 ```
 
