@@ -4,31 +4,36 @@ Most time **Just 1 command line** to solve your daily text or file processing wo
 
 Since 2019-07-19 a `Visual Studio Code` extension: [**vscode-msr**]( https://marketplace.visualstudio.com/items?itemName=qualiu.vscode-msr) (source code: [here](https://github.com/qualiu/vscode-msr)) to help your coding work.
 
-#### **M**atch/**S**earch/**R**eplace: `lzmw.exe`/`lzmw-Win32.exe`/`lzmw.cygwin`/`lzmw.gcc**`/`lzmw-i386.gcc**`
+#### **M**atch/**S**earch/**R**eplace: on [Windows/MinGW/Cygwin + Ubuntu/CentOS/Fedora + Darwin](#msr-color-doc-on-windowslinux--download-command)
 
 - **Match/Search/Replace*** Lines/Blocks in Files/Pipe.
 - **Filter/Load/Extract/Transform/Stats/*** Lines/Blocks in Files/Pipe.
 - **Execute** transformed/replaced result lines as command lines.
 
-#### **N**ot-**IN**-latter: `nin.exe`/`nin-Win32.exe`/`nin.cygwin`/`nin.gcc**`/`nin-i386.gcc**`
+#### **N**ot-**IN**-latter: on [Windows/MinGW/Cygwin + Ubuntu/CentOS/Fedora + Darwin](#nin-color-doc-on-windowslinux--download-command)
 
 - Get `Unique` or `Raw` **Exclusive/Mutual** Line-Set or Key-Set;
 - **Stats** + **Get top distribution** in Files/Pipe.
 - Remove(Skip) Line-Set or Key-Set matched in latter file/pipe.
 
-# MSR Overview: [Windows](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) or [Linux](https://qualiu.github.io/lzmw/usage-by-running/lzmw-CentOS-7.html)
+# LZMW Overview: [Windows](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) or [Linux](https://qualiu.github.io/lzmw/usage-by-running/lzmw-CentOS-7.html) or [MacOS](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Darwin-Arm64.html)
 
-### Performance Comparison [lzmw > findstr, lzmw ~ grep](https://github.com/qualiu/lzmw/tree/master/perf)
+### Performance Comparison: findstr + grep + lzmw
 
-| findstr + grep + lzmw on Windows                                                                                     | findstr + grep + lzmw on Cygwin                                                                                     | grep + lzmw on CentOS                                                                                               |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| [**Summary table**](https://github.com/qualiu/lzmw/blob/gh-pages/perf/summary-full-Windows-comparison-2019-08-11.md) | [**Summary table**](https://github.com/qualiu/lzmw/blob/gh-pages/perf/summary-full-Cygwin-comparison-2019-08-11.md) | [**Summary table**](https://github.com/qualiu/lzmw/blob/gh-pages/perf/summary-part-CentOS-comparison-2019-08-11.md) |
+| Windows | MacOS | Linux |
+| ------- | ----- | ----- |
+| [**Summary table**](https://github.com/qualiu/lzmw/blob/gh-pages/perf/summary-full-Windows-comparison-2019-08-11.md) | [**Summary table**](https://github.com/qualiu/lzmw/blob/gh-pages/perf/summary-full-Darwin-Arm64-comparison-2021-11-20.md) | [**Summary table**](https://github.com/qualiu/lzmw/blob/gh-pages/perf/summary-part-CentOS-comparison-2019-08-11.md) |
+| **2X**~**15X+** > findstr | **3X**~**10X+** > grep | **1.5~3X+** vs **1.5~3X+** |
 
-### **Vivid Colorful Demo/Examples** like [Windows screenshot](https://qualiu.github.io/lzmw/demo/windows-test.html)
+### Quickly Get lzmw/nin + Demo + Related Resources
 
-- Download all by command (Install [git](https://git-scm.com/downloads)) : **git clone** <https://github.com/qualiu/lzmw/>
-- If you've cloned it, run command in the folder: **git pull origin master** && **git reset --hard origin/master** (if conflicts).
-- Helpful scripts use **lzmw.exe** and **nin.exe** : <https://github.com/qualiu/lzmwTools> , and also *.bat files in [tools](https://github.com/qualiu/lzmw/tree/master/tools)
+- To quickly get lzmw/nin without slowly cloning + storing many files: 
+  - Method-1: Install a tiny extension [vscode-msr](https://marketplace.visualstudio.com/items?itemName=qualiu.vscode-msr) to **auto check + download** by system + terminal.
+  - Method-2: Manually **click the URLs** in [**lzmw download commands**](#msr-color-doc-on-windowslinux--download-command) or [**nin download commands**](#nin-color-doc-on-windowslinux--download-command).
+- To clone all files: 
+  - git clone https://github.com/qualiu/lzmw (run `git reset --hard origin/master` when pulling conflicts).
+- Preview functions: See HTML screenshots like [lzmw](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) or [nin](https://qualiu.github.io/lzmw/usage-by-running/nin-CentOS-7.html) or vivid colorful [**demo on Windows**](https://qualiu.github.io/lzmw/demo/windows-test.html).
+- Helpful **repos**: [**msrTools**](https://github.com/qualiu/msrTools)(like [psall.bat](https://github.com/qualiu/msrTools/blob/master/psall.bat) + [pskill.bat](https://github.com/qualiu/msrTools/blob/master/pskill.bat) + [Run-SQL.ps1](https://github.com/qualiu/msrTools/blob/master/SQL/Run-SQL.ps1)) + [**msrUI**](https://github.com/qualiu/msrUI) + **lzmw-nin** repo(if you're in Microsoft).
 
 ### Almost No Learning Cost
 
@@ -40,7 +45,7 @@ Since 2019-07-19 a `Visual Studio Code` extension: [**vscode-msr**]( https://mar
   - **Preview changes**: lzmw -r -p `path1,pathN` -t `"Regex-pattern"` -o `"replace-to"` **-j** [Optional-Args](#optional-args)
   - **Replace files**: lzmw -r -p `path1,pathN` -t `"Regex-pattern"` -o `"replace-to"` **-R** [Optional-Args](#optional-args)
 - Use [optional args](#optional-args) like **-P -A -C** or **-PAC** or **-PIC** to get pure result as same as other tools like `grep`/`findstr`.
-- All options are **optional** and **no order** and **effective meanwhile**; Free with **abbreviations** or **full-names** (like **-i** = `--ignore-case`).
+- All options are **optional** + **no order** + **effective meanwhile**; Free with **abbreviations** or **full-names**(like **-i** = `--ignore-case`).
 
 ## Usage + Examples + Color-Text-Screenshots
 
@@ -55,36 +60,39 @@ Since 2019-07-19 a `Visual Studio Code` extension: [**vscode-msr**]( https://mar
 
 You can use a **`tool folder`** (already in `%PATH%` or `$PATH`) instead of using **`%SystemRoot%`** or **`/usr/bin/`** (you can also link lzmw to there).
 
-- [lzmw on **Windows**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/lzmwTools/blob/master/system/install-cygwin.bat); or get **lzmw** by [PowerShell command](https://github.com/qualiu/vscode-msr#or-manually-download--set-path-once-and-forever))
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.exe -O lzmw.exe.tmp && `move /y lzmw.exe.tmp lzmw.exe`  && `icacls lzmw.exe /grant %USERNAME%:RX` && `copy lzmw.exe %SystemRoot%\`
+- [lzmw on **Windows** x86_64](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat); or get **lzmw** by [PowerShell command](https://github.com/qualiu/vscode-msr#or-manually-download--set-path-once-and-forever))
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.exe -O `lzmw.exe.tmp` && `move /y lzmw.exe.tmp lzmw.exe`  && `icacls lzmw.exe /grant %USERNAME%:RX` && `move lzmw.exe %SystemRoot%\`
   - For 32-bit Windows: https://github.com/qualiu/lzmw/raw/master/tools/lzmw-Win32.exe
-- [lzmw on **Cygwin**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Cygwin.html)
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.cygwin -O lzmw.cygwin.tmp && `mv -f lzmw.cygwin.tmp lzmw.cygwin`  && `chmod +x lzmw.cygwin` && `cp lzmw.cygwin /usr/bin/lzmw`
-- [lzmw on **Fedora**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Fedora-25.html) + [**CentOS**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-CentOS-7.html) + **WSL** + **Ubuntu**:
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.gcc48 -O lzmw.gcc48.tmp && `mv -f lzmw.gcc48.tmp lzmw.gcc48`  && `chmod +x lzmw.gcc48` && `sudo cp lzmw.gcc48 /usr/bin/lzmw`
+- [lzmw on **Darwin** Arm64](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Darwin-Arm64.html) for **MacBook**:
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw-arm64.darwin -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw` && `chmod +x lzmw` && `sudo mv lzmw /usr/local/bin/lzmw`
+- [lzmw on **CentOS** x86_64](https://qualiu.github.io/lzmw/usage-by-running/lzmw-CentOS-7.html) + [**Fedora**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Fedora-25.html) + **WSL** + **Ubuntu**:
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.gcc48 -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw` && `chmod +x lzmw` && `sudo mv lzmw /usr/bin/lzmw`
   - For 32-bit Linux like [**32-bit CentOS**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-i386-CentOS-32bit.html): Use https://github.com/qualiu/lzmw/raw/master/tools/lzmw-i386.gcc48
-
+- [lzmw on **Cygwin** x86_64](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Cygwin.html) (one command + green [install-cygwin.bat](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat)):
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.cygwin -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw`  && `chmod +x lzmw` && `mv lzmw /usr/bin/lzmw`
 ## NIN Color Doc on Windows/Linux + Download Command
 
-- [nin on **Windows**](https://qualiu.github.io/lzmw/usage-by-running/nin-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/lzmwTools/blob/master/system/install-cygwin.bat))
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.exe -O nin.exe.tmp && `move /y nin.exe.tmp nin.exe`  && `icacls nin.exe /grant %USERNAME%:RX` && `copy nin.exe %SystemRoot%\`
+- [nin on **Windows** x86_64](https://qualiu.github.io/lzmw/usage-by-running/nin-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat))
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.exe -O `nin.exe.tmp` && `move /y nin.exe.tmp nin.exe` && `icacls nin.exe /grant %USERNAME%:RX` && `move nin.exe %SystemRoot%\`
   - For 32-bit Windows: https://github.com/qualiu/lzmw/raw/master/tools/nin-Win32.exe
-- [nin on **Cygwin**](https://qualiu.github.io/lzmw/usage-by-running/nin-Cygwin.html)
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.cygwin -O nin.cygwin.tmp && `mv -f nin.cygwin.tmp nin.cygwin`  && `chmod +x nin.cygwin` && `cp nin.cygwin /usr/bin/nin`
-- [nin on **Fedora**](https://qualiu.github.io/lzmw/usage-by-running/nin-Fedora-25.html) + [**CentOS**](https://qualiu.github.io/lzmw/usage-by-running/nin-CentOS-7.html) + **WSL** + **Ubuntu**:
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.gcc48 -O nin.gcc48.tmp && `mv -f nin.gcc48.tmp nin.gcc48`  && `chmod +x nin.gcc48` && `sudo cp nin.gcc48 /usr/bin/nin`
+- [nin on **Darwin** Arm64](https://qualiu.github.io/lzmw/usage-by-running/nin-Darwin-Arm64.html) for **MacBook**:
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin-arm64.darwin -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `sudo mv nin /usr/local/bin/nin`
+- [nin on **CentOS** x86_64](https://qualiu.github.io/lzmw/usage-by-running/nin-CentOS-7.html) + [**Fedora**](https://qualiu.github.io/lzmw/usage-by-running/nin-Fedora-25.html) + **WSL** + **Ubuntu**:
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.gcc48 -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `sudo mv nin /usr/bin/nin`
   - For 32-bit Linux like [**32-bit CentOS**](https://qualiu.github.io/lzmw/usage-by-running/nin-i386-CentOS-32bit.html): Use https://github.com/qualiu/lzmw/raw/master/tools/nin-i386.gcc48
+- [nin on **Cygwin** x86_64](https://qualiu.github.io/lzmw/usage-by-running/nin-Cygwin.html) (one command + green [install-cygwin.bat](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat)):
+  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.cygwin -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `mv nin /usr/bin/nin`
 
 ## Demo and Test Screenshots
 
 **Zoom out** following screenshots to **90% or smaller** if it's not tidy or comfortable.
 
-- [Windows vivid demo test](https://qualiu.github.io/lzmw/demo/windows-test.html) (run `git clean -dfx` before re-run test if test failed).
+- [Windows vivid demo test](https://qualiu.github.io/lzmw/demo/windows-test.html) (run `git clean -dfx` before re-running test if test failed).
 - [Linux demo and test](https://qualiu.github.io/lzmw/demo/linux-test.html).
 
 ### Powerful
 
-- Single exe for multiple platforms: **Windows** + **Cygwin** + **WSL** + **Ubuntu/CentOS/Fedora**
+- Single exe for multiple platforms: **Windows** + **Cygwin** + **WSL** + **Ubuntu/CentOS/Fedora/Darwin**
 - Smart Loading files with 8 composable kinds of filters:
   - 5 pairs of file attribute filters:
     - File name patterns (**-f**/**--nf**)
@@ -278,7 +286,7 @@ It's better to use **"\1"** than **"$1"** which let you easier to copy/migrate y
   More detail/examples see the home doc or just run the exe with '--help' or '-h' or no args.
 ```
 
-### If you Want to Use MSR to Color Execution
+### If you Want to Use LZMW to Color Execution
 
 General example: Transform output to command lines then **execute**:
 
@@ -289,7 +297,7 @@ General example: Transform output to command lines then **execute**:
 - Hide summary of all executions:  **-M**  like **-X -M** or **-XM** (**-XM** or **-XMI** is mostly used)
 - Hide all(command/cost/summary): **-A** like **-XA**
 
-### If you Want to Use MSR to Color Output
+### If you Want to Use LZMW to Color Output
 
 Brief introduction besides the color doc [lzmw on Windows](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) as following:
 

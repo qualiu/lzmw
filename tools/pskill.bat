@@ -3,7 +3,7 @@
 :: Will show the processes info with colors before killing.
 :: This scripts depends and will call psall.bat.
 ::
-:: Latest version in: https://github.com/qualiu/lzmwTools/
+:: Latest version in: https://github.com/qualiu/msrTools/
 ::============================================================
 @echo off
 

@@ -4,7 +4,7 @@ cd "$(dirname $0)"
 
 lzmw=$(bash $ThisDir/get-exe-path.sh lzmw 1)
 if [ ! -f "$lzmw" ]; then
-    echo "Not found lzmw as above." >&2 ; 
+    echo "Not found lzmw as above." >&2 ;
     exit -1
 fi
 

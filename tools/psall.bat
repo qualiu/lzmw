@@ -8,7 +8,7 @@
 :: [1]: Default: :RowNumber: ParentProcessId ProcessId Name CommandLine
 :: [2]: With -P: ParentProcessId ProcessId Name CommandLine
 ::
-:: Latest version in: https://github.com/qualiu/lzmwTools/
+:: Latest version in: https://github.com/qualiu/msrTools/
 :: ############################################################################
 
 @echo off
