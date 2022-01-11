@@ -31,6 +31,7 @@ Get difference-set(not-in-latter) for first file/pipe; Or intersection-set with 
   -O [ --out-not-0-sum ]       Output summary only if the results count is not 0.
   -C [ --no-color ]            No color for output (it's better to not add color if have subsequent matching or processing).
   -P [ --no-percent ]          Not output percentages (Overwrite --percentage). (Overwrite --percentage).
+  --sum                        Sum accumulative counts and percentages(if used -p) for each key/line.
   --not-warn-bom               Not output BOM warnings when reading BOM files which BOM header bytes != 0xEFBBBF.
   -H [ --head ] arg            Output top [N] rows of whole output if N > 0; Skip top [N] lines if N < 0; [N] = 0 means not output.
   -T [ --tail ] arg            Output bottom [N] rows of whole output if N > 0; Skip bottom [N] lines if N < 0; [N] = 0 means not output.
@@ -46,7 +47,7 @@ Get difference-set(not-in-latter) for first file/pipe; Or intersection-set with 
   -Y [ --not-from-pipe ]       Force reading from files other than pipe (to avoid reading pipe if running in another command).
   -c [ --show-command ]        Show command line, you can append text for debug, or extraction after -c (if append text, -c and text must be last).
   --verbose                    Show parsed arguments, return value, time zone, BOM rows and EXE path, etc.
-  -h [ --help ]                See usage and examples below. More detail: https://github.com/qualiu/lzmw
+  -h [ --help ]                See usage and examples below. More detail: https://github.com/qualiu/msr
 
 Usage: nin  File1-or-pipe  File2-or-nul  [Regex-capture1-pattern-1]  [Regex-capture1-pattern-2]  [Options like: -i -u -m -w -H 2 -t xxx --nt xxx]
 All [Quoted Args Options] above are Optional, can be omitted.
