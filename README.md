@@ -58,30 +58,42 @@ Since 2019-07-19 a `Visual Studio Code` extension: [**vscode-msr**]( https://mar
 
 ## MSR Color Doc on Windows/Linux + Download Command
 
-You can use a **`tool folder`** (already in `%PATH%` or `$PATH`) instead of using **`%SystemRoot%`** or **`/usr/bin/`** (you can also link lzmw to there).
+You can use a **`tool folder`** (already in `%PATH%` or `$PATH`) instead of using **`%SystemRoot%`** or **`/usr/bin/`** (you can also link msr to there).
 
-- [lzmw on **Windows** x86_64](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat); or get **lzmw** by [PowerShell command](https://github.com/qualiu/vscode-msr#or-manually-download--set-path-once-and-forever))
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.exe -O `lzmw.exe.tmp` && `move /y lzmw.exe.tmp lzmw.exe`  && `icacls lzmw.exe /grant %USERNAME%:RX` && `move lzmw.exe %SystemRoot%\`
-  - For 32-bit Windows: https://github.com/qualiu/lzmw/raw/master/tools/lzmw-Win32.exe
-- [lzmw on **Darwin** Arm64](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Darwin-Arm64.html) for **MacBook**:
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw-arm64.darwin -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw` && `chmod +x lzmw` && `sudo mv lzmw /usr/local/bin/lzmw`
-- [lzmw on **CentOS** x86_64](https://qualiu.github.io/lzmw/usage-by-running/lzmw-CentOS-7.html) + [**Fedora**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Fedora-25.html) + **WSL** + **Ubuntu**:
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.gcc48 -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw` && `chmod +x lzmw` && `sudo mv lzmw /usr/bin/lzmw`
-  - For 32-bit Linux like [**32-bit CentOS**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-i386-CentOS-32bit.html): Use https://github.com/qualiu/lzmw/raw/master/tools/lzmw-i386.gcc48
-- [lzmw on **Cygwin** x86_64](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Cygwin.html) (one command + green [install-cygwin.bat](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat)):
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.cygwin -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw`  && `chmod +x lzmw` && `mv lzmw /usr/bin/lzmw`
+- [lzmw on **Windows**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat); or get **lzmw** by [PowerShell command](https://github.com/qualiu/vscode-lzmw#or-manually-download--set-path-once-and-forever))
+  - **x86_64** + **Arm64**:
+    - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.exe -O `lzmw.exe.tmp` && `move /y lzmw.exe.tmp lzmw.exe`  && `icacls lzmw.exe /grant %USERNAME%:RX` && `move lzmw.exe %SystemRoot%\`
+  - Windows `32-bit`:
+    - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw-Win32.exe -O `lzmw.exe.tmp` && `move /y lzmw.exe.tmp lzmw.exe`  && `icacls lzmw.exe /grant %USERNAME%:RX` && `move lzmw.exe %SystemRoot%\`
+  - [lzmw on **Cygwin** x86_64](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Cygwin.html) (one command + green [install-cygwin.bat](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat)):
+    - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.cygwin -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw`  && `chmod +x lzmw` && `mv lzmw /usr/bin/lzmw`
+- [lzmw on **MacBook**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Darwin-Arm64.html) `Arm64` (Darwin):
+    - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw-arm64.darwin -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw` && `chmod +x lzmw` && `sudo mv lzmw /usr/local/bin/lzmw`
+- [lzmw on **Linux**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-CentOS-7.html) + [**Fedora**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Fedora-25.html) + **WSL** + **Ubuntu**:
+  - **x86_64** Linux (CentOS / Ubuntu / Fedora):
+    - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.gcc48 -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw` && `chmod +x lzmw` && `sudo mv lzmw /usr/bin/lzmw`
+  - **x86** `32-bit` like [**32-bit CentOS**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-i386-CentOS-32bit.html):
+    - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw-i386.gcc48 -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw` && `chmod +x lzmw` && `sudo mv lzmw /usr/bin/lzmw`
+  - **Arm64**:
+    - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw-aarch64.linux -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw` && `chmod +x lzmw` && `sudo mv lzmw /usr/bin/lzmw`
+
 ## NIN Color Doc on Windows/Linux + Download Command
-
-- [nin on **Windows** x86_64](https://qualiu.github.io/lzmw/usage-by-running/nin-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat))
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.exe -O `nin.exe.tmp` && `move /y nin.exe.tmp nin.exe` && `icacls nin.exe /grant %USERNAME%:RX` && `move nin.exe %SystemRoot%\`
-  - For 32-bit Windows: https://github.com/qualiu/lzmw/raw/master/tools/nin-Win32.exe
-- [nin on **Darwin** Arm64](https://qualiu.github.io/lzmw/usage-by-running/nin-Darwin-Arm64.html) for **MacBook**:
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin-arm64.darwin -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `sudo mv nin /usr/local/bin/nin`
-- [nin on **CentOS** x86_64](https://qualiu.github.io/lzmw/usage-by-running/nin-CentOS-7.html) + [**Fedora**](https://qualiu.github.io/lzmw/usage-by-running/nin-Fedora-25.html) + **WSL** + **Ubuntu**:
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.gcc48 -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `sudo mv nin /usr/bin/nin`
-  - For 32-bit Linux like [**32-bit CentOS**](https://qualiu.github.io/lzmw/usage-by-running/nin-i386-CentOS-32bit.html): Use https://github.com/qualiu/lzmw/raw/master/tools/nin-i386.gcc48
-- [nin on **Cygwin** x86_64](https://qualiu.github.io/lzmw/usage-by-running/nin-Cygwin.html) (one command + green [install-cygwin.bat](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat)):
-  - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.cygwin -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `mv nin /usr/bin/nin`
+- [nin on **Windows**](https://qualiu.github.io/msr/usage-by-running/nin-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat); or get **nin** by [PowerShell command](https://github.com/qualiu/vscode-nin#or-manually-download--set-path-once-and-forever))
+  - **x86_64** + **Arm64**:
+    - wget https://github.com/qualiu/msr/raw/master/tools/nin.exe -O `nin.exe.tmp` && `move /y nin.exe.tmp nin.exe`  && `icacls nin.exe /grant %USERNAME%:RX` && `move nin.exe %SystemRoot%\`
+  - Windows `32-bit`:
+    - wget https://github.com/qualiu/msr/raw/master/tools/nin-Win32.exe -O `nin.exe.tmp` && `move /y nin.exe.tmp nin.exe`  && `icacls nin.exe /grant %USERNAME%:RX` && `move nin.exe %SystemRoot%\`
+  - [nin on **Cygwin** x86_64](https://qualiu.github.io/msr/usage-by-running/nin-Cygwin.html) (one command + green [install-cygwin.bat](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat)):
+    - wget https://github.com/qualiu/msr/raw/master/tools/nin.cygwin -O `nin.tmp` && `mv -f nin.tmp nin`  && `chmod +x nin` && `mv nin /usr/bin/nin`
+- [nin on **MacBook**](https://qualiu.github.io/msr/usage-by-running/nin-Darwin-Arm64.html) `Arm64` (Darwin):
+    - wget https://github.com/qualiu/msr/raw/master/tools/nin-arm64.darwin -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `sudo mv nin /usr/local/bin/nin`
+- [nin on **Linux**](https://qualiu.github.io/msr/usage-by-running/nin-CentOS-7.html) + [**Fedora**](https://qualiu.github.io/msr/usage-by-running/nin-Fedora-25.html) + **WSL** + **Ubuntu**:
+  - **x86_64** Linux (CentOS / Ubuntu / Fedora):
+    - wget https://github.com/qualiu/msr/raw/master/tools/nin.gcc48 -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `sudo mv nin /usr/bin/nin`
+  - **x86** `32-bit` like [**32-bit CentOS**](https://qualiu.github.io/msr/usage-by-running/nin-i386-CentOS-32bit.html):
+    - wget https://github.com/qualiu/msr/raw/master/tools/nin-i386.gcc48 -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `sudo mv nin /usr/bin/nin`
+  - **Arm64**:
+    - wget https://github.com/qualiu/msr/raw/master/tools/nin-aarch64.linux -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `sudo mv nin /usr/bin/nin`
 
 ## Demo and Test Screenshots
 
@@ -96,10 +108,22 @@ You can use a **`tool folder`** (already in `%PATH%` or `$PATH`) instead of usin
 - Smart Loading files with 8 composable kinds of filters:
   - 5 pairs of file attribute filters:
     - File name patterns (**-f**/**--nf**)
-    - Directory patterns(**-d**/**--nd**)
-    - Full path patterns(**--pp**/**--np**/**--xp**)
-    - Size range(**--s1**,**--s2**)
-    - Write-time range(**--w1**,**--w2**)
+    - Directory patterns (**-d**/**--nd**)
+    - Full path patterns:
+      - Regex: 
+        - **--pp** `need-regex`
+        - **--np** `exclude-regex`
+      - Texts:
+        - **--xp** `"test,mock,/obj/"`
+        - **--sp** `"src/,/common/"`
+    - File size range:
+      - **--s1** `1B` ; **--s2** `1.6MB`
+      - **--s1** `file1-as-size` ;  **--s2** `file2`
+    - File modification time range:
+      - **--w1** `2015-07-01T18:30:00`  ;  **--w2** `2015-08` or `"2015-07-01 20:00"`
+      - **--w1** `10days` ;  **--w2** `+10d`
+      - **--w1** `file1_as_time_plus_1s_if_no_w2`
+      - **--w1** `file1_as_time` ; **--w2** `file_or_time_or_offset`
   - 3 kinds of file row / block filters to start/stop/skip reading/replacing each files/pipe:
     - Row/line number begin/end (**-L**, **-N**);
     - Block begin/end patterns (**-b**, **-Q**) for each block in each file/pipe; with **-q** to stop at once for pipe/each file.
@@ -147,9 +171,10 @@ Use the rich searching options of like below, **combine** these **optional** opt
 - Filter `file name`: **-f** `should-match-Regex` , **--nf** `should-not-match-Regex`
 - Filter `directory name`: **-d** `at-least-one-match-Regex` , **--nd** `none-should-match-Regex`
 - Filter `full path pattern`: **--pp** `should-match-Regex` , **--np** `should-not-match-Regex`
-- Skip `full or sub paths`: **--xp** `d:\win\dir,my\sub,\bin\,\out\`
-  - Newer lzmw support **universal slash** `/` for `--pp`/`--np`/`--xp` like: **--xp** `d:/win/dir,my/sub,/bin/,/out/`
-    - Check if support universal slash by command: `lzmw --help | lzmw -x "Support '/' on Windows"`
+- Filter `full or sub paths`: **--xp** `"d:\win\dir,my\sub,\bin\,\out\\"` , **--sp** `"\src\,common"`
+  - Newer msr support **universal slash** `/` for `--pp`/`--np`/`--xp` like: 
+    - **--xp** `"d:/win/dir,my/sub,/bin/,/out/"`
+    - Check if support universal slash by command: `msr --help | msr -x "Support '/' on Windows"`
 - Skip/Exclude link files: **--xf**
 - Skip/Exclude link folders: **--xd**
 - Try to read once for link files: **-G** (link files' folders must be or under input root paths of **-p** or/and **-w**)
@@ -253,9 +278,11 @@ It's better to use **"\1"** than **"$1"** which let you easier to copy/migrate y
   -d "Match-Folder-Name-Regex"
   --nd "^(\.git|bin|Debug|Release|static|packages|test)$"
 
-  --pp "Match-Full-Path-Regex"
   --np "Exclude-Full-Path-Regex"
+  --pp "Match-Full-Path-Regex"
+  
   --xp "Exclude-Full-or-SubPath1,FullPath2,SubPathN"
+  --sp "Need-SubPath1,SubPath2"
 
   --s1 1B
   --s2 10.50MB
