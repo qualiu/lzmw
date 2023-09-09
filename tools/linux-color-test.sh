@@ -25,6 +25,8 @@ if [ ! -f "$lzmw" ] || [ ! -f "$nin" ]; then
     exit_error "Not found lzmw or nin as above."
 fi
 
+export MSR_USE_BRIGHT_COLOR=0
+
 $lzmw -p ./example-commands.bat -i -q "stop" -t "lzmw -c -p %~dp0\\\\?" -o "$lzmw -c -p ./" --nt "-o\s+.*\s+-R" -PAC | $lzmw -t "\s+-P(\w*)" -o '$1' -aPAC | $lzmw -t "\s+-(\w*)A(\w*)" -o ' -$1$2' -aPAC | $lzmw -t "($lzmw -c)" -o '$1 -PA' -aXIM > tmp-linux-color-test.log
 
 $lzmw -p color-group-test.cmd -t "^lzmw" -o $lzmw --nx dp0 -XIM >> tmp-linux-color-test.log
