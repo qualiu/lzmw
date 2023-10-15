@@ -29,7 +29,7 @@ Since 2019-07-19 a `Visual Studio Code` extension: [**vscode-msr**]( https://mar
 
 - To quickly get lzmw/nin without slowly cloning + storing many files: 
   - Method-1: Install a tiny extension [vscode-msr](https://marketplace.visualstudio.com/items?itemName=qualiu.vscode-msr) to **auto check + download** by system + terminal.
-  - Method-2: Manually **click the URLs** in [**lzmw download commands**](#lzmw-Color-Doc on-on-windowslinux--download-command) or [**nin download commands**](#nin-Color-Doc on-on-windowslinux--download-command).
+  - Method-2: Manually **click the URLs** in [**lzmw download commands**](#msr-color-doc-on-windowslinux--download-command) or [**nin download commands**](#nin-color-doc-on-windowslinux--download-command).
 - To clone all files: 
   - git clone https://github.com/qualiu/lzmw (run `git reset --hard origin/master` when pulling conflicts).
 - Preview functions: See HTML screenshots like [lzmw](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) or [nin](https://qualiu.github.io/lzmw/usage-by-running/nin-CentOS-7.html) or vivid colorful [**demo on Windows**](https://qualiu.github.io/lzmw/demo/windows-test.html).
@@ -60,7 +60,7 @@ Since 2019-07-19 a `Visual Studio Code` extension: [**vscode-msr**]( https://mar
 
 You can use a **`tool folder`** (already in `%PATH%` or `$PATH`) instead of using **`%SystemRoot%`** or **`/usr/bin/`** (you can also link lzmw to there).
 
-- [lzmw-Color-Doc on **Windows**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat); or get **lzmw** by [PowerShell command](https://github.com/qualiu/vscode-msr#or-manually-download--set-path-once-and-forever))
+- [lzmw-Color-Doc on **Windows**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat); or get **lzmw** by [PowerShell](https://github.com/qualiu/vscode-msr#or-manually-download--set-path-once-and-forever))
   - **x86_64** + **Arm64**:
     - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.exe -O `lzmw.exe.tmp` && `move /y lzmw.exe.tmp lzmw.exe`  && `icacls lzmw.exe /grant %USERNAME%:RX` && `move lzmw.exe %SystemRoot%\`
   - Windows `32-bit`:
@@ -76,9 +76,12 @@ You can use a **`tool folder`** (already in `%PATH%` or `$PATH`) instead of usin
     - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw-i386.gcc48 -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw` && `chmod +x lzmw` && `sudo mv lzmw /usr/bin/lzmw`
   - **Arm64**:
     - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw-aarch64.linux -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw` && `chmod +x lzmw` && `sudo mv lzmw /usr/bin/lzmw`
+- **FreeBSD**
+  - **amd64**:
+    - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw-amd64.freebsd -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw` && `chmod +x lzmw` && `sudo mv lzmw /usr/bin/lzmw`
 
 ## NIN Color Doc on Windows/Linux + Download Command
-- [nin-Color-Doc on **Windows**](https://qualiu.github.io/lzmw/usage-by-running/nin-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat); or get **nin** by [PowerShell command](https://github.com/qualiu/vscode-msr#or-manually-download--set-path-once-and-forever))
+- [nin-Color-Doc on **Windows**](https://qualiu.github.io/lzmw/usage-by-running/nin-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat); or get **nin** by [PowerShell](https://github.com/qualiu/vscode-msr#or-manually-download--set-path-once-and-forever))
   - **x86_64** + **Arm64**:
     - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.exe -O `nin.exe.tmp` && `move /y nin.exe.tmp nin.exe`  && `icacls nin.exe /grant %USERNAME%:RX` && `move nin.exe %SystemRoot%\`
   - Windows `32-bit`:
@@ -94,6 +97,9 @@ You can use a **`tool folder`** (already in `%PATH%` or `$PATH`) instead of usin
     - wget https://github.com/qualiu/lzmw/raw/master/tools/nin-i386.gcc48 -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `sudo mv nin /usr/bin/nin`
   - **Arm64**:
     - wget https://github.com/qualiu/lzmw/raw/master/tools/nin-aarch64.linux -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `sudo mv nin /usr/bin/nin`
+ - **FreeBSD**:
+   - **amd64**:
+     - wget https://github.com/qualiu/lzmw/raw/master/tools/nin-amd64.freebsd -O `nin.tmp` && `mv -f nin.tmp nin` && `chmod +x nin` && `sudo mv nin /usr/bin/nin`
 
 ## Demo and Test Screenshots
 
