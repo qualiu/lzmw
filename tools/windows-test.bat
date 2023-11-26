@@ -31,6 +31,8 @@ lzmw -z "LostArg%~1" -t "^LostArg(|-h|--help|/\?)$" > nul || (
     exit /b 0
 )
 
+for /f "tokens=*" %%a in ('set ^| lzmw -t "^(MSR_\w+)=.*" -o "\1" -PAC') do @lzmw -z "%%a" -t "(.+)" -o "echo Cleared \1=%\1% | lzmw -aPA -t MSR_\\w+ -e =.*" -XA || @set "%%a="
+
 lzmw -p %0 -t "^\s*set /a TestGroupNumber\s*\+\s*=" >nul
 set /a TestGroupCount=!ERRORLEVEL!
 

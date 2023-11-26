@@ -4,13 +4,13 @@ Most time **Just 1 command line** to solve your daily text or file processing wo
 
 Since 2019-07-19 a `Visual Studio Code` extension: [**vscode-msr**]( https://marketplace.visualstudio.com/items?itemName=qualiu.vscode-msr) (source code: [here](https://github.com/qualiu/vscode-msr)) to help your coding work.
 
-#### **M**atch/**S**earch/**R**eplace: on [Windows/MinGW/Cygwin + Ubuntu/CentOS/Fedora + Darwin](#lzmw-Color-Doc on-on-windowslinux--download-command)
+#### **M**atch/**S**earch/**R**eplace: on [Windows/MinGW/Cygwin + Ubuntu/CentOS/Fedora + Darwin + FreeBSD](#msr-color-doc-on-windowslinux--download-command)
 
 - **Match/Search/Replace*** Lines/Blocks in Files/Pipe.
 - **Filter/Load/Extract/Transform/Stats/*** Lines/Blocks in Files/Pipe.
 - **Execute** transformed/replaced result lines as command lines.
 
-#### **N**ot-**IN**-latter: on [Windows/MinGW/Cygwin + Ubuntu/CentOS/Fedora + Darwin](#nin-Color-Doc on-on-windowslinux--download-command)
+#### **N**ot-**IN**-latter: on [Windows/MinGW/Cygwin + Ubuntu/CentOS/Fedora + Darwin + FreeBSD](#nin-color-doc-on-windowslinux--download-command)
 
 - Get `Unique` or `Raw` **Exclusive/Mutual** Line-Set or Key-Set;
 - **Stats** + **Get top distribution** in Files/Pipe.
@@ -60,6 +60,8 @@ Since 2019-07-19 a `Visual Studio Code` extension: [**vscode-msr**]( https://mar
 
 You can use a **`tool folder`** (already in `%PATH%` or `$PATH`) instead of using **`%SystemRoot%`** or **`/usr/bin/`** (you can also link lzmw to there).
 
+Validation with [**md5.txt**](tools/md5.txt) use `md5sum xxx` like: `md5sum lzmw* | lzmw -t "\s+\**" -o " " -PAC | nin md5.txt -m`
+
 - [lzmw-Color-Doc on **Windows**](https://qualiu.github.io/lzmw/usage-by-running/lzmw-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat); or get **lzmw** by [PowerShell](https://github.com/qualiu/vscode-msr#or-manually-download--set-path-once-and-forever))
   - **x86_64** + **Arm64**:
     - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw.exe -O `lzmw.exe.tmp` && `move /y lzmw.exe.tmp lzmw.exe`  && `icacls lzmw.exe /grant %USERNAME%:RX` && `move lzmw.exe %SystemRoot%\`
@@ -81,6 +83,9 @@ You can use a **`tool folder`** (already in `%PATH%` or `$PATH`) instead of usin
     - wget https://github.com/qualiu/lzmw/raw/master/tools/lzmw-amd64.freebsd -O `lzmw.tmp` && `mv -f lzmw.tmp lzmw` && `chmod +x lzmw` && `sudo mv lzmw /usr/bin/lzmw`
 
 ## NIN Color Doc on Windows/Linux + Download Command
+
+Validation with [**md5.txt**](tools/md5.txt) use `md5sum xxx` like: `md5sum nin* | lzmw -t "\s+\**" -o " " -PAC | nin md5.txt -m`
+
 - [nin-Color-Doc on **Windows**](https://qualiu.github.io/lzmw/usage-by-running/nin-Windows.html) + **MinGW**: (You can get `wget` by [choco](https://chocolatey.org/packages/Wget) or [cygwin](https://github.com/qualiu/msrTools/blob/master/system/install-cygwin.bat); or get **nin** by [PowerShell](https://github.com/qualiu/vscode-msr#or-manually-download--set-path-once-and-forever))
   - **x86_64** + **Arm64**:
     - wget https://github.com/qualiu/lzmw/raw/master/tools/nin.exe -O `nin.exe.tmp` && `move /y nin.exe.tmp nin.exe`  && `icacls nin.exe /grant %USERNAME%:RX` && `move nin.exe %SystemRoot%\`
@@ -197,6 +202,7 @@ Use the rich searching options of like below, **combine** these **optional** opt
 - Output summary `info` to **stderr** + **hide** `warnings in stderr` (like BOM encoding): **-I** : Like **-I -C** or **-IC** or **-J -I -C** or **-JIC** etc.
 - Use **--force** to force replace BOM files which header != 0xEFBBBF (if UTF8 encoding is acceptable).
 - Use `--keep-color` on Windows/MinGW if you want to keep color for pipe or output file.
+- Use `--colors` to change/set colors for match-result / file-paths / final summary: See [**Set-Or-Change-Color-Groups**](#set-or-change-color-groups).
 - Use `--unix-slash 1` to output forward slash (`/`) of file paths on Windows (`lzmw`/`nin` accepts 2 types of slash: `'/'` and `'\'`).
 - Use `--exit number/Math/Regex` to change exit code, like:
   - Use `--exit gt255-to-255` for Cygwin/Linux/MacOS shell.
@@ -324,12 +330,76 @@ It's better to use **"\1"** than **"$1"** which let you easier to copy/migrate y
   -T {N} : {N} = 0 to hide output;  {N} > 0 to show tail N lines;  {N} < 0 to skip tail N lines.
 
   -U 3 -D 3
+  
+  --colors "Green, t=Red + Yellow_Blue, x = Yellow, e = Cyan_Black, d = Blue, f = Green, p = Green, m = Green, u = Red."
 
   --timeout 30.5
+
   *** ***
   More detail/examples see the home doc or just run the exe with '--help' or '-h' or no args.
 ```
 
+### Set or Change Color Groups
+
+- Method-1: Use `--colors` to set color groups for matching text + file paths + summary.
+  - Full color groups example (explanations see below):
+    - `--colors "Green, t=Red+Blue_Yellow+Magenta_Red, x=Yellow, e=Cyan, d=Blue, f=Green, m=Green, u=Yellow"`
+    - Valid color names(no-case): `Red + Green + Yellow + Blue + Cyan + Magenta + Black + White + None`.
+- Method-2: Set environment variable `MSR_COLORS` with value of `--colors` example above.
+
+#### Group-1 of Colors for Matching Text
+
+##### Default Colors of Text Matching
+- Plain text matching(`-x`) use `Yellow`(`Yellow_None`): 
+  - Foreground Color = `Yellow`
+  - Background Color = `None`(usually `Black`).
+- Regex text matching(`-t`) use color arrays for **Regex-captured-groups**:
+  - Linux = `Red_Black + Yellow_Red + White_Magenta + Cyan_Red`
+  - Windows = `Red_Black + White_Red + Red_Yellow + White_Magenta`
+- Regex enhance/extra-coloring (`-e`):
+  - Windows = `Green_Black + White_Blue + Black_Cyan + Magenta_Black + Black_White + Yellow_Black`
+  - Linux = `Green_Black + White_Blue + Yellow_Blue + Magenta_Black + Black_White + Yellow_Black`
+- Example:
+    - Command: 
+      - `echo abc 123 extra plain | lzmw -t "\w+ (\d+)" -e "ext\w+" -x plain`
+    - Group **-t** matched result:
+      - Output `abc` with color `Red_Black`: foreground = `Red`, background = `Black`.
+      - Output `123` with color `White_Red`.
+    - Group **-e** matched result:
+      - Output `extra` with color `Green_Black`.
+    - Group **-x** matched result:
+      - Output `plain` with color `Yellow`.
+
+##### Change Default Matching Colors
+
+- Change all colors with no group name of `x/t/e`:
+  - Example command: `echo abc 123 extra plain | lzmw -t "\w+ (\d+)" -e "ext\w+" -x plain --colors Green`
+  - All matched text of groups `-t/-x/-e` will be output with `Green` color.
+- Change one group with group name of `x/t/e`:
+  - Example command: `echo abc 123 extra plain | lzmw -t "\w+ (\d+)" -e "ext\w+" -x plain --colors Green,t=Cyan+Red_Blue`
+  - Group **-t** result use `Cyan + Red_Blue`
+    - Output `abc` with `Cyan`.
+    - Output `123` with `Red_Blue`
+  - Other matched result of `-x/-e` use `Green` color.
+- Remove one or more group color:
+  - Example command: `echo abc 123 extra plain | lzmw -t "\w+ (\d+)" -e "ext\w+" -x plain --colors t=none`
+  - Group **-t** result will be no color, other groups (`-x/e`) keep colors.
+
+#### Group-2 of Color for Result File Path
+
+- Change result file path color with `d/f/p` for `directory`/`file-name` or `path` for both.
+  - Example command: `lzmw -p . -l --colors p=green_blue`
+  - Output file paths with color = `Green_Blue` (foreground = `Green`, background = `Blue`).
+- Remove colors for file paths:
+  - Example command: `lzmw -p . -l --colors p=none`
+  - Output file paths with color = `None` which is no color.
+
+#### Group-3 of Color for Final Summary Text
+- Change summary color if matched (usually found results):
+  - Example command: `lzmw -p . -f "\.cpp$" -t search -x plain-text --colors m=Green`.
+- Remove summary color whatever matched(`m`) or not(`u`):
+  - Example command: `lzmw -p . -f "\.cpp$" -t search -x plain-text --colors m=none,u=none`.
+  
 ### If you Want to Use MSR to Color Execution
 
 General example: Transform output to command lines then **execute**:
@@ -340,6 +410,9 @@ General example: Transform output to command lines then **execute**:
 - Hide return value and time cost: **-I** like **-X -I** or **-XI**
 - Hide summary of all executions:  **-M**  like **-X -M** or **-XM** (**-XM** or **-XMI** is mostly used)
 - Hide all(command/cost/summary): **-A** like **-XA**
+- Output `"return-value+command"` only if a command returns abnormal code (fail):
+  - Use **-X -O** to output `"return-value+command"` only if a command `return != 0`.
+  - Use **-X -O -V xxx** like `-V gt0` to output only if `return value > 0`.
 
 ### If you Want to Use MSR to Color Output
 
